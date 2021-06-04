@@ -1,0 +1,35 @@
+1 - Executar no banco o script do arquivo script banco.txt
+   
+    O script vai criar o campo CAMINHO_DATABASE, vai servir para saber de qual banco é esse usuário.
+    Vai servir quando for colocado em um servidor todos os bancos, para teste coloca o mesmo banco.
+
+2 - Baixar publicação em https://github.com/juniorfdl/Inpulse-Web2.0/tree/master/Published
+
+3 - Na Dentro da Pasta Install
+
+    Instalar na sequencia:
+        - Install32 01.exe ou Install64 01.exe - conforme versao do windows
+        - Install02.bat
+
+4 - Entra no Arquivo FrontEnd\public\scripts\SIS\config.js
+    
+    Trocar onde esta escrito localhost pelo IP da maquina.
+
+5 - Após as instalações acima já pode Startar ou Parar o programa
+    
+   - Start.bat - Iniciar
+   - Stop.bat - Para
+
+6 - Após Start acessar o link do sistema
+   
+  http://localhost:1020
+
+
+Obs.: Se a posta 1020 não estiver disponivel, ela pode ser alterada no arquivo 
+      FrontEnd\Server.js
+     
+     procure por 1020 e troque pela porta que desejar.
+
+     Exemplo trocar por 1122 o link fica http://localhost:1122
+
+   

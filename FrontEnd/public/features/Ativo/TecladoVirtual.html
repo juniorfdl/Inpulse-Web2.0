@@ -1,0 +1,116 @@
+<form name="formTecladoVirtual" class="cor_fundo_043" id = "form_teclado_virtual"> 
+    <div class="modal-header">
+        <div class="col-md-10">
+            <h3 class="modal-title fonte_13" id="modal-title">Teclado Virtual</h3>
+        </div>
+        <div class="col-md-2">
+            <span class="pull-right">
+                <button class="btn btn-sm btn-warning hidden-print" style="width: 30px; height: 25px;" 
+                   ng-click="ctrl.FecharTeclado()">
+                    <span class="glyphicon glyphicon-remove">
+                    </span>
+                </button>
+            </span>
+        </div>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <fieldset>
+            <div class="row">
+                <luar-text container-class="col-md-11 fonte_13" label="Telefone" name="TELEFONE" 
+                  ng-model="ctrl.TelefoneTeclado">
+                </luar-text>
+            </div>
+        </fieldset>
+        <br>
+
+        <fieldset>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.EnviarDTMF(1)"
+                  style="width: 38px; color:black; height: 30px; background: white; font-size: 15px;">1</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.EnviarDTMF(2)"
+                style="width: 38px;  color:black; height: 30px; background: white; font-size: 15px;">2</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.EnviarDTMF(3)"
+                  ng-click="ctrl.EnviarDTMF(1)"style="width: 38px; color:black;  height: 30px; background: white; font-size: 15px;">3</button>
+            </div>
+
+            <div class="col-md-6">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.LigarTeclado()"
+                    style="width: 120px; height: 30px; background: #029104;font-size: 15px;">Ligar/Atender
+                </button>
+            </div>
+        </fieldset>
+        <br>
+        <fieldset>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.EnviarDTMF(4)"
+                style="width: 38px; color:black;  height: 30px; background: white; font-size: 15px;">4</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.EnviarDTMF(5)"
+                style="width: 38px; color:black;  height: 30px; background: white; font-size: 15px;">5</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.EnviarDTMF(6)"
+                style="width: 38px; color:black;  height: 30px; background: white; font-size: 15px;">6</button>
+            </div>
+            <div class="col-md-6">
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.LiberarLigacao()"
+                      style="width: 120px; height: 30px; background: #F5070B; font-size: 15px;">Desligar
+                    </button>
+            </div>
+        </fieldset>
+        <br>
+        <fieldset>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.EnviarDTMF(7)"
+                style="width: 38px; color:black;  height: 30px; background: white; font-size: 15px;">7</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.EnviarDTMF(8)"
+                style="width: 38px; color:black;  height: 30px; background: white; font-size: 15px;">8</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.EnviarDTMF(9)"
+                style="width: 38px; color:black;  height: 30px; background: white; font-size: 15px;">9</button>
+            </div>
+            <div class="col-md-6">
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.Transferir()"
+                      style="width: 120px; height: 30px; background: #00495B; font-size: 15px;">Transferir
+                    </button>
+            </div>
+        </fieldset>
+
+        <br>
+        <fieldset>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.EnviarDTMF('*')"
+                  style="width: 38px; color:black;  height: 30px; background: white; font-size: 15px;">*</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.EnviarDTMF(0)"
+                  style="width: 38px; color:black;  height: 30px; background: white; font-size: 15px;">0</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.EnviarDTMF('#')"
+                  style="width: 38px; color:black;  height: 30px; background: white; font-size: 15px;">#</button>
+            </div>
+            
+        </fieldset>
+
+        <br>
+        <fieldset>
+            <div class="col-md-6">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.TelefoneTeclado = null "
+                  style="width: 127px; color:black;  height: 30px; background: white; font-size: 15px;">Limpar</button>
+            </div>
+        </fieldset>
+
+    </div>
+
+</form>

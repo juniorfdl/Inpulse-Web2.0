@@ -1,0 +1,51 @@
+﻿<div class="container">
+
+ <center>
+        <div>
+			<div><br><br><br><br><br>
+            <form class="formlogin2">
+			<p><img src="img/logo_sistema_inpulse_branco.png" alt="" /> </p> 
+			<br>
+            <p>Chegue onde você deseja!</p>
+            <p>Nós te damos o impulso que você precisa!</p>
+			</form>
+<br>
+            <form  class="formlogin" name="flogin">
+			                <div style="font-family:Segoe UI;"><center>
+                    <luar-text container-class="col-md-11" label="Usuário"
+                               name="usuario" ng-model="ctrl.userName">
+                    </luar-text>
+                
+                    <luar-text container-class="col-md-11" label="Senha" type="password"
+                               name="senha" ng-model="ctrl.password">
+                    </luar-text>                    
+               </center> </div>
+
+                <div>
+               <!--     <luar-select container-class="col-md-11" label="Módulo" name="NIVEL"
+                                 ng-options="item.NIVEL as item.NIVEL for item in ::ctrl.NivelLook"
+                                 ng-model="ctrl.Nivel">
+                    </luar-select>-->
+                </div><br>
+
+                
+                    <div style="font-family:Segoe UI;" ><center>
+                      <button type="button" value="ENTRAR" class="btn btn-primary" style="width: 100%"
+                                ng-click="ctrl.login()">
+                            <span class="glyphicon glyphicon-user"></span>
+                            ENTRAR
+                        </button>
+						<input id="check1" type="checkbox" ng-model="ctrl.PausarLigacoes" > Entrar em pausa</input>
+                    </center></div>                   
+               
+
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        
+                    </div>
+                </div>
+
+
+            </form>
+	</div></div>
+</center></div>

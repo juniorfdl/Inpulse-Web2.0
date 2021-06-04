@@ -1,0 +1,41 @@
+DROP TRIGGER IF EXISTS `crm_sgr`.`tg_campanhas_clientes_alt`;
+
+DELIMITER $$
+USE `crm_sgr`$$
+CREATE DEFINER=`root`@`localhost` TRIGGER `tg_campanhas_clientes_alt` BEFORE UPDATE ON `campanhas_clientes` FOR EACH ROW BEGIN  
+  
+  IF (NEW.CONCLUIDO = "NAO") THEN   
+    SET NEW.OPERADOR_LIGACAO = 0;  
+  END IF; 
+
+  IF NEW.OPERADOR <> NEW.OPERADOR_LIGACAO AND NEW.CONCLUIDO = "SIM" AND NEW.OPERADOR > 0 AND
+   exists(SELECT CODIGO FROM propostas  WHERE LIGACAO = NEW.CODIGO LIMIT 1) THEN
+    SET NEW.OPERADOR_LIGACAO = NEW.OPERADOR; 
+  END IF;
+
+  IF NEW.AGENDA = -1 THEN
+    SET NEW.AGENDA = 0;
+  END IF;  
+  
+  #IF (COALESCE(OLD.DATA_HORA_FIM,0) > 0)and(COALESCE(OLD.DATA_HORA_FIM,0) <> COALESCE(OLD.DATA_HORA_LIG,0)) THEN
+  #  SET NEW.DATA_HORA_FIM = OLD.DATA_HORA_FIM; 
+  #END IF;
+    
+  IF COALESCE(NEW.DATA_HORA_LIG,0) = 0 THEN
+    SET NEW.DATA_HORA_LIG = NEW.DATA_HORA_FIM; 
+  END IF; 
+  
+  IF COALESCE(NEW.DATA_HORA_FIM,0) < COALESCE(NEW.DATA_HORA_LIG,0) THEN
+    SET NEW.DATA_HORA_LIG = NEW.DATA_HORA_FIM;
+  END IF;  
+  
+  IF (NEW.data_hora_fim > 0) and (DATE(NEW.data_hora_lig) <> DATE(NEW.data_hora_fim)) THEN
+    SET NEW.data_hora_fim = addtime(NEW.DATA_HORA_LIG,20);
+  END IF;
+  
+  IF (NEW.data_hora_fim > 0) and (NEW.data_hora_lig = NEW.data_hora_fim) THEN
+    SET NEW.data_hora_fim = addtime(NEW.DATA_HORA_LIG,20);
+  END IF;  
+  
+END$$
+DELIMITER ;

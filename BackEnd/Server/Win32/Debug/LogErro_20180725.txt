@@ -1,0 +1,19 @@
+
+25/07/2018 21:03:52
+Could not convert variant of type (String) into type (Date)
+
+25/07/2018 21:07:10
+Could not convert variant of type (String) into type (Date)
+
+25/07/2018 21:10:05
+Could not convert variant of type (String) into type (Date)
+
+25/07/2018 21:34:28
+Could not convert variant of type (String) into type (Date)
+
+25/07/2018 21:39:16
+Could not convert variant of type (String) into type (Date)
+
+25/07/2018 21:42:01
+Could not convert variant of type (String) into type (Date)
+25/07/2018 22:07:46Field 'TEMPO_MAX_SEG' not found

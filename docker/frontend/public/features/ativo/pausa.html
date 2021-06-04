@@ -1,0 +1,59 @@
+<form name="formPausa">
+    <div class="modal-header">
+        <div class="col-md-10">
+            <h3 class="modal-title" id="modal-title">Pausar Ligações</h3>
+        </div>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="col-md-11 form-group">
+            <label>Motivo Pausa</label>
+            <select class="form-control" name="MotivoCombo" 
+               ng-options="item as item.DESCRICAO for item in ctrl.DadosStart.MotivosPausa track by item.DESCRICAO "
+               ng-model="ctrl.SelectedMotivoPausa" ng-change="ctrl.ChangeMotivoPausa()">
+            </select>
+        </div>
+
+        <div class="col-md-11 form-group">
+            <label>Observações</label>
+            <textarea class="form-control" rows="4" cols="50" ng-model="ctrl.MotivosPausaDescricao">
+            </textarea>
+        </div>
+       
+        <div class="col-md-12 form-group">
+            
+          <center> 
+            <h2>                           
+                <span ng-class="ctrl.cssPausa()">Status da pausa</span>
+            </h2>             
+            
+            <h3>                           
+                  <span class="label label-primary">Tempo pausa . . .
+                       <span class="badge">{{ctrl.TEMPO_MAX_SEG_DISPLAY}}</span></a>
+                  </span>
+            </h3>
+            <h3>                           
+                    <span class="label label-primary">Tempo em pausa
+                         <span class="badge">{{ctrl.tempoEmPausa_DISPLAY}}</span></a>
+                    </span>
+            </h3>
+
+          </center>
+        </div>
+
+        <div class="col-md-12 form-group">
+            
+            <button class="btn btn-sm btn-primary" style="width: 110px" ng-click="ctrl.GravarPausa(1)">
+                <span class="glyphicon glyphicon-ok-sign">
+                </span> Logout
+            </button>
+            <button class="btn btn-sm btn-warning hidden-print" style="width: 110px" ng-click="ctrl.GravarPausa(2)">
+                <span class="glyphicon glyphicon-remove">
+                </span> Sair Pausa
+            </button>            
+        </div>
+
+    </div>
+
+</form>

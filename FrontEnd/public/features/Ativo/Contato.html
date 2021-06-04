@@ -1,0 +1,38 @@
+
+
+<div ng-show="ctrl.MenuSelecionado == 'CONTATOS'">
+
+    <div class="col-md-12">
+       <input type="button" class="btn btn-link" ng-click="ctrl.AbrirNovoContato()" value="Novo Contato" />
+    </div>
+
+    <div class="col-md-12">
+
+        <table class="table table-condensed">
+            <thead>
+                <tr class="cor_fundo_042 fonte_14">
+                    <th>Nome</th>
+                    <th>Apelido</th>
+                    <th>Cargo</th>
+                    <th>E-mail</th>
+                    <th width="5%"></th>
+                    <th width="5%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in ctrl.ProximaLigacao.Contatos track by item.id">
+
+                    <td>{{ item.NOME }}</td>
+                    <td>{{ item.TRATAMENTO }}</td>
+                    <td>{{ item.CARGO_DESCRICAO }}</td>
+                    <td>{{ item.EMAIL }}</td>
+                    <td width="5%"><a class="btn btn-primary " role="button" ng-click="ctrl.EditContato(item)">Alterar</a></td>
+                    <td width="5%"><a class="btn btn-danger " role="button" ng-click="ctrl.DelContato(item)">Deletar</a></td>
+
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+</div>

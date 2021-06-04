@@ -1,0 +1,70 @@
+
+07/12/2018 19:21:47
+CoInitialize não foi chamado
+
+07/12/2018 19:22:44
+CoInitialize não foi chamado
+
+07/12/2018 19:25:45
+CoInitialize não foi chamado
+
+07/12/2018 19:26:13
+CoInitialize não foi chamado
+
+07/12/2018 19:26:44
+CoInitialize não foi chamado
+
+07/12/2018 19:46:53
+CoInitialize não foi chamado
+
+07/12/2018 19:57:51
+CoInitialize não foi chamado
+
+07/12/2018 20:13:14
+CoInitialize não foi chamado
+
+07/12/2018 20:14:12
+CoInitialize não foi chamado
+
+07/12/2018 20:26:42
+CoInitialize não foi chamado
+
+07/12/2018 20:41:05
+Access violation at address 00000000 in module 'SIPDW.exe'. Read of address 00000000
+
+07/12/2018 20:41:08
+Access violation at address 00000000 in module 'SIPDW.exe'. Read of address 00000000
+
+07/12/2018 20:41:10
+Access violation at address 00000000 in module 'SIPDW.exe'. Read of address 00000000
+
+07/12/2018 20:41:16
+Access violation at address 00000000 in module 'SIPDW.exe'. Read of address 00000000
+
+07/12/2018 20:41:20
+Access violation at address 00000000 in module 'SIPDW.exe'. Read of address 00000000
+
+07/12/2018 20:41:25
+Access violation at address 00000000 in module 'SIPDW.exe'. Read of address 00000000
+
+07/12/2018 20:41:27
+Access violation at address 00000000 in module 'SIPDW.exe'. Read of address 00000000
+
+07/12/2018 20:41:30
+Access violation at address 00000000 in module 'SIPDW.exe'. Read of address 00000000
+
+07/12/2018 20:41:41
+Access violation at address 00000000 in module 'SIPDW.exe'. Read of address 00000000
+
+07/12/2018 20:41:44
+Access violation at address 00000000 in module 'SIPDW.exe'. Read of address 00000000
+
+07/12/2018 20:43:40
+Access violation at address 00000000 in module 'SIPDW.exe'. Read of address 00000000
+
+07/12/2018 20:44:55
+CoInitialize não foi chamado
+
+07/12/2018 21:12:06
+CoInitialize não foi chamado
+07/12/2018 21:41:41CoInitialize não foi chamado

@@ -1,0 +1,95 @@
+<form name="formNovoContato">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Novo Contato</h3>
+        <div class="col-md-12">           
+
+            <span class="pull-right">
+                <button class="btn btn-sm btn-warning hidden-print" style="width: 30px; height: 25px;" 
+                    ng-click="ctrl.FecharNovoContato()">
+                    <span class="glyphicon glyphicon-remove">
+                    </span>
+                </button>
+            </span>
+        </div>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+        <fieldset>
+            <luar-text container-class="col-md-6" label="Nome" 
+                 name="NomeContato" ng-model="ctrl.NovoContato.NOME">
+            </luar-text>
+            
+            <luar-select container-class="col-md-3" label="Cargo" name="CargoContato" 
+                ng-options="item.DESCRICAO for item in ::ctrl.DadosStart.Cargos"                
+                ng-model="ctrl.SelectedCargo">
+            </luar-select>
+
+            <luar-text container-class="col-md-3" label="Aniversário" 
+                 type="number" name="AniversarioContato" ng-model="ctrl.NovoContato.ANIVERSARIO">
+            </luar-text>
+
+            <luar-text container-class="col-md-6" label="E-mail" type="email"
+                 name="EmailContato" ng-model="ctrl.NovoContato.EMAIL">
+            </luar-text>
+
+            <luar-text container-class="col-md-3" label="Apelido/Tratamento" 
+                 name="ApelidoContato" ng-model="ctrl.NovoContato.TRATAMENTO">
+            </luar-text>
+
+            <luar-select container-class="col-md-3" label="Sexo" name="SexoContato" 
+                ng-options="item.SEXO as item.DESCRICAO for item in ::ctrl.Sexo"
+                ng-model="ctrl.NovoContato.SEXO">
+            </luar-select>
+
+            <luar-text container-class="col-md-4" label="Time de Futebol" 
+              name="TimeFutebolContato" ng-model="ctrl.NovoContato.TIME_FUTEBOL">
+            </luar-text>
+
+            <luar-text container-class="col-md-2" label="Nro Filhos" 
+              type="number" name="NroFilhosContato" ng-model="ctrl.NovoContato.FILHOS">
+            </luar-text>
+
+        </fieldset>
+
+        <fieldset>
+            <luar-select container-class="col-md-1" label="Aréa" name="Area1Contato" 
+                ng-options="item.Area as item.Area for item in ctrl.DadosStart.FoneAreas"
+                ng-model="ctrl.NovoContato.AREA_DIRETO">
+            </luar-select>
+
+            <luar-text container-class="col-md-3" label="Fone Direto" wt-easy-mask="fone" 
+                name="FoneDiretoContato" ng-model="ctrl.NovoContato.FONE_DIRETO">
+            </luar-text>
+        </fieldset>
+
+        <fieldset>
+            <luar-select container-class="col-md-1" label="Aréa" name="AreaCelContato" 
+                ng-options="item.Area as item.Area for item in ctrl.DadosStart.FoneAreas"
+                ng-model="ctrl.NovoContato.AREA_CEL">
+            </luar-select>
+
+            <luar-text container-class="col-md-3" label="Celular" 
+                name="CelularContato" ng-model="ctrl.NovoContato.CELULAR" wt-easy-mask="fone" >
+            </luar-text>
+        </fieldset>
+
+        <fieldset>
+            <luar-select container-class="col-md-1" label="Aréa" name="ArearesContato" 
+                ng-options="item.Area as item.Area for item in ctrl.DadosStart.FoneAreas"
+                ng-model="ctrl.NovoContato.AREA_RESI">
+            </luar-select>
+
+            <luar-text container-class="col-md-3" label="Fone Residêncial" 
+                name="residencialContato" ng-model="ctrl.NovoContato.FONE_RESIDENCIAL" wt-easy-mask="fone" >
+            </luar-text>
+        </fieldset>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" ng-click="ctrl.ConfirmarNovoContato()">
+            <span class="glyphicon glyphicon-floppy-disk"> Confirmar
+            </span>
+        </button> 
+    </div>    
+
+</form>

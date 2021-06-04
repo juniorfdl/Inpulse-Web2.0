@@ -1,0 +1,8 @@
+alter table parametros add CAMPOS_IMPORTACAO_ITENS_COMPRAS varchar(500);
+
+
+#Exemplo
+#NULL,CODPROD, DESCRICAO, QDT, UN_MEDIDA, VALOR_UN 
+
+#Exemplo Compras
+#DESCRICAO, CLIENTE, DATA, VALOR, FORMA_PGTO

@@ -1,0 +1,93 @@
+<form name="formEnviarEmail">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Enviar E-mail</h3>
+        <div class="col-md-12">
+            <span class="pull-right">
+                <button class="btn btn-sm btn-warning hidden-print" style="width: 30px; height: 25px;" ng-click="ctrl.FecharEnviarEmail()">
+                    <span class="glyphicon glyphicon-remove">
+                    </span>
+                </button>
+            </span>
+        </div>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+        <fieldset>
+            <luar-text container-class="col-md-11" label="Para" name="EnviarEmailPara" ng-model="ctrl.EnviarEmail.PARA">
+            </luar-text>
+
+            <div class="row">
+                <luar-check-group class="col-md-11">
+                    <input luar-check label="Solicitar confirmação de leitura" ng-false-value="'NAO'" ng-true-value="'SIM'"
+                        name="CONFIRMACAOLEITURA" ng-model="ctrl.EnviarEmail.CONFIRMACAOLEITURA" />
+                </luar-check-group>
+            </div>
+
+            <luar-text container-class="col-md-11" label="Cópia" name="EnviarEmailCopia" ng-model="ctrl.EnviarEmail.COPIA">
+            </luar-text>
+
+            <luar-text container-class="col-md-11" label="Cópia oculta" name="EnviarEmailCopiaOculta" ng-model="ctrl.EnviarEmail.COPIAOCULTA">
+            </luar-text>
+
+            <luar-text container-class="col-md-11" label="Assunto" name="EnviarEmailAssunto" ng-model="ctrl.EnviarEmail.ASSUNTO">
+            </luar-text>
+
+            <luar-select container-class="col-md-6" label="Prioridade" name="Prioridade" ng-options="item.PRIORIDADE for item in ::ctrl.ListaPrioridade"
+                ng-change="ctrl.ChangePrioridade()" ng-model="ctrl.SelectedPrioridade">
+            </luar-select>
+                 
+           <!-- <luar-textarea container-class="col-md-11" label="Mensagem" name="EnviarEmailMensagem" ng-model="ctrl.EnviarEmail.TEXTO">
+            </luar-textarea> -->
+            
+     </fieldset>
+     <div container-class="col-md-11"  ng-app="textAngularTest" ng-controller="wysiwygeditor" class="container app">
+        <h3>Mensagem</h3>       
+        <div text-angular="text-angular" name="EnviarEmailMensagem" ng-model="ctrl.EnviarEmail.TEXTO" ta-disabled='disabled'></div>
+      </div>
+        <fieldset>
+            <div class="col-md-12">
+                <input type="file" ng-model="ctrl.myFile" base-sixty-four-input/>
+            </div>
+
+            <div class="col-md-12">
+                <input type="button" class="btn btn-link" ng-click="ctrl.InserirAnexo()" ng-show="ctrl.myFile" value="Adicionar Anexo"/>
+            </div>
+
+            <div class="col-md-12">
+
+                <table class="table table-condensed">
+                    <thead>
+                        <tr class="cor_fundo_042 fonte_14">
+                            <th>Nome Anexo</th>
+                            <th width="5%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in ctrl.EnviarEmail.Anexos track by item.NOME">
+                            <td>{{ item.NOME }}</td>
+                            <td width="5%"><a class="btn btn-danger " role="button" ng-click="ctrl.DelAnexo(item)">Deletar</a></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+            <!-- 
+                <input type = "file" file-model = "ctrl.myFile"/>
+                <button ng-click = "ctrl.uploadFile()">upload me</button> -->
+
+        </fieldset>
+
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ctrl.ConfirmarEnviarEmail()">
+            <span class="glyphicon glyphicon-ok-sign"> Enviar
+            </span>
+        </button>
+    </div>
+
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'time-out': 5000, mouseoverTimer: false, limit: 1}">
+    </toaster-container>
+
+</form>

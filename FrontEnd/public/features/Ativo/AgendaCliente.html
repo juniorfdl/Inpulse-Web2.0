@@ -1,0 +1,154 @@
+<form name="formAgendaCliente">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Agenda</h3>
+        <div class="col-md-12">
+            <div class="col-md-2">
+                <span class="pull-left">
+                    <button class="btn btn-sm btn-primary hidden-print" ng-click="ctrl.AtualizarAgenda()" style="width: 120px">
+                        <span class="glyphicon glyphicon glyphicon-phone-alt">
+                        </span> Atualizar
+                    </button>
+                </span>
+            </div>
+           
+            <div class="col-md-2">
+                <span class="pull-left">
+                    <button class="btn btn-sm btn-primary hidden-print" ng-click="ctrl.AbrirNovoAgendamento()" style="width: 150px">
+                        <span class="glyphicon glyphicon-pencil">
+                        </span> Novo Agendamento
+                    </button>
+                </span>
+            </div>
+
+            <div class="col-md-8"> 
+                <span class="pull-right">
+                    <button class="btn btn-sm btn-warning hidden-print" style="width: 30px; height: 25px;" ng-click="ctrl.FecharAgenda()">
+                        <span class="glyphicon glyphicon-remove">
+                        </span>
+                    </button>
+                </span>
+             </div>
+        </div>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+        <fieldset>
+            <luar-textdata container-class="col-md-2" label="Data Inicial" name="DataInicial" ng-model="ctrl.FiltroAgenda.DATA_INICIAL">
+            </luar-textdata>
+
+            <luar-textdata container-class="col-md-2" label="Data Final" name="DataFinal" ng-model="ctrl.FiltroAgenda.DATA_FINAL">
+            </luar-textdata>
+
+            <luar-text container-class="col-md-2" label="Cod. ERP" name="COD_ERP" ng-model="ctrl.FiltroAgenda.COD_ERP">
+            </luar-text>
+
+            <luar-select container-class="col-md-2" label="Clientes Ativo" name="ClienteAtivo" ng-options="item.FLG as item.FLG for item in ::ctrl.Flg_Filtros"
+                ng-model="ctrl.FiltroAgenda.CLIENTE_ATIVO">
+            </luar-select>
+
+            <luar-select container-class="col-md-2" label="Clientes Exceçao" name="ClienteExcecao" ng-options="item.FLG as item.FLG for item in ::ctrl.Flg_Filtros"
+                ng-model="ctrl.FiltroAgenda.CLIENTE_EXCECAO">
+        </fieldset>
+
+        <fieldset>
+            <div class="col-md-6 ">
+                <label>Apenas Cliente em Atraso</label>
+                <input type="checkbox" ng-model="ctrl.FiltroAgenda.EM_ATRASO">
+            </div>
+        </fieldset>
+
+        <fieldset>
+                
+            <div class="col-md-12 input-group">      
+
+                <luar-text container-class="col-md-6" placeholder="Pesquisar . . ." 
+                   ng-change="ctrl.HistoricoCliente = null"
+                   ng-model="searchFish">
+                </luar-text>
+
+            </div>      
+            
+
+            <div class="col-md-12">
+                <table class="table-container">
+                    <tbody>
+                        <tr class="cor_fundo_042 fonte_14">
+                            <td width="30%">Campanha</td>
+                            <td width="50%">Cliente</td>
+                            <td width="10%">Código ERP</td>
+                            <td width="10%">Agendamento</td>
+                        </tr>
+                        <tr>
+                            <td colspan="7">
+                                   
+                                <div class="scroll-container">
+                                    <table class="table table-condensed">
+                                        <tr ng-repeat="item in ctrl.DadosAgenda | filter:searchFish track by item.CODIGO" 
+                                            ng-click="ctrl.AbrirHistorico(item);ctrl.SetCliente(item)">
+                                            <td width="30%" ng-style="{'background-color':  '{{ item.COR }}' }"  style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.CAMPANHA }}</td>
+                                            <td width="50%" ng-style="{'background-color':  '{{ item.COR }}' }"  style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.CLIENTE }}</td>
+                                            <td width="10%" ng-style="{'background-color':  '{{ item.COR }}' }"  style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.COD_ERP }}</td>
+                                            <td width="10%" ng-style="{'background-color':  '{{ item.COR }}' }"  style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.DT_AGENDAMENTO | date:'dd/MM/yyyy'}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <div class="col-md-12">
+                <p class="fonte_08">HISTÓRICO</p>
+            </div>
+
+            <div>
+                <div class="col-md-12">
+                    <table class="table-container">
+                        <tbody>
+                            <tr class="cor_fundo_042 fonte_14">
+                                <td width="10%">Ligação Em</td>
+                                <td width="20%">Operador Ligação</td>
+                                <td width="10%">Resultado</td>
+                                <td width="30%">Descrição</td>
+                                <td width="10%">Contato</td>
+                                <td width="10%">Fidelizar</td>
+                                <td width="10%">Telefone Lig.</td>
+                            </tr>
+                            <tr>
+                                <td colspan="7">
+                                    <div class="scroll-container">
+                                        <table class="table table-condensed">
+                                            <tr ng-repeat="item in ctrl.HistoricoCliente track by item.CODIGO" 
+                                                 ng-click="ctrl.HistoricoClienteOBSERVACAO = item.OBSERVACAO">
+                                                <td width="10%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">
+                                                    {{ item.DATA_HORA_LIG | date:'dd/MM/yyyy'}}</td>
+                                                <td width="20%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.OPERADOR }}</td>
+                                                <td width="10%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.RESULTADO }}</td>
+                                                <td width="30%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.RES_NOME}}</td>
+                                                <td width="10%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.ECONTATO }}</td>
+                                                <td width="10%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.FIDELIZARCOTACAO }}</td>
+                                                <td width="10%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.TELEFONE_LIGADO }}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-12">
+                    <label>Observação Histórico</label>
+                    <textarea rows="4" cols="50" ng-model="ctrl.HistoricoClienteOBSERVACAO" class="form-control">
+                            </textarea>
+                </div>
+
+            </div>
+        </fieldset>
+
+    </div>
+
+</form>

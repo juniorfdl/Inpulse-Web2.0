@@ -1,0 +1,457 @@
+ <form name="formreceptivo"> 
+    <div class="modal-header">
+        <div class="col-md-11">
+            <h3 class="modal-title " id="modal-title">Receptivo - {{ ctrl.NumeroRecebendoChamada }}</h3>
+        </div>     
+     <!--   <div class="col-md-1"> 
+                <span class="pull-right">
+                    <button class="btn btn-sm btn-warning hidden-print" style="width: 30px; height: 25px;" ng-click="ctrl.FecharReceptivo()">
+                        <span class="glyphicon glyphicon-remove">
+                        </span>
+                    </button>
+                </span>
+        </div>   --> 
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+      <fieldset>
+            <div class="row">
+                <div class="col-md-12">
+                    <button ng-show="!ctrl.SipDemo() " type="button" class="btn btn-primary" ng-click="ctrl.LigarTeclado()"
+                        style="width: 100px; height: 30px; background: #029104;font-size: 15px;">Atender
+                    </button>
+             
+                    <button  ng-show="!ctrl.SipDemo() " type="button" class="btn btn-primary" ng-click="ctrl.LiberarLigacao()"
+                      style="width: 100px; height: 30px; background: #F5070B; font-size: 15px;">Liberar
+                    </button>
+             
+                    <button  ng-show="!ctrl.SipDemo() " type="button" class="btn btn-primary" ng-click="ctrl.AbrirModalTransferir()"
+                      style="width: 100px; height: 30px; background: #00495B; font-size: 15px;">Transferir
+                    </button>
+           
+                    <button   type="button" class="btn btn-primary" ng-click="ctrl.LigacaoPerdida()"
+                        style="width: 100px; height: 30px; background: #F5070B; font-size: 15px;">Perdida
+                    </button>
+
+                    <button type="button" class="btn btn-secondary" ng-click="ctrl.InserirClientes()"
+                        style="width: 100px; height: 30px;font-size: 15px;">Inserir
+                    </button>
+
+                    <button type="button" class="btn btn-secondary" ng-click="ctrl.AbrirPesquisaClientes()"
+                    style="width: 100px; height: 30px; font-size: 15px;">Pesquisar
+                </button>
+
+                    <button type="button" class="btn btn-primary " ng-click="ctrl.FinalizarLigacaoRecebida()"
+                        style="width: 100px; height: 30px; background: #029104;font-size: 15px;">Finalizar
+                    </button>
+              
+                </div>
+        </fieldset>
+           <br>
+           
+           <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" target="_self" href="#Cliente">Cliente</a></li>
+                <li><a data-toggle="tab" href="#obs" target="_self">Observaçoes</a></li>
+                <li><a data-toggle="tab" href="#historico" target="_self">Historico</a></li>
+                <li><a data-toggle="tab" href="#telefones" target="_self">Telefones</a></li>
+                <li><a data-toggle="tab" href="#finalizar" target="_self">Finalizar</a></li>
+                <li><a data-toggle="tab" href="#compras" target="_self">Compras</a></li>
+                <li><a data-toggle="tab" href="#agenda" target="_self">Agenda</a></li>
+              </ul>
+              
+              <div class="tab-content">
+                <div id="Cliente" class="tab-pane active">
+                        
+                        <div class="col-md-12"><br>
+                           <div class="row">
+                                   <div class="col-md-5 form-group">
+                                       <label>Razão Social</label>
+                                       <input type="text" ng-model="ctrl.DadosRecebendoLigacao.RAZAO" class="form-control">
+                                   </div>
+                                   <div class="col-md-4 form-group">
+                                       <label>Nome Fantasia</label>
+                                       <input type="text" ng-model="ctrl.DadosRecebendoLigacao.FANTASIA" class="form-control">
+                                   </div>
+                                   <div class="col-md-3 form-group">
+                                       <label>Contato</label>
+                                       <input type="text" readonly ng-model="ctrl.DadosRecebendoLigacao.NOME_CONTATO" class="form-control">
+                                   </div>
+                               </div>
+                               <div class="row">
+                                   <div class="col-md-3 form-group">
+                                       <label>CPF/CNPJ</label>
+                                       <input type="text" id="CPF_CNPJ_INPUT" ng-model="ctrl.DadosRecebendoLigacao.CPF_CNPJ" 
+                                            ng-model-options="{ allowInvalid: true }"
+                                            wt-easy-mask="cnpj" 
+                                            wt-easy-mask-options="{ removeSeparators: true }"
+                                            class="form-control">          
+                                   </div>
+                                   <div class="col-md-3 form-group">
+                                       <label>RG/Inscrição Estadual</label>
+                                       <input type="text" ng-model="ctrl.DadosRecebendoLigacao.IE_RG"
+                                        wt-easy-mask="9999999999"
+                                        ng-model-options="{ allowInvalid: true }"
+                                        wt-easy-mask-options="{ removeSeparators: true }"
+                                        class="form-control">
+                                   </div>
+                                   <div class="col-md-2 form-group">
+                                       <label>Tipo Pessoa</label>
+                                       <select class="form-control" ng-model="ctrl.DadosRecebendoLigacao.PESSOA">
+                                           <option value=""></option>
+                                           <option value="FIS">Física</option>
+                                           <option value="JUR">Jurídica</option>
+                                       </select>
+                                   </div>
+                                   <div class="col-md-2 form-group">
+                                       <label>Código ERP</label>
+                                       <input type="text" readonly ng-model="ctrl.DadosRecebendoLigacao.COD_ERP" class="form-control" 
+                                          style="font-style: unset; font-size: 15px; color: red;font-weight:bold;">
+                                   </div>
+                               </div>
+                               <div class="row">
+                                   <div class="col-md-4 form-group">
+                                      <!-- <label>Campanha</label>--> 
+                                       <luar-select label="Campanha"   name="CampanhaCombo" 
+                                            ng-options="camp.id as camp.Descricao for camp in ::ctrl.ListaCampanhas"
+                                            ng-model="ctrl.DadosRecebendoLigacao.COD_UNIDADE"  >
+                                        </luar-select>
+                                      <!-- <input type="text" ng-model="ctrl.DadosRecebendoLigacao.DadosLigacao.CAMPANHA"
+                                            >--> 
+                                   </div>
+                                   <div class="col-md-4 form-group">
+                                       <label>Carteira</label>
+                                       <input type="text" readonly ng-model="ctrl.DadosRecebendoLigacao.DadosLigacao.CARTEIRA"
+                                              class="form-control">
+                                   </div>
+                                   <div class="col-md-2 form-group">
+                                       <label>Data do Cadastro</label>
+                                       <input type="date" readonly ng-model="ctrl.DadosRecebendoLigacao.DATACAD" wt-iso-date class="form-control">
+                                   </div>            
+                               </div>
+                               
+                               <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label>Email</label>
+                                    <input type="text" ng-model="ctrl.DadosRecebendoLigacao.EMAIL"
+                                           class="form-control">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Contato e-mail</label>
+                                    <input type="text" ng-model="ctrl.DadosRecebendoLigacao.CONTATO_MAIL"
+                                           class="form-control">
+                                </div>
+                                       
+                            </div> 
+                           </div> 
+                </div>
+               
+                <div id="obs" class="tab-pane ">
+                        <div class="col-md-12">
+                                <label>Observação Administrador</label>
+                                <textarea rows="4" cols="50" readonly="true" ng-model="ctrl.DadosRecebendoLigacao.OBS_ADMIN" class="form-control-hist">
+                                </textarea>
+                        </div>
+                        <div class="col-md-12">
+                                <label>Observação Operador</label>
+                                <textarea rows="4" cols="50" ng-model="ctrl.DadosRecebendoLigacao.OBS_OPERADOR" class="form-control-hist">
+                                </textarea>
+                        </div>
+                </div>
+                <div id="historico" class="tab-pane ">
+                        <div class="col-md-12">
+                                <table class="table-container">
+                                    <tbody>
+                                        <tr class="cor_fundo_042 fonte_14">
+                                            <td width="20%">Campanha</td>
+                                            <td width="8%">Tipo Ligação</td>
+                                            <td width="12%">Operador</td>
+                                            <td width="30%">Resultado</td>
+                                            <td width="10%">Inicio</td>
+                                            <td width="10%">Fim</td>
+                                            <td width="10%">Telefone</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="7">
+                                                <div class="scroll-container">
+                                                    <table class="table table-condensed"> 
+                                                        <tr  ng-repeat="item in ctrl.DadosRecebendoLigacao.DadosLigacao.Historico track by item.CODIGO" 
+                                                            ng-click="ctrl.HistoricoOBSERVACAO = item.OBSERVACAO; ctrl.SelectHist = $index"									
+                                                            ng-class="{'CorLinhaGrid': ctrl.SelectHist == $index}"
+                                                            >
+                                                            <td width="20%"  ng-style="{'background-color':  '{{ item.COR }}' }" style="font-size:11px;">{{ item.CAMPANHA }}</td>
+                                                            <td width="8%"   ng-style="{'background-color':  '{{ item.COR }}' }" style="font-size:11px;">{{ item.TIPO_LIGACAO }}</td>
+                                                            <td width="12%"  ng-style="{'background-color':  '{{ item.COR }}' }" style="font-size:11px;">{{ item.OPERADOR }}</td>
+                                                            <td width="30%"  ng-style="{'background-color':  '{{ item.COR }}' }" style="font-size:11px;">{{ item.RESULTADO }}</td>
+                                                            <td width="10%"  ng-style="{'background-color':  '{{ item.COR }}' }" style="font-size:11px;">{{ item.INICIO | date:'dd/MM/yyyy HH:mm'}}</td>
+                                                            <td width="10%"  ng-style="{'background-color':  '{{ item.COR }}' }" style="font-size:11px;">{{ item.FIM | date:'dd/MM/yyyy HH:mm'}}</td>
+                                                            <td width="10%"  ng-style="{'background-color':  '{{ item.COR }}' }" style="font-size:11px;">{{ item.TELEFONE }}</td>
+                                                        </tr>                        
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        
+                            <div class="col-md-12">
+                                <label>Observação Histórico</label>
+                                <textarea rows="4" cols="50" ng-model="ctrl.HistoricoOBSERVACAO" class="form-control-hist">
+                                </textarea>
+                            </div>
+                </div>
+                <div id="telefones" class="tab-pane ">
+                        <div class="col-md-12"><br>
+                            <div class="row">
+                                    <div class="col-md-1 form-group">
+                                        <label>Area 1</label>
+                                        <select class="form-control" name="AREA1Combo" 
+                                        ng-options="item.Area as item.Area for item in ctrl.DadosStart.FoneAreas"
+                                        ng-model="ctrl.DadosRecebendoLigacao.AREA1">
+                                      </select>
+                                     
+                                    </div>
+                                    <div class="col-md-2 form-group">
+                                        <label>Telefone 1</label>
+                                        <input type="text"  ng-model="ctrl.DadosRecebendoLigacao.FONE1"  class="form-control">
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label>Descriçao Telefone 1</label>
+                                        <input type="text"  ng-model="ctrl.DadosRecebendoLigacao.DESC_FONE1"   class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-md-1 form-group">
+                                            <label>Area 2</label>
+                                            <select class="form-control" name="AREA2Combo" 
+                                            ng-options="item.Area as item.Area for item in ctrl.DadosStart.FoneAreas"
+                                            ng-model="ctrl.DadosRecebendoLigacao.AREA2"> </select>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <label>Telefone 2</label>
+                                            <input type="text" ng-model="ctrl.DadosRecebendoLigacao.FONE2"  class="form-control">
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label>Descriçao Telefone 2</label>
+                                            <input type="text" ng-model="ctrl.DadosRecebendoLigacao.DESC_FONE2"   class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                            <div class="col-md-1 form-group">
+                                                <label>Area 3</label>
+                                                <select class="form-control" name="AREA3Combo" 
+                                                ng-options="item.Area as item.Area for item in ctrl.DadosStart.FoneAreas"
+                                                ng-model="ctrl.DadosRecebendoLigacao.AREA3"> </select>
+                                            </div>
+                                            <div class="col-md-2 form-group">
+                                                <label>Telefone 3</label>
+                                                <input type="text" ng-model="ctrl.DadosRecebendoLigacao.FONE3"  class="form-control">
+                                            </div>
+                                            <div class="col-md-3 form-group">
+                                                <label>Descriçao Telefone 3</label>
+                                                <input type="text" ng-model="ctrl.DadosRecebendoLigacao.DESC_FONE3"  class="form-control">
+                                            </div>
+                                        </div>
+                        </div>
+                </div>
+                <div id="finalizar" class="tab-pane ">
+                        <fieldset>
+                            <div class="row">                                  
+                
+                                <luar-select container-class="col-md-2" label="Resultado" name="ResultadoComboCod" 
+                                    required ng-options="item.id as ctrl.GetDescricaoResultadoCod(item) for item in ::ctrl.DadosStart.Resultados"
+                                    ng-model="ctrl.DadosRecebendoLigacao.DadosLigacao.Finalizar.RESULTADO" 
+                                    ng-change="ctrl.ChangeResultadoReceptivo()">
+                                </luar-select>
+                
+                                <luar-select container-class="col-md-9" label="Descrição Resultado" name="ResultadoCombo" 
+                                    required ng-options="item.id as ctrl.GetDescricaoResultado(item) for item in ::ctrl.DadosStart.Resultados"
+                                    ng-model="ctrl.DadosRecebendoLigacao.DadosLigacao.Finalizar.RESULTADO" 
+                                    ng-change="ctrl.ChangeResultadoReceptivo()">
+                                </luar-select>
+                            </div>
+                
+                            <div class="row">
+                
+                                <luar-select container-class="col-md-11" label="Fase do Contato" name="Fase" ng-options="item.id as item.NOME for item in ::ctrl.DadosStart.FaseContato"
+                                    ng-model="ctrl.DadosRecebendoLigacao.DadosLigacao.Finalizar.FASE_CONTATO">
+                                </luar-select>
+                
+                            </div>
+                    
+                            <div class="row">
+                                <luar-textarea container-class="col-md-11" label="Observação" name="Observacao" required ng-model="ctrl.ProximaLigacao.DadosLigacao.Finalizar.OBSERVACAO">
+                                </luar-textarea>
+                            </div>
+                
+                            <div class="row">
+                                <luar-text container-class="col-md-11" label="Ação" name="ACAO" ng-disabled="true" ng-model="ctrl.ProximaLigacao.DadosLigacao.Finalizar.DESCRICAO_ACAO">
+                                </luar-text>
+                            </div>
+                
+                            <div class="row" ng-show="ctrl.DadosRecebendoLigacao.DadosLigacao.Finalizar.ACAO == 1">
+                                <luar-text container-class="col-md-3" label="Telefone" name="TELEFONE" 
+                                    required ng-model="ctrl.DadosRecebendoLigacao.DadosLigacao.Finalizar.TELEFONE" wt-easy-mask="fone" >
+                                </luar-text>
+                
+                                <luar-select container-class="col-md-3" label="Copia Fone" name="CopiaFoneCombo" 
+                                        required ng-options="item.FONE as item.DESCRICAO for item in ::ctrl.FonesCliente"
+                                    ng-model="ctrl.DadosRecebendoLigacao.DadosLigacao.Finalizar.TELEFONE">
+                                </luar-select>
+                            </div>
+                    
+                            <div class="row" ng-show="ctrl.VisualizarDataReceptivo()">
+                                <luar-textdata container-class="col-md-3" label="Data" name="DATA" required ng-model="ctrl.DadosRecebendoLigacao.DadosLigacao.Finalizar.DATA">
+                                </luar-textdata>
+                
+                                <luar-text container-class="col-md-2" label="Hora" name="HORA" type="time"
+                                    ng-model="ctrl.DadosRecebendoLigacao.DadosLigacao.Finalizar.HORA">
+                                </luar-text>
+                            </div>
+                
+                            <div class="row">
+                                <luar-check-group class="col-md-5">
+                                    <input luar-check label="Alta Prioridade" ng-false-value="'N'" ng-true-value="'S'" name="ALTA_PRIORIDADE" ng-model="ctrl.ProximaLigacao.DadosLigacao.Finalizar.ALTA_PRIORIDADE"
+                                    />
+                
+                                    <input luar-check label="Pausar Entre Chamadas" ng-false-value="'N'" ng-true-value="'S'" name="PAUSAR_ENTRE_CHAMADAS" ng-model="ctrl.ProximaLigacao.DadosLigacao.Finalizar.PAUSAR_ENTRE_CHAMADAS"
+                                    />
+                                </luar-check-group>
+                            </div>
+                    
+                            <div class="row">
+                                <div ng-show="ctrl.VisualizarEmailReceptivo()">
+                                    <luar-select container-class="col-md-4" label="Tipo de E-mail" name="TIPO_EMAIL" 
+                                        ng-options="item as item.DESCRICAO for item in ::ctrl.DadosStart.ConfigMail"
+                                        ng-change="ctrl.ChangeConfigMail()"
+                                        ng-model="ctrl.SelectedTipoEmail">
+                                    </luar-select>
+                                </div>
+                
+                                <div ng-show="ctrl.DadosRecebendoLigacao.DadosLigacao.Finalizar.ACAO == 8">
+                                    <luar-select container-class="col-md-6" label="Delegar Operador" name="DelegarOperador" 
+                                        ng-options="item.id as item.NOME for item in ::ctrl.DadosStart.Operadores"
+                                        ng-model="ctrl.DadosRecebendoLigacao.DadosLigacao.Finalizar.OperadorDelegar">
+                                    </luar-select>
+                                </div>
+                            </div>
+                
+                            <div class="row" ng-show="ctrl.DadosRecebendoLigacao.DadosLigacao.Finalizar.PROPOSTA == 'SIM' ">
+                                <luar-textvalor container-class="col-md-4" 
+                                    label="Valor Proposta" name="VALOR_PROPOSTA" required 
+                                    ng-model="ctrl.DadosRecebendoLigacao.DadosLigacao.Finalizar.VALOR_PROPOSTA">
+                                </luar-textvalor>
+                            </div>
+                    
+                            <div class="row" ng-show="ctrl.VisualizarEmailReceptivo()">
+                                <span class="pull-right">
+                                <button class="btn btn-sm btn-primary hidden-print"
+                                    ng-click="ctrl.AbrirModalEnviarEmail()" style="width: 120px">
+                                    <span class="glyphicon glyphicon-ok-sign">
+                                    </span> Enviar E-mail
+                                </button>
+                                </span>
+                            </div>
+                
+                        </fieldset>
+                </div>
+                <div id="compras" class="tab-pane ">
+                        <div class="col-md-12">
+
+                                <table class="table-container"> <!-- o tamanho do td é 25% pois tem 4 colunas, então 100% / 4 = 25 -->
+                                    <tbody>
+                                        <tr class="cor_fundo_042 fonte_13">
+                                            <td width="25%">Data</td>
+                                            <td width="25%">Descrição Compra</td>
+                                            <td width="25%">Valor Total</td>
+                                            <td width="25%">Forma Pgto</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="scroll-container">
+                                                    <table class="table table-condensed"> 
+                                                        <tr ng-repeat="item in ctrl.DadosRecebendoLigacao.DadosLigacao.COMPRAS track by item.CODIGO"
+                                                                ng-click="ctrl.SelectCompra = $index"
+                                                                ng-class="{'CorLinhaGrid': ctrl.SelectCompra == $index}">
+                                                            <td width="25%">{{ item.DATA | date:'dd/MM/yyyy'}}</td>
+                                                            <td width="25%">{{ item.DESCRICAO }}</td>
+                                                            <td width="25%">{{ item.VALOR | currency:'':2}}</td>
+                                                            <td width="25%">{{ item.FORMA_PGTO }}</td>
+                                                        </tr>                        
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                                   <br> </div>
+                </div>
+                <div id="agenda" class="tab-pane ">
+                        <div class="col-md-12">
+                                <table class="table-container">
+                                <tbody>
+                                    <tr class="cor_fundo_042 fonte_14">
+                                        <td width="7%">Proposta</td>
+                                        <td width="8%">Data</td>
+                                        <td width="16%">Campanha</td>
+                                        <td width="11%">Dt Resultado</td>
+                                        <td width="25%">Resultado</td>
+                                        <td width="10%">Telefone</td>
+                                        <td width="11%">Operador</td>
+                                        <td width="12%">Operador Lig.</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8">
+                               
+                                            <div class="scroll-container">
+                                                <table class="table table-condensed"> 
+                                                    <tr  ng-repeat="item in ctrl.DadosRecebendoLigacao.DadosLigacao.AGENDA track by item.CODIGO">
+                                                        <td width="7%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ ctrl.GetProposta(item) }}</td>
+                                                        <td width="8%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.DT_AGENDAMENTO | date:'dd/MM/yyyy HH:mm'}}</td>
+                                                        <td width="16%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.CAMPANHA }}</td>
+                                                        <td width="11%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.DT_RESULTADO | date:'dd/MM/yyyy'}}</td>
+                                                        <td width="25%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.RESULTADO }}</td>
+                                                        <td width="10%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.FONE1 }}</td>
+                                                        <td width="11%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.OPERADOR }}</td>
+                                                        <td width="12%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.OPERADOR_LIGACAO }}</td>
+                                                    </tr>                        
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>       
+                            
+                                </div> 
+                </div>
+              </div>
+           <fieldset>         
+                                     
+        </fieldset>    
+    </div>
+        <br>
+         <fieldset>
+            <div class="col-md-4">
+                    <fieldset>
+                            <legend>Microfone</legend>
+                            <input type="range" id="micrange" min="0" max="100" ng-model="ctrl.micvolume" ng-change="ctrl.SetMicValue()"  step="1"> 
+                            <input type="checkbox" id="micmutecheckbox" name="micmutecheckbox"  ng-model="ctrl.micmute" ng-change="ctrl.SetMicMute()">
+                            <label for ="micmutecheckbox">Microfone Mudo</label>
+                        </fieldset>  
+                </div>     
+              <div class="col-md-4">
+                    <fieldset>
+                            <legend>Fone</legend>
+                            <input type="range" id="foneRange" ng-model="ctrl.phonevolume" ng-change="ctrl.SetPhoneValue()" min="0" max="100" step="1"> 
+                            <input type="checkbox" id="phonemutecheckbox" name="phonemutecheckbox"  ng-model="ctrl.phonemute" ng-change="ctrl.SetPhoneMute()">
+                            <label for ="phonemutecheckbox">Fone Mudo</label>
+                        </fieldset>  
+               
+                  
+            </div>
+        </fieldset> 
+    <p></p>
+    <br>
+ </form>

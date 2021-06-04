@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{2CBBB6AD-6754-4402-8680-5CA5A68CEE91}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Server.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Server.Ativo.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Server">
+        <MSBuild Projects="Server.dproj"/>
+    </Target>
+    <Target Name="Server:Clean">
+        <MSBuild Projects="Server.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Server:Make">
+        <MSBuild Projects="Server.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Server_Ativo">
+        <MSBuild Projects="Server.Ativo.dproj"/>
+    </Target>
+    <Target Name="Server_Ativo:Clean">
+        <MSBuild Projects="Server.Ativo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Server_Ativo:Make">
+        <MSBuild Projects="Server.Ativo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Server;Server_Ativo"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Server:Clean;Server_Ativo:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Server:Make;Server_Ativo:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

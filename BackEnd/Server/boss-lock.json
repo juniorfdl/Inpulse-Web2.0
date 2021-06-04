@@ -1,0 +1,110 @@
+{
+	"hash": "d41d8cd98f00b204e9800998ecf8427e",
+	"updated": "2020-10-14T23:05:27.2514393-03:00",
+	"installedModules": {
+		"bitbucket.org/isaquepinheiro/cqlbr": {
+			"name": "cqlbr",
+			"version": "1.0.1",
+			"hash": "bdf5ac552706c32ca1c03b4cc296e665",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"bitbucket.org/isaquepinheiro/dbcbr": {
+			"name": "dbcbr",
+			"version": "1.0.4",
+			"hash": "3fdef5ef7f8ab15de732e6655ce99bd4",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"bitbucket.org/isaquepinheiro/dbebr": {
+			"name": "dbebr",
+			"version": "1.0.3",
+			"hash": "58b3ccf936e32824f4b87c4c447c8048",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"bitbucket.org/isaquepinheiro/jsonbr": {
+			"name": "jsonbr",
+			"version": "1.0.0",
+			"hash": "94ce55fd759a4d33502df6b5695596c0",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"github.com/dliocode/horse-utils-clientip": {
+			"name": "horse-utils-clientip",
+			"version": "0.0.6",
+			"hash": "db4c16721abe55f9f8c42c7990101361",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"github.com/hashload/handle-exception": {
+			"name": "handle-exception",
+			"version": "0.1.4",
+			"hash": "1152772d75f59dbb562cc7b7711a8ebe",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"github.com/hashload/horse": {
+			"name": "horse",
+			"version": "2.0.13",
+			"hash": "985da2054d3c705bc211797c653e47ba",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"github.com/hashload/horse-cors": {
+			"name": "horse-cors",
+			"version": "1.0.3",
+			"hash": "248f37dd844f5a4c4ff78364e5a86027",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"github.com/hashload/horse-logger": {
+			"name": "horse-logger",
+			"version": "2.0.2",
+			"hash": "bfb121c6e85b5cfeedbd445c962a3fed",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"github.com/hashload/horse-logger-provider-console": {
+			"name": "horse-logger-provider-console",
+			"version": "1.0.3",
+			"hash": "59ed31ebb80012c6f8a2d4d45744d1c5",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"github.com/hashload/horse-logger-provider-logfile": {
+			"name": "horse-logger-provider-logfile",
+			"version": "1.0.2",
+			"hash": "06662520147a72069aee445b4b73f710",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"github.com/hashload/jhonson": {
+			"name": "jhonson",
+			"version": "1.1.1",
+			"hash": "5740da7df1068b882117a68df8098c9a",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"github.com/viniciussanchez/dataset-serialize": {
+			"name": "dataset-serialize",
+			"version": "v2.3.0",
+			"hash": "916555f057218c63d26c06a3c0bd12f4",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		}
+	}
+}

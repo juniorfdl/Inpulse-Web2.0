@@ -1,0 +1,14 @@
+FROM juniorfdl2/appdelphi
+
+COPY app /usr/src/app/
+
+RUN chmod +x Server.Ativo
+RUN chmod +x config.txt
+
+# RUN apt-get update
+# RUN apt-get install libmysqlclient-dev -y
+
+# EXPOSE 9000
+# CMD [ "./Server.Ativo"]
+# database:Server=localhost;Port=3306;Database=crm_sgr;User_Name=root;Password=root;DriverID=MySQL;
+

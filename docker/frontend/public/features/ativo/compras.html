@@ -1,0 +1,99 @@
+<div ng-show="ctrl.MenuSelecionado == 'COMPRAS'">
+    <div class="col-md-12">
+
+<table class="table-container"> <!-- o tamanho do td é 25% pois tem 4 colunas, então 100% / 4 = 25 -->
+    <tbody>
+        <tr class="cor_fundo_042 fonte_13">
+            <td width="25%">Data</td>
+            <td width="25%">Descrição Compra</td>
+            <td width="25%">Valor Total</td>
+            <td width="25%">Forma Pgto</td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <div class="scroll-container">
+                    <table class="table table-condensed"> 
+                        <tr ng-repeat="item in ctrl.ProximaLigacao.DadosLigacao.COMPRAS track by item.CODIGO"
+                                ng-click="ctrl.SelectCompra = $index"
+                                ng-class="{'CorLinhaGrid': ctrl.SelectCompra == $index}">
+                            <td width="25%">{{ item.DATA | date:'dd/MM/yyyy'}}</td>
+                            <td width="25%">{{ item.DESCRICAO }}</td>
+                            <td width="25%">{{ item.VALOR | currency:'':2}}</td>
+                            <td width="25%">{{ item.FORMA_PGTO }}</td>
+                        </tr>                        
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+   <br> </div>
+
+    <div class="col-md-12">
+
+        
+		<table class="table-container"> <!-- o tamanho do td é 25% pois tem 4 colunas, então 100% / 4 = 25 -->
+			<tbody>
+				<tr class="cor_fundo_042 fonte_13">
+					<td width="8%">Produto</td>
+					<td width="30%"><center>Descrição</center></td>
+					<td width="12%">Quantidade</td>
+					<td width="10%">Unidade</td>
+					<td width="20%">Valor</td>
+					<td width="20%">Desconto</td>
+				</tr>
+				<tr>
+					<td colspan="6">
+						<div class="scroll-container">
+							<table class="table table-condensed"> 
+                                <tr ng-repeat="item in ctrl.ProximaLigacao.DadosLigacao.COMPRAS[ctrl.SelectCompra].Itens">
+									<td width="8%">{{ item.CODPROD }}</td>
+									<td width="30%"><center>{{ item.DESCRICAO }}</center></td>
+									<td width="12%">{{ item.QDT }}</td>
+									<td width="10%">{{ item.UN_MEDIDA }}</td>
+									<td width="20%">{{ item.VALOR_UN | currency:'':2}}</td>
+									<td width="20%">{{ item.DESCONTO | currency:'':2}}</td>
+								</tr>                        
+							</table>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table><br>
+		
+		
+		
+		
+		
+		
+		
+		<!--
+		<table class="table table-condensed">
+            <thead>
+                <tr class="cor_fundo_042 fonte_14">
+                    <th>Produto</th>
+                    <th>Descrição</th>
+                    <th>Quantidade</th>
+                    <th>Unidade</th>
+                    <th>Valor</th>
+                    <th>Desconto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in ctrl.ProximaLigacao.DadosLigacao.COMPRAS[ctrl.SelectCompra].Itens">
+
+                    <td>{{ item.CODPROD }}</td>
+                    <td>{{ item.DESCRICAO }}</td>
+                    <td>{{ item.QDT }}</td>
+                    <td>{{ item.UN_MEDIDA }}</td>
+                    <td style="text-align-last:center">{{ item.VALOR_UN | currency:'':2}}</td>
+                    <td style="text-align-last:center">{{ item.DESCONTO | currency:'':2}}</td>                   
+
+                </tr>
+            </tbody>
+
+        </table>
+-->
+    </div>
+</div>

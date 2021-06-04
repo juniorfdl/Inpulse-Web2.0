@@ -1,0 +1,19 @@
+1 - informa o campos a ser importado em parametros
+
+    Ferramentas/Configurações/Paraetros - Aba Dados Importação
+
+2 - Abrir no Delphi o programa "ImportadorFireDac", localizado na pasta ImportadorFireDac dentro da pasta de fonte sgr.
+
+3 - Colocar o .exe gerado "ImportadorFireDac.exe" na mesma pasta do sgr.exe
+
+4 - Configurar o CFG.ini - informar qual base o sistema executa
+   
+Exemplo: 
+ 
+[import]    
+firedac=Database=crm_sgr;User_Name=root;Password=infotec;Server=localhost;DriverID=MySQL
+
+5 - Teste
+
+  Quando mandar importar um arquivo de clientes o sistema vai abrir um programa externo com as operações.
+   

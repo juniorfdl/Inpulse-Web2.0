@@ -1,0 +1,125 @@
+<style>
+    .loader {
+  border: 5px solid #f3f3f3; /* Light grey */
+  border-top: 5px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+    margin-left: 45%;
+    margin-top: 135px;
+    margin-bottom: 135px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+<form name="formPesquisaCliente">
+    <div class="modal-header">
+        <div class="col-md-11">
+                <h3 class="modal-title" id="modal-title">Pesquisa de Cliente</h3>
+        </div>         
+        <div class="col-md-1"> 
+            <span class="pull-right">
+                <button class="btn btn-sm btn-warning hidden-print" style="width: 30px; height: 25px;" ng-click="ctrl.fecharPesquisa()">
+                    <span class="glyphicon glyphicon-remove">
+                    </span>
+                </button>
+            </span>
+        </div>   
+    </div>
+    <div class="modal-body" id="modal-body">  
+            <div class="row" >           
+                <div class="col-md-12">
+                    <div class="col-md-5">
+                        <input type="text" placeholder="Filtrar Clientes" ng-model="ctrl.filtrosPesquisaCLiente" class="form-control">
+                    </div>
+                    <div class="col-md-5">
+                            <button type="button" class="btn btn-primary" ng-click="ctrl.FiltrarPesquisa()"
+                            style="width: 100px; height: 30px; font-size: 15px;">Filtrar
+                        </button>
+                    </div>
+                     
+                </div>
+            </div>
+       <br>
+        <div class="row" >           
+                <div class="col-md-12">
+                        <div class="justify-content-center" ng-show="!ctrl.DadosClienteCarregado"> 
+                                <div class="loader">  
+                                </div>
+                        </div>
+                    <table class="table-container" ng-show="ctrl.DadosClienteCarregado">
+                        <tbody>
+                            <tr class="cor_fundo_042 fonte_14">
+                                <td width="10%">Codigo</td>
+                                <td width="15%"> Nome</td>
+                                <td width="15%">Nome Fantasia</td>
+                                <td width="15%">CPF/CNPJ</td>
+                                <td width="10%">ERP</td>
+
+                                 <!--   <td width="5%">Email</td>
+                                <td width="5%">Contato</td>     -->                           
+                                <td width="10%">Telefone 1</td>
+                                <td width="10%">Telefone 2</td>
+                                <td width="10%">Telefone 3</td>
+                            </tr>
+                            <tr   >
+                                <td colspan="12" >
+                                    <div class="scroll-container"  style="height: 330px">
+                                        <table class="table table-condensed"> 
+                                            <tr  ng-repeat="item in ctrl.DadosPesquisaCliente track by item.id" 
+                                                ng-click="ctrl.SelectCli = item.id;ctrl.PessoaSelecionada = item.id"	                                               					
+                                                ng-class="{'CorLinhaGrid': ctrl.SelectCli == item.id}"  >
+                                                <td width="10%" style="font-size:11px;">{{ item.id }}</td>
+                                                <td width="15%"  style="font-size:11px;">{{ item.RAZAO }}</td>
+                                                <td width="15%" style="font-size:11px;">{{ item.FANTASIA }}</td>
+                                                <td width="15%" style="font-size:11px;">{{ item.CPF_CNPJ }}</td>
+                                                <td width="10%" style="font-size:11px;">{{ item.COD_ERP }}</td>
+                                             <!--   <td width="5%" style="font-size:11px;">{{ item.EMAIL }}</td>
+                                                <td width="5%" style="font-size:11px;">{{ item.CONTATO_MAIL }}</td>-->
+                                                <td width="10%" style="font-size:11px;">{{ item.FONE1 }}</td>
+                                                <td width="10%" style="font-size:11px;">{{ item.FONE2 }}</td>
+                                                <td width="10%" style="font-size:11px;">{{ item.FONE3 }}</td>
+                                            </tr>                        
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                
+            </div>                        
+        </div>   
+        <div  class="row">
+            <div class="col-md-12"> 
+                <div class="col-md-10 ">
+                    <nav aria-label="">
+                        <ul class="pagination float-left">
+                            <li class="page-item">
+                            <a class="page-link" href="#"  ng-click="ctrl.PaginaAnterior()"> Anterior </a>
+                            </li>                     
+                            <li class="page-item">
+                            <a class="page-link" href="#"  ng-click="ctrl.ProximaPagina()"> Proximo </a>
+                            </li>
+                        </ul>
+                    </nav>  
+                </div> 
+                <div class="col-md-2 "  style="top: 30px;" >
+                        <button class="btn btn-primary hidden-print" style="width: 130px; top: 10px; height: 30px;" ng-click="ctrl.SelecionarPesquisa()">
+                            Selecionar
+                        </button>
+                </div>                    
+            </div> 
+            
+                        
+        </div> 
+        <div  class="row">
+               
+        </div>      
+    </div>
+   
+</form>
+

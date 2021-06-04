@@ -1,0 +1,270 @@
+﻿<div class="container">
+
+
+    <!-- <div ng-show="false">
+
+                <timer countdown="1" interval="1000">
+                    <h1 align="center">{{seconds}}</h1>
+                </timer>
+        
+            </div> -->
+
+    <div class="row cor_fundo_01">
+        <div class="col-md-6 ">
+            <p><img clas="margem_03" src="img/logo_sistema_inpulse_cinza.png" alt=""></p>
+            
+        </div>
+        <div class="col-md-3">
+            <p class="fonte_04 margem_03">Operador: {{currentUser.LOGIN}}</p>
+            <p class="fonte_05">Tempo logado: {{ctrl.tempoTotal}}</p>
+            <p class="fonte_05">Produtividade: {{ctrl.ProximaLigacao.DadosLigacao.PRODUTIVIDADE}}</p>
+        </div>
+        <div class="col-md-3">
+            <!-- <p class="fonte_04 margem_03 cursorpointer" ng-click="ctrl.AbrirModalPausa()">SAIR</p> -->
+            <p class="fonte_05">Ligações efetuadas: {{ctrl.ProximaLigacao.DadosLigacao.LIG_EFETUADAS}}</p>
+            <p class="fonte_05">Tempo em ligação: {{ctrl.tempoLigacao}}</p>
+            <p class="fonte_05">Tempo total ligações: {{ctrl.tempoTotalLigacao}}</p>
+        </div>
+    </div>
+    <div style="background-image: linear-gradient(to bottom, #2e4c85, #25477d, #1c4375, #133e6e, #073966);" class="row">
+        <div class="col-md-2">
+            <p class="fonte_02 margem_03" align="center">Código: {{ctrl.ProximaLigacao.id}}</p>
+        </div>
+        <div class="col-md-2">
+            <p class="fonte_02 margem_03" align="center">Prioridade: {{ctrl.ProximaLigacao.DadosLigacao.PRIORIDADE}}</p>
+        </div>
+        <div class="col-md-3">
+            <p class="fonte_02 margem_03" align="center">Pedidos Fechados:
+                {{ctrl.ProximaLigacao.DadosLigacao.PEDIDOS_FECHADOS}}</p>
+        </div>
+        <div class="col-md-3">
+            <p class="fonte_02 margem_03" align="center">
+                Ligações dos últimos 7 dias: {{ctrl.ProximaLigacao.DadosLigacao.LigacoesUlt7Dias}}
+            </p>
+        </div>
+
+        <div class="col-md-2">
+            <p class="fonte_02 margem_03" align="center">
+                Fidelizações: {{ctrl.ProximaLigacao.DadosLigacao.Fidelizacoes}}
+            </p>
+        </div>
+    </div>
+
+    <div class="container ng-scope row" style="height:100%;">
+        <div class="row col-md-2">
+            <div class="row cor_fundo_041">
+                <div class="col-md-12">
+                    <center>
+                        <p style="font-size:14px;font-family:Segoe UI;color:#ffffff;font-style:bold;"> Status:
+                            {{ctrl.StatusLigacaoCalc}} </p>
+                        <p style="font-size:15px;font-family:Segoe UI;color:#ffffff;">
+                            Número Discado: {{ctrl.ProximaLigacao.DadosLigacao.FONE}}</p>
+                    </center>
+                    <img style="width:25px;top:4px;position:absolute; cursor: pointer;" data-toggle="tooltip"
+                        data-placement="top" title="Pular Contagem" ng-show="ctrl.TempoAguardeLigacao > 0" ng-click="ctrl.TempoAguardeLigacao = 0"
+                        src="img/Contador.gif">
+                </div>
+                <div class="col-md-12">&nbsp;<br>
+                    <center>
+                        <img ng-click="ctrl.AbrirModalFinalizar()" ng-show="ctrl.ProximaLigacao" src="img/finalizar.png" class="img-fluid" alt="Finalizar Ligação"
+                            data-toggle="tooltip" data-placement="top" title="Finalizar Ligação" style="width: 32px; cursor: pointer;">
+                        <img ng-click="ctrl.LiberarLigacao()" ng-show="ctrl.ProximaLigacao" src="img/liberar.png" class="img-fluid" alt="Liberar Ligação"
+                            data-toggle="tooltip" data-placement="top" title="Liberar Ligação" style="width: 32px; cursor: pointer;">
+                        <img ng-click="ctrl.AbrirModalTeclado()" ng-show="ctrl.ProximaLigacao" src="img/teclado.png" class="img-fluid" alt="Teclado Virtual"
+                            data-toggle="tooltip" data-placement="top" title="Teclado Virtual" style="width: 32px; cursor: pointer;">
+                        <img src="img/agenda.png" class="img-fluid" alt="Agenda" data-toggle="tooltip" data-placement="top"
+                            title="Abrir Agenda" ng-click="ctrl.AbrirModalAgenda()" ng-show="ctrl.ProximaLigacao" style="width: 32px; cursor: pointer;">
+                    </center>
+                    <!--<p class="fonte_04 margem_03 cursorpointer" ng-click="logout()">SAIR</p>-->
+                </div>
+
+
+                <div class="row">
+
+                    <!-- <div class="col-md-3">
+                    
+                </div>
+                <div class="col-md-9">
+                    <p class="fonte_02 margem_03">TEMPO LOGADO</p>
+                    <p class="fonte_01">
+                      {{ctrl.tempoTotal}}
+                    </p>
+                </div> -->
+                </div>
+                <div class="row">
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <center>
+                            <input class="cursorpointer" type="checkbox" ng-model="ctrl.PausarLigacoes">
+                            <label class="fonte_14">Pausar na próxima ligação</label></center>
+                    </div>
+                </div>
+            </div>
+            <div  ng-show="ctrl.PermitePesquisarClienteAtivo()">
+              <div class="row linha">
+                <div class="col-md-12 ">
+                </div>
+                </div>
+                <div ng-click="ctrl.AbrirPesquisaClientes()" style="cursor: pointer;" class="row cor_fundo_04">
+                    <div class="col-md-12">
+                        <img style="width:25px;height:25px;margin-top: 5px; margin-bottom: 5px" src="img/pesquisa-cliente.png">
+                        <span class="fonte_13 margem_05" >
+                            Pesquisar clientes
+                        </span>
+                    </div>
+                </div>  
+            </div>
+            
+
+                <div class="row linha">
+                    <div class="col-md-12 ">
+                    </div>
+                </div>
+                <div ng-click="ctrl.ChamarReceptivo()" style="cursor: pointer;" class="row cor_fundo_04">
+                    <div class="col-md-12">
+                        <img style="width:30px;height:30px;" src="img/receptivo.png">
+                        <span class="fonte_13 margem_05" >
+                            Receptivo
+                        </span>
+                    </div>
+                </div>
+            <div class="row linha">
+                <div class="col-md-12 ">
+                </div>
+            </div>
+            <div ng-click="ctrl.MenuSelecionado = 'ENDEREÇO'" style="cursor: pointer;" class="row cor_fundo_04">
+                <div class="col-md-12">
+                    <img style="width:30px;height:30px;" src="img/endereco.png">
+                    <span class="fonte_13 margem_05" ng-click="ctrl.MenuSelecionado = 'ENDEREÇO'">
+                        Endereço
+                    </span>
+                </div>
+            </div>
+            <div class="row linha">
+                <div class="col-md-12 ">
+                </div>
+            </div>
+            <div ng-click="ctrl.MenuSelecionado = 'ORIGEM'" style="cursor: pointer;" class="row cor_fundo_04">
+                <div class="col-md-12">
+                    <img style="width:30px;height:30px;" src="img/origem.png">
+                    <span class="fonte_13 margem_05">Origem</span>
+                </div>
+            </div>
+            <div class="row linha">
+                <div class="col-md-12 ">
+                </div>
+            </div>
+            <div ng-click="ctrl.MenuSelecionado = 'CONTATOS'" style="cursor: pointer;" class="row cor_fundo_04">
+                <div class="col-md-12">
+                    <img style="width:30px;height:30px;" src="img/contato.png">
+                    <span class="fonte_13 margem_05">Contatos</span>
+                </div>              
+            </div>
+            <div class="row linha">
+                <div class="col-md-12 ">
+                </div>
+            </div>
+            <div ng-click="ctrl.MenuSelecionado = 'OBSERVAÇÕES'" style="cursor: pointer;" class="row cor_fundo_04">
+                <div class="col-md-12">
+                    <img style="width:30px;height:30px;" src="img/observacao.png">
+                    <span class="fonte_13 margem_05">Observações</span>
+                </div>               
+            </div>
+            <div class="row linha">
+                <div class="col-md-12 ">
+                </div>
+            </div>
+            <div ng-click="ctrl.MenuSelecionado = 'TELEFONES'" style="cursor: pointer;" class="row cor_fundo_04">
+                <div class="col-md-12">
+                    <img style="width:30px;height:30px;" src="img/telefones.png"> 
+                    <span class="fonte_13 margem_05">Telefones</span>
+                </div>
+
+            </div>
+            <div class="row linha">
+                <div class="col-md-12 ">
+                </div>
+            </div>
+            <div ng-click="ctrl.MenuSelecionado = 'COMPRAS'" style="cursor: pointer;" class="row cor_fundo_04">
+                <div class="col-md-12">
+                    <img style="width:30px;height:30px;" src="img/compras.png">
+                    <span class="fonte_13 margem_05">Compras</span>
+                </div>
+            </div>
+            <div class="row linha">
+                <div class="col-md-12 ">
+                </div>
+            </div>
+           
+            <div ng-click="ctrl.MenuSelecionado = 'AGENDA'" style="cursor: pointer;" class="row cor_fundo_04">
+            
+               <div class="col-md-12">
+                    <img style="width:30px;height:30px" src="img/calendario.png">
+                    <span class="fonte_13 margem_05">Agenda</span>
+                </div>                 
+           
+            </div>
+            <div class="row linha">
+                <div class="col-md-12 ">
+                </div>
+            </div>
+            <div class="row cor_fundo_042">
+                <!--<div class="col-md-3">
+                    <img style="width:30px;height:30px;top:4px;position:absolute;" src="img/historico.png">
+                </div>
+                <div class="col-md-9">
+                    <p class="fonte_13 margem_05">Histórico</p>
+                </div> -->
+                <div class="col-md-12">
+                    <img style="width:30px;height:30px;" src="img/historico.png">
+                    <span class="fonte_13 margem_05">Histórico</span>
+                </div>
+                
+            </div>
+            <div class="row linha">
+                <div class="col-md-12 ">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-10">
+            <form>
+                <div ng-include="'features/ativo/dadosgerais.html'"></div>
+                <div ng-include="'features/ativo/observacoes.html'"></div>
+                <div ng-include="'features/ativo/endereco.html'"></div>
+                <div ng-include="'features/ativo/origem.html'"></div>
+                <div ng-include="'features/ativo/contato.html'"></div>
+                <div ng-include="'features/ativo/telefones.html'"></div>
+                <div ng-include="'features/ativo/compras.html'"></div>
+                <div ng-include="'features/ativo/agenda.html'"></div>
+                <div ng-include="'features/ativo/historico.html'"></div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/ng-template" id="tempodiscagem.html">
+    <form name="formItens">
+        <div class="modal-header">
+        </div>
+
+        <div class="modal-body" id="modal-body">
+
+            <fieldset>              
+
+            </fieldset>
+
+        </div>
+        <div class="modal-footer">
+            <span class="pull-right">
+                <button class="btn btn-sm btn-primary hidden-print" ng-click="ok()"><span class="glyphicon glyphicon-floppy-disk"></span> Salvar</button>
+                <button class="btn btn-sm btn-warning hidden-print" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+            </span>
+        </div>
+    </form>
+</script>

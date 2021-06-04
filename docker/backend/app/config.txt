@@ -1,0 +1,3 @@
+port:9000
+log:logfull
+database:Server=192.168.100.102;Port=3306;Database=crm_sgr;User_Name=root;Password=root;DriverID=MySQL;

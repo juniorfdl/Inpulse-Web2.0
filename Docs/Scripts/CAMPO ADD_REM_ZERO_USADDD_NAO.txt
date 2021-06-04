@@ -1,0 +1,3 @@
+
+ALTER TABLE PARAMETROS ADD ADD_REM_ZERO_USADDD_NAO CHAR(1)
+ COMMENT 'A = ADD ou R = remover o 0 da frente do número quando o telefone tiver a regra USAR_DDD=NAO' ;

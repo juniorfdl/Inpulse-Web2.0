@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br" ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <title>SISTEMA IN.PULSE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <base href="/">
+
+    <!-- for Chrome on Android, multi-resolution icon of 196x196 -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" sizes="196x196" href="app/icon.ico">
+
+<link href="/Content/angular-dashboard-framework.css" rel="stylesheet"/>
+<link href="/Content/angular-responsive-tables.css" rel="stylesheet"/>
+<link href="/Content/angular-smart-forms.css" rel="stylesheet"/>
+<link href="/Content/angular-wt-apps.css" rel="stylesheet"/>
+<link href="/Content/bootstrap-theme.css" rel="stylesheet"/>
+<link href="/Content/bootstrap.css" rel="stylesheet"/>
+<link href="/Content/estilo.css" rel="stylesheet"/>
+<link href="/Content/select.css" rel="stylesheet"/>
+<link href="/Content/sweetalert.css" rel="stylesheet"/>
+<link href="/Content/toaster.css" rel="stylesheet"/>
+<link href="/Content/angular-material/angular-material.css" rel="stylesheet"/>
+<link href="/Content/Site.css" rel="stylesheet"/>
+<link href="/Content/style.css" rel="stylesheet"/>
+<link rel='stylesheet prefetch' href='/Content/font-awesome.min.css'>
+
+</head>
+<body  ng-class="cssLogin">
+    <!--[if lt IE 9]>
+        <p class="browsehappy">Você está usando uma versão <strong>obsoleta</strong> do Internet Explorer. Por favor <a href="http://browsehappy.com/">atualize seu navegador</a> para utilizar esta aplicação.</p>
+    <![endif]-->
+    <noscript>
+        <div class="well text-center">
+            Você está utilizando um navegador que não suporta a execução de scripts.
+        </div>
+    </noscript>
+    
+    <div ng-include="'header.html'"></div>
+
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'time-out': 5000, mouseoverTimer: false, limit: 1}">        
+    </toaster-container>
+
+    <toaster-container toaster-options="{'toaster-id': 'notificacoes', 'position-class': 'toast-bottom-right', 'time-out': 0, mouseoverTimer: false}">        
+    </toaster-container>
+
+    <!-- <div class="wt-spinner" wt-full-page-spinner>
+        <span class="glyphicon glyphicon-refresh wt-spinner-animate"></span>
+    </div> -->
+
+    <ui-view autoscroll wt-auto-focus></ui-view> 
+
+   <!-- <div class="container">
+    <div class="row">
+        <div class="col-md-6 margem_01">
+            <img src="img/logo_sistema_inpulse_branco.png" alt="" />
+        </div>
+        <div class="col-md-6">
+            &nbsp;
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 margem_01">
+            <p class="fonte_01">CHEGUE ONDE VOCÊ DESEJA!</p>
+            <p class="fonte_02">Nós te damos o impulso que você precisa!</p>
+        </div>
+        <div class="col-md-6">
+            &nbsp;
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5 margem_01">
+            <form class="formlogin" name="flogin">
+                <div class="row">
+                    <luar-text container-class="col-md-11" label="Usuário"
+                               name="usuario" ng-model="ctrl.userName">
+                    </luar-text>
+                </div>
+
+                <div class="row">
+                    <luar-text container-class="col-md-11" label="Senha" type="password"
+                               name="senha" ng-model="ctrl.password">
+                    </luar-text>                    
+                </div>
+
+                <div class="row">
+                    <luar-select container-class="col-md-11" label="Modulo" name="NIVEL"
+                                 ng-options="item.NIVEL as item.NIVEL for item in ::ctrl.NivelLook"
+                                 ng-model="ctrl.Nivel">
+                    </luar-select>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <button type="button" value="ENTRAR" class="form-control"
+                                ng-click="ctrl.login()">
+                            <span class="glyphicon glyphicon-user"></span>
+                            &nbsp;&nbsp;ENTRAR
+                        </button>
+                    </div>                   
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <input id="check1" type="checkbox" name="" value="">
+                        <label for="check1">Entrar no modo "Pausa"</label>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div> -->
+<!-- </div> -->
+    
+
+<footer ng-if="!layout">
+        <hr />
+        <p>©luarApp - {{$root.currentUser.userEmpresa}}</p>
+</footer>
+
+<script src="/scripts/Base/lodash.js" defer></script>
+<script src="/scripts/Angular/angular.js" defer></script>
+<script src="/scripts/Angular/angular-animate.js" defer></script>
+<script src="/scripts/Angular/angular-messages.js" defer></script>
+<script src="/scripts/Angular/select.js" defer></script>
+<script src="/scripts/Angular/unsavedChanges.js" defer></script>
+<script src="/scripts/Angular/SweetAlert.js" defer></script>
+<script src="/scripts/Angular/toaster.js" defer></script>
+<script src="/scripts/Angular/angular-easy-masks.js" defer></script>
+<script src="/scripts/Angular/angular-wt-apps.js" defer></script>
+<script src="/scripts/Angular/angular-smart-forms.js" defer></script>
+<script src="/scripts/Angular/angular-responsive-tables.js" defer></script>
+<script src="/scripts/Angular/angular-ui-router.js" defer></script>
+<script src="/scripts/Angular/angular-material.js" defer></script>
+<script src="/scripts/Angular/angular-aria.js" defer></script>
+<script src="/scripts/Angular/angular-timer-all.min.js" defer></script>
+<script src="/scripts/Angular/svg-assets-cache.js" defer></script>
+<script src="/scripts/Angular/ui-bootstrap-tpls.js" defer></script>
+<script src="/scripts/Angular/roundProgress.min.js" defer></script>
+<script src="/scripts/Angular/RichText.js" defer></script>
+<script src="/scripts/Angular/angular-base64-upload.js" defer></script>
+
+<script src="/scripts/Base/sweetalert.min.js" defer></script>
+<script src="/scripts/Base/basics.js" defer></script>
+<script src="/scripts/Base/ngCpfCnpj.js" defer></script>
+<script src="/scripts/Base/errors.js" defer></script>
+<script src="/scripts/Base/apiInterceptor.js" defer></script>
+<script src="/scripts/Base/crud.js" defer></script>
+<script src="/scripts/Base/crudServices.js" defer></script>
+<script src="/scripts/Base/crudHttpRedirect.js" defer></script>
+<script src="/scripts/Base/directives.js" defer></script>
+<script src="/scripts/SIS/config.js" defer></script>
+<script src="/scripts/SIS/states.js" defer></script>
+<script src="/scripts/Base/api.js" defer></script>
+<script src="/scripts/Base/app.js" defer></script>
+<script src="/scripts/Base/security.js" defer></script>
+<script src="/scripts/Base/backButton.js" defer></script>
+<script src="/scripts/Base/formFields.js" defer></script>
+<script src="/scripts/Base/layoutCrud.js" defer></script>
+<script src="/scripts/Base/mensagens.js" defer></script>
+<script src="/scripts/Chart.min.js" defer></script>
+<script src="/features/login/ctrl.js" defer></script>
+<script src="/features/ativo/ctrl.js" defer></script>
+<script src="/features/ativo/services.js" defer></script>
+<script src='/scripts/Angular/angular-sanitize.min.js' defer></script>
+<script src='/scripts/Angular/textAngular.min.js' defer></script>
+<script src='/scripts/SIS/sip.min.js' defer></script>
+<script src='/scripts/SIS/ABTOPhoneUA.min.js' defer></script>
+<script src='/scripts/SIS/ABTO.lib.js' defer></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" defer></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" defer></script>
+</body>
+</html>

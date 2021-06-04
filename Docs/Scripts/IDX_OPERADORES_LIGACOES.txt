@@ -1,0 +1,5 @@
+ALTER TABLE `crm_sgr`.`operadores_ligacoes` 
+ADD INDEX `IDX_OPE_LIGACAO` (`OPERADOR` ASC);
+
+ALTER TABLE `crm_sgr`.`operadores_ligacoes` 
+ADD INDEX `IDX_OPE_LIG_FIM` (`FIM` ASC);

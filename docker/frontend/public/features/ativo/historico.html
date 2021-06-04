@@ -1,0 +1,55 @@
+<!-- ng-show="ctrl.MenuSelecionado == 'HISTÓRICO'" -->
+
+<div class="col-md-12">
+    <p class="fonte_08">HISTÓRICO</p>
+</div>
+<div class="">
+		<div class="row">
+			<div class="col-md-12">
+						<table class="unresponsive table-container">
+							<tbody>
+								<tr class="cor_fundo_042 fonte_14">
+									<td width="20%">Campanha</td>
+									<td width="8%">Tipo Ligação</td>
+									<td width="12%">Operador</td>
+									<td width="30%">Resultado</td>
+									<td width="10%">Inicio</td>
+									<td width="10%">Fim</td>
+									<td width="10%">Telefone</td>
+								</tr>
+								<tr>
+									<td colspan="7">
+										<div class="scroll-container">
+											<table class="table table-condensed"> 
+												<tr  ng-repeat="item in ctrl.ProximaLigacao.DadosLigacao.Historico track by item.CODIGO" 
+													ng-click="ctrl.HistoricoOBSERVACAO = item.OBSERVACAO; ctrl.SelectHist = $index"									
+													ng-class="{'CorLinhaGrid': ctrl.SelectHist == $index}"
+													>
+													<td width="20%"  ng-style="{'background-color':  '{{ item.COR }}' }" style="font-size:11px;">{{ item.CAMPANHA }}</td>
+													<td width="8%"   ng-style="{'background-color':  '{{ item.COR }}' }" style="font-size:11px;">{{ item.TIPO_LIGACAO }}</td>
+													<td width="12%"  ng-style="{'background-color':  '{{ item.COR }}' }" style="font-size:11px;">{{ item.OPERADOR }}</td>
+													<td width="30%"  ng-style="{'background-color':  '{{ item.COR }}' }" style="font-size:11px;">{{ item.RESULTADO }}</td>
+													<td width="10%"  ng-style="{'background-color':  '{{ item.COR }}' }" style="font-size:11px;">{{ item.INICIO | date:'dd/MM/yyyy HH:mm'}}</td>
+													<td width="10%"  ng-style="{'background-color':  '{{ item.COR }}' }" style="font-size:11px;">{{ item.FIM | date:'dd/MM/yyyy HH:mm'}}</td>
+													<td width="10%"  ng-style="{'background-color':  '{{ item.COR }}' }" style="font-size:11px;">{{ item.TELEFONE }}</td>
+												</tr>                        
+											</table>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+		
+		</div>
+	  </div>
+<div>
+
+
+    <div class="col-md-12">
+        <label>Observação Histórico</label>
+        <textarea rows="4" cols="50" ng-model="ctrl.HistoricoOBSERVACAO" class="form-control-hist">
+        </textarea>
+    </div>
+
+</div>

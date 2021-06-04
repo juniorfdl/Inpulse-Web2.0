@@ -1,0 +1,511 @@
+﻿/* table.scroll {
+  width: 100%;  
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 2px solid black;
+} */
+
+.ta-editor {
+  min-height: 300px;
+  height: auto;
+  overflow: auto;
+  font-family: inherit;
+  font-size: 100%;
+}
+
+table.scroll tbody,
+table.scroll thead { 
+  display: block; 
+}
+
+table.scroll thead tr th { 
+  height: 30px;
+  line-height: 30px;
+  width: 200px;
+  text-align: left;
+}
+
+table.scroll tbody {
+  height: 100px;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.bodyLogin {
+   background: url(../img/tela_login.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  padding-left: 20px;
+}
+
+/* 
+.inputlogin {
+  
+} */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Segoe ui;
+    font-size: 15px;
+}
+
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+}
+
+.content {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.5);
+    color: #f1f1f1;
+    width: 100%;
+    padding: 20px;
+}
+
+#myBtn {
+    width: 200px;
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    background: #000;
+    color: #fff;
+    cursor: pointer;
+}
+
+#myBtn:hover {
+    background: #ddd;
+    color: black;
+}
+
+
+
+
+
+
+.box {
+        margin: 0px auto;
+        width: 70%;
+    }
+
+.box-chartEstado {
+        width: 90%;
+        margin: 0 auto;
+        padding: 10px;
+    }
+
+  .container{
+     width: 100%;
+   }   
+
+
+.formlogin {
+  font-family:Segoe ui;
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: bold;
+  background-color: black;
+  max-width: 350px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
+  display: block;
+  opacity: 0.7;
+  filter: alpha(opacity=40);
+}
+
+.formlogin2 {
+  font-family:Segoe UI;
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: bold;
+  max-width: 350px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
+  display: block;
+  opacity: 0.9;
+}
+
+.cursorpointer {
+    cursor:pointer;
+}
+
+.fonte_01 {
+  font-family: Segoe UI;
+  font-size: 12px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.fonte_02 {
+  font-family: Segoe UI;
+  font-size: 11px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.fonte_03 {
+  font-family: Segoe UI;
+  font-size: 10px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.fonte_04 {
+  font-family: Segoe UI;
+  font-size: 12px;
+  color: #e71f27;
+  font-weight: bold;
+}
+
+.fonte_05 {
+  font-family: segoe ui;
+  font-size: 11px;
+  color: #000000;
+  font-weight: bold;
+}
+
+.fonte_06 {
+  font-family: Segoe UI;
+  color: #ffffff;
+  font-weight: normal;
+  font-size: 11px;
+}
+
+.fonte_07 {
+  font-family: Segoe UI;
+  font-size: 12px;
+  color: #000000;
+  font-weight: normal;
+}
+
+.fonte_08 {
+  font-family: Segoe UI;
+  font-size: 17px;
+  color: #e71f27;
+  font-weight: bold;
+}
+
+.fonte_SaldoCompra {
+  font-family: Segoe UI;
+  font-size: 17px;
+  color: #1f2ce7;
+  font-weight: bold;
+  float: right;
+}
+
+
+.fonte_09 {
+  font-family: Segoe UI;
+  font-size: 12px;
+  color: #454242;
+  font-weight: bold;
+}
+
+.fonte_10 {
+  font-family: Segoe UI;
+  font-size: 12px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.fonte_11 {
+  font-family: Segoe UI;
+  font-size: 12px;
+  color: #000000;
+  font-weight: bold;
+}
+
+.fonte_12 {
+  font-family: Segoe UI;
+  font-size: 12px;
+  color: #4d4d4d;
+  font-weight: bold;
+}
+
+.fonte_13 {
+  font-family: Segoe UI;
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.fonte_14 {
+  font-family: segoe ui;
+  font-size: 12px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.table_compras {
+	 height: 200px;
+    overflow: scroll;
+}
+
+
+.cor_fundo_01 {
+background-color: #ffffff;
+}
+
+.cor_fundo_02 {
+  background-color: #454242;
+}
+
+.cor_fundo_03 {
+  background-color: #6c1d6b;
+}
+
+.cor_fundo_04 {
+    background-image: linear-gradient(to right, #00deff, #00c7e4, #00b1cb, #019bb1, #018699);
+}
+
+.cor_fundo_04:hover {
+   background-image: linear-gradient(to right, #0361f0, #005cda, #0257c4, #0e51af, #184b99);
+}
+
+.cor_fundo_041 {
+    background-image: linear-gradient(to right, #00deff, #00c7e4, #00b1cb, #019bb1, #018699);
+}
+
+.cor_fundo_042 {
+	background-image: linear-gradient(to bottom, #2e4c85, #25477d, #1c4375, #133e6e, #073966);
+}
+
+.cor_fundo_043 {
+    background: linear-gradient(to bottom, #6600cc 0%, #336699 100%);
+}
+
+.cor_fundo_red {
+	background: linear-gradient(to bottom, #cc0000 0%, #800000 100%);
+}
+
+.cor_fundo_green {
+	background: linear-gradient(to bottom, #00cc00 0%, #003300 100%);
+}
+
+.cor_fundo_05 {
+  background-color: #e71f27;
+}
+
+.cor_fundo_06 {
+  background-color: #e71f27;
+}
+
+.cor_fundo_07 {
+  background-color: #50164f;
+}
+
+.margem_01 {
+  margin-top: 40px;
+}
+
+.margem_02 {
+  margin-top: 30px;
+}
+
+.margem_03 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.margem_04 {
+  margin-bottom: 3px;
+}
+
+.margem_05 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+     -webkit-touch-callout: none;
+   -webkit-user-select: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+ }
+
+.margem_06 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.margem_07 {
+  margin-top: 45px;
+}
+
+.margem_08 {
+  margin-top: 10px;
+}
+
+.margem_09 {
+  margin-left: 0px;
+}
+
+.margem_10 {
+  margin-bottom: 50px;
+}
+
+.margem_11 {
+  margin-top: 78px;
+}
+
+.margem_12 {
+  margin-top: 27px;
+}
+
+.margem_13 {
+  margin-top: 27px;
+}
+
+/* body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+} */
+
+/* Set padding to keep content from hitting the edges */
+/* .body-content {
+    padding-left: 2px;
+    padding-right: 2px;
+} */
+
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 1px;
+  padding-left: 15px;
+   -webkit-touch-callout: none;
+   -webkit-user-select: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+  }
+
+.col-md-15 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 1px;
+  padding-left: 15px;
+}
+
+.col-md-16 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 1px;
+  padding-left: 15px;
+}
+
+.loginnovo {
+  position: relative;
+  min-height: 1px;
+  padding-right: 1px;
+  padding-left: 15px;
+}
+
+
+.container {
+   padding-right: 5px; 
+   padding-left: 5px; 
+   margin-right: inherit; 
+   margin-left: inherit; 
+   margin-top: inherit;  
+}
+
+
+.col-botao{
+  position: relative;
+  min-height: 1px;
+  padding-right: 3px;
+  padding-left: 3px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+    max-width: 280px;
+}*/
+
+.progress-wrapper{
+    position: relative;
+    margin:20px auto;
+    font-size: 40px;
+}
+
+.progress{
+    position: absolute;
+    color: #bbb;
+    font-weight: 100;
+    line-height: 1;
+}
+
+
+
+.table-container {
+    border:0px solid #ccc;
+    border-radius: 3px;
+    width:100%;
+}
+.table-container table {
+    width: 100%;
+}
+.scroll-container{
+  border-top:0px solid #ccc;
+  min-height: 100px;
+  max-height: 550px;
+  height: 150px;
+  overflow-y: scroll;
+  resize: vertical;
+  overflow: auto;  
+}
+
+.form-control-hist {
+  position: relative;
+  font-size: 12px;
+  max-height: 550px;
+  min-height: 75px;
+  height: 132px;
+  width:100%;
+  overflow-y: scroll;
+  resize: vertical;
+  overflow: auto;
+  margin-bottom: 0px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.scroll-container td:first-child{
+    border-right: 0px solid #ccc;
+}
+.scroll-container td{
+    border-bottom: 0px solid #ccc;    
+}
+tr{
+    height: 32px;
+    padding:0;
+	padding-left: 20px;
+}
+td{
+    padding:4px;
+	text-align: center-left;
+}
+
+.CorLinhaGrid {
+  color: blue;
+  font-size: 17px;
+  font-style: italic;  
+  font-weight: bold;
+}

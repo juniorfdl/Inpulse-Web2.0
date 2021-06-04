@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  app:
+    container_name: "infotec.ativo"    
+    image: juniorfdl2/appdelphi
+    command: ['./Server.Ativo']
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+    volumes:
+      - ./log:/usr/src/app/log
+    # environment:      
+    #   MONGO_PORT: 27017
+    

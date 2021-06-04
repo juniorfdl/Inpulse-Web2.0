@@ -1,0 +1,61 @@
+<div class="col-md-12" ng-show="ctrl.MenuSelecionado == 'ORIGEM'">
+
+    <div class="row">
+
+        <div class="col-md-4 form-group">
+            <label>Grupos</label>
+            <select class="form-control" name="GrupoCombo" 
+            ng-options="item.id as item.DESCRICAO for item in ctrl.DadosStart.Grupos"
+                ng-model="ctrl.ProximaLigacao.GRUPO">
+            </select>
+        </div>
+
+        <div class="col-md-4 form-group">
+            <label>Origem</label>
+            <input type="text" readonly ng-model="ctrl.ProximaLigacao.DadosLigacao.ORIGEM" class="form-control">
+        </div>
+
+        <div class="col-md-4 form-group">
+                <label>Midia</label>
+                <select class="form-control" name="GrupoMidia" 
+                ng-options="item.id as item.NOME for item in ctrl.DadosStart.Midias"
+                    ng-model="ctrl.ProximaLigacao.COD_MIDIA">
+                </select>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label>E-mail</label>
+            <input type="text" ng-model="ctrl.ProximaLigacao.EMAIL" class="form-control">
+        </div>
+        <div class="col-md-6 form-group">
+            <label>WebSite</label>
+            <input type="text" maxlength="15" ng-model="ctrl.ProximaLigacao.WEBSITE" class="form-control">
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 form-group">
+            <label>Contato E-mail</label>
+            <input type="text" ng-model="ctrl.ProximaLigacao.CONTATO_MAIL" class="form-control">
+        </div>
+
+        <div class="col-md-4 form-group">
+            <label>Operador</label>
+            <input type="text" readonly ng-model="ctrl.ProximaLigacao.DadosLigacao.NOME_OPERADOR" class="form-control">
+        </div>
+
+        <div class="col-md-4 form-group">
+                <label>Segmento</label>
+                <select class="form-control" name="GrupoSegmento" 
+                ng-options="item.id as item.NOME for item in ctrl.DadosStart.Segmentos"
+                    ng-model="ctrl.ProximaLigacao.SEGMENTO">
+                </select>
+        </div>
+
+    </div>
+
+</div>

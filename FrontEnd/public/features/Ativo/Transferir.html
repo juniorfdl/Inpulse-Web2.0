@@ -1,0 +1,38 @@
+<form name="formTransferir">
+    <div class="modal-header">
+       <div class="col-md-11">
+             <h3 class="modal-title" id="modal-title">Transferir Ligaçao</h3>
+       </div>         
+        <div class="col-md-1"> 
+            <span class="pull-right">
+                <button class="btn btn-sm btn-warning hidden-print" style="width: 30px; height: 25px;" ng-click="ctrl.FecharTransferir()">
+                    <span class="glyphicon glyphicon-remove">
+                    </span>
+                </button>
+            </span>
+        </div>   
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <fieldset>
+           
+            <div class="row">
+                <div class="col-md-7">
+                    <input type="text"  ng-model="ctrl.telefonetransferir" required class="form-control">
+                </div> 
+                <div class="col-md-1">
+                        <button type="button" class="btn btn-primary" ng-click="ctrl.TransferirLigacao()"
+                            style="height: 30px;font-size: 15px;">Transferir
+                        </button>
+                </div>
+                       
+            </div>
+            <br>
+            <div class="row">
+                   
+            </div>
+        </fieldset>
+
+    </div>
+</form>

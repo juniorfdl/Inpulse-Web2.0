@@ -1,0 +1,22 @@
+{
+	"name": "backend",
+	"description": "",
+	"version": "1.0.0",
+	"homepage": "",
+	"mainsrc": "src",
+	"projects": [],
+	"dependencies": {
+		"bitbucket.org/isaquepinheiro/cqlbr": "^1.0.1",
+		"bitbucket.org/isaquepinheiro/dbcbr": "^1.0.4",
+		"bitbucket.org/isaquepinheiro/dbebr": "^1.0.3",
+		"bitbucket.org/isaquepinheiro/jsonbr": "^1.0.0",
+		"github.com/hashload/handle-exception": "^0.1.4",
+		"github.com/hashload/horse": "^v2.0.1",
+		"github.com/hashload/horse-cors": "^1.0.2",
+		"github.com/hashload/horse-logger": "^0.1.5",
+		"github.com/hashload/horse-logger-provider-console": "^1.0.3",
+		"github.com/hashload/horse-logger-provider-logfile": "^1.0.2",
+		"github.com/hashload/jhonson": "^1.0.6",
+		"github.com/viniciussanchez/dataset-serialize": "^v2.3.0"
+	}
+}

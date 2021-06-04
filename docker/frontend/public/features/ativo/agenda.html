@@ -1,0 +1,40 @@
+<div ng-show="ctrl.MenuSelecionado == 'AGENDA'">
+
+  <div class="col-md-12">
+	<table class="table-container">
+    <tbody>
+        <tr class="cor_fundo_042 fonte_14">
+            <td width="7%">Proposta</td>
+            <td width="8%">Data</td>
+            <td width="16%">Campanha</td>
+            <td width="11%">Dt Resultado</td>
+			<td width="25%">Resultado</td>
+			<td width="10%">Telefone</td>
+			<td width="11%">Operador</td>
+			<td width="12%">Operador Lig.</td>
+        </tr>
+        <tr>
+            <td colspan="8">
+                <div class="scroll-container">
+                    <table class="table table-condensed"> 
+                        <tr ng-repeat="item in ctrl.ProximaLigacao.DadosLigacao.AGENDA track by item.CODIGO">
+							<td width="7%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ ctrl.GetProposta(item) }}</td>
+							<td width="8%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.DT_AGENDAMENTO | date:'dd/MM/yyyy HH:mm'}}</td>
+							<td width="16%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.CAMPANHA }}</td>
+							<td width="11%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.DT_RESULTADO | date:'dd/MM/yyyy'}}</td>
+							<td width="25%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.RESULTADO }}</td>
+							<td width="10%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.FONE1 }}</td>
+							<td width="11%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.OPERADOR }}</td>
+							<td width="12%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.OPERADOR_LIGACAO }}</td>
+                        </tr>                        
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+                
+
+    </div> 
+</div>

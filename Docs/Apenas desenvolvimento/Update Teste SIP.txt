@@ -1,0 +1,5 @@
+/* Para tudo dar certo, no banco que você rodar esses updates, você deve abrir o in.Pulse supervisor, ir em ferramentas - configurar - parametros - configurar ddds 
+e alterar o ddd local para 11 e a operadora para 0 e salvar. - não adianta fazer pelo banco, pois o sistema muda varias coisas "rotina de ddds diferentes" */
+
+update parametros pr set pr.ASTERISK_SERVER='177.99.230.99' , pr.ASTERISK_PROXY='177.99.230.99', pr.ASTERISK_PORTA='5060';
+update operadores op set op.ASTERISK_RAMAL='rolim', op.ASTERISK_USERID='rolim', op.ASTERISK_LOGIN='rolim', op.ASTERISK_SENHA='B5Ku8MBqqy';

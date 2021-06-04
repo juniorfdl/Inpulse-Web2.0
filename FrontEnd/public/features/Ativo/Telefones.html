@@ -1,0 +1,101 @@
+<div class="col" ng-show="ctrl.MenuSelecionado == 'TELEFONES'">
+
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-2 form-group">
+                <label>Area</label>
+                <select class="form-control" name="AREA1Combo" 
+                  ng-options="item.Area as item.Area for item in ctrl.DadosStart.FoneAreas"
+                  ng-model="ctrl.ProximaLigacao.AREA1">
+                </select>
+            </div>
+
+            <div class="col-md-3 form-group">
+                <label>Fone 1</label>
+                <input type="text" ng-model="ctrl.ProximaLigacao.FONE1" class="form-control">
+            </div>
+            <div class="col-md-5 form-group">
+                <label>Descrição Fone 1</label>
+                <input type="text" maxlength="30" ng-model="ctrl.ProximaLigacao.DESC_FONE1" class="form-control">
+
+            </div>
+
+            <div class="col col-md-2 col-botao form-group">
+                <br>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2 form-group">
+                <label>Area</label>
+                <select class="form-control" name="Area1Combo" 
+                    ng-options="item.Area as item.Area for item in ctrl.DadosStart.FoneAreas"
+                    ng-model="ctrl.ProximaLigacao.AREA2">
+                </select>
+            </div>
+
+            <div class="col-md-3 form-group">
+                <label>Fone 2</label>
+                <input type="text" ng-model="ctrl.ProximaLigacao.FONE2" class="form-control">
+            </div>
+            <div class="col-md-5 form-group">
+                <label>Descrição Fone 2</label>
+                <input type="text" maxlength="30" ng-model="ctrl.ProximaLigacao.DESC_FONE2" class="form-control">
+            </div>
+
+            <div class="col col-md-2 col-botao form-group">
+                <br>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-2 form-group">
+                <label>Area</label>
+                <select class="form-control" name="AREA3Combo" 
+                    ng-options="item.Area as item.Area for item in ctrl.DadosStart.FoneAreas"
+                    ng-model="ctrl.ProximaLigacao.AREA3">
+                </select>
+            </div>
+
+            <div class="col-md-3 form-group">
+                <label>Fone 3</label>
+                <input type="text" maxlength="9" ng-model="ctrl.ProximaLigacao.FONE3" class="form-control">
+            </div>
+            <div class="col-md-5 form-group">
+                <label>Descrição Fone 3</label>
+                <input type="text" maxlength="30" ng-model="ctrl.ProximaLigacao.DESC_FONE3" class="form-control">
+            </div>
+
+            <div class="col col-md-2 col-botao form-group">
+                <br>
+                
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2 form-group">
+                <label>Area</label>
+                <select class="form-control" name="AREAFAXCombo" 
+                    ng-options="item.Area as item.Area for item in ctrl.DadosStart.FoneAreas"
+                    ng-model="ctrl.ProximaLigacao.AREAFAX">
+                </select>
+            </div>
+
+            <div class="col-md-3 form-group">
+                <label>FAX</label>
+                <input type="text" maxlength="9" ng-model="ctrl.ProximaLigacao.FAX" class="form-control">
+            </div>
+            <div class="col-md-5 form-group">
+                <label>Descrição FAX</label>
+                <input type="text" maxlength="30" ng-model="ctrl.ProximaLigacao.DESCFAX" class="form-control">
+            </div>
+
+            <div class="col col-md-2 col-botao form-group">
+                <br>
+            </div>
+        </div>
+    </div>
+
+    
+</div>

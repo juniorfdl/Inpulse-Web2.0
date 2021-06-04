@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{92F20E40-D789-49AD-AE06-932BF86BFBB4}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="SIP\SIP.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="BackEnd\Server\Server.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="SIP DW\SIPDW.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="SIP">
+        <MSBuild Projects="SIP\SIP.dproj"/>
+    </Target>
+    <Target Name="SIP:Clean">
+        <MSBuild Projects="SIP\SIP.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SIP:Make">
+        <MSBuild Projects="SIP\SIP.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Server">
+        <MSBuild Projects="BackEnd\Server\Server.dproj"/>
+    </Target>
+    <Target Name="Server:Clean">
+        <MSBuild Projects="BackEnd\Server\Server.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Server:Make">
+        <MSBuild Projects="BackEnd\Server\Server.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SIPDW">
+        <MSBuild Projects="SIP DW\SIPDW.dproj"/>
+    </Target>
+    <Target Name="SIPDW:Clean">
+        <MSBuild Projects="SIP DW\SIPDW.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SIPDW:Make">
+        <MSBuild Projects="SIP DW\SIPDW.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="SIP;Server;SIPDW"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="SIP:Clean;Server:Clean;SIPDW:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="SIP:Make;Server:Make;SIPDW:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

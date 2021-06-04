@@ -1,0 +1,101 @@
+<form name="formPropostasCliente">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Inserir Venda</h3>
+        <div class="col-md-12">
+
+            <span class="pull-left">
+                <button class="btn btn-sm btn-primary hidden-print" ng-click="ctrl.AtualizarPropostasCliente()" 
+                    style="width: 120px">
+                    <span class="glyphicon glyphicon glyphicon-phone-alt">
+                    </span> Atualizar
+                </button>
+            </span>
+
+            <span class="pull-right">
+
+                <button class="btn btn-sm btn-primary hidden-print"
+                    ng-click="ctrl.ConfirmarPropostasCliente()" style="width: 120px">
+                        <span class="glyphicon glyphicon-ok-sign">
+                        </span> Confirmar
+                </button>
+
+                <button class="btn btn-sm btn-warning hidden-print" style="width: 120px"
+                    ng-click="ctrl.FecharPropostasCliente()">
+                    <span class="glyphicon glyphicon-remove">
+                    </span> Cancelar
+                </button>
+            </span>
+        </div>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+        <fieldset>
+            <luar-textdata container-class="col-md-2" label="Data Inicial" name="DataInicial" 
+               ng-model="ctrl.FiltroPropostasCliente.DATA_INICIAL">
+            </luar-textdata>
+
+            <luar-textdata container-class="col-md-2" label="Data Final" name="DataFinal" 
+              ng-model="ctrl.FiltroPropostasCliente.DATA_FINAL">
+            </luar-textdata>
+        
+            <div class="col-md-6 ">
+                <label>Abrir propostas utilizadas</label>
+                <input type="checkbox" ng-model="ctrl.FiltroPropostasCliente.UTILIZADAS">
+            </div>
+        </fieldset>
+
+        <fieldset>
+             <luar-text container-class="col-md-8" label="Descrição Venda" name="DescricaoVenda" 
+                ng-model="ctrl.COMPRAS.DESCRICAO">
+             </luar-text>
+        
+             <luar-textvalor container-class="col-md-3" label="Valor Venda" name="ValorVenda" 
+               ng-model="ctrl.COMPRAS.VALOR">
+             </luar-textvalor>
+        </fieldset>
+
+        <fieldset>
+            <!-- <div class="col-md-12 input-group">      
+                <luar-text container-class="col-md-6" placeholder="Pesquisar . . ." 
+                   ng-change="ctrl.DadosPropostasCliente = null"
+                   ng-model="searchFish">
+                </luar-text>
+            </div>       -->
+
+            <div class="col-md-12">
+                <table class="table-container">
+                    <tbody>
+                        <tr class="cor_fundo_042 fonte_14">
+                            <td width="20%">Data</td>
+                            <td width="50%">Operador</td>
+                            <td width="10%">Código</td>
+                            <td width="10%">Venda</td>
+                            <td width="10%">Utilizar</td>
+                        </tr>
+                        <tr>
+                            <td colspan="7">
+                                    <!-- class="scroll-container" -->
+                                <div> 
+                                    <table class="table table-condensed">
+                                        <tr ng-repeat="item in ctrl.DadosPropostasCliente track by item.CODIGO">
+                                            <td width="20%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.DATA | date:'dd/MM/yyyy'}}</td>
+                                            <td width="50%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.OPERADOR }}</td>
+                                            <td width="10%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.CODIGO }}</td>
+                                            <td width="10%" style="font-size:11px;font-family:Segoe ui;font-weight:bold;">{{ item.VENDA}}</td>
+                                            <td width="10%" 
+                                               style="font-size:11px;font-family:Segoe ui;font-weight:bold;">
+                                               <input type="checkbox" ng-model="item.UTILIZAR">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+
+    </div>
+
+</form>

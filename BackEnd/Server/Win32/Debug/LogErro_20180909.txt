@@ -1,0 +1,4 @@
+
+09/09/2018 16:00:34
+Could not convert variant of type (String) into type (Integer)
+09/09/2018 16:04:06[FireDAC][Phys][MySQL] Data too long for column 'CELULAR' at row 1
