@@ -227,7 +227,7 @@ end;
 
 function TAtivo.Campanhas(const pBaseDados: String): TJSONArray;
 var
-  vJsonStr, xSql: String;
+  xSql: String;
   vUnidades: Tunidades;
   vListUnidades: TObjectList<Tunidades>;
 begin
@@ -248,8 +248,6 @@ begin
       end;
 
       Result := TInfotecUtils.ObjectToJsonArray<TUnidades>(vListUnidades);
-//      vJsonStr := TJSONBr.ObjectListToJsonString<TUnidades>(vListUnidades);
-//      Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONArray;
     finally
       vListUnidades.Free;
     end;
@@ -330,7 +328,7 @@ end;
 
 function TAtivo.DadosRecebendoLigacao(pFone, CaminhoBD, operador: string): TJsonObject;
 var
-  vJsonStr,xSql, where: String;
+  xSql, where: String;
   fObjCli: TClientes;
 begin
   Result := nil;
@@ -359,8 +357,6 @@ begin
     end;
 
     Result := TInfotecUtils.ObjectToJsonObject(fObjCli) as TJSONObject;
-//    vJsonStr := TJSONBr.ObjectToJsonString(fObjCli);
-//    Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONObject;
   finally
     if FConnection.IsConnected then
       FConnection.Disconnect;
@@ -370,15 +366,12 @@ end;
 function TAtivo.DeletarContato(const AValue: TJSONObject): TJSONObject;
 var
   fobj: TContatos;
-  vJsonStr:String;
 begin
-  fobj := TJSONBr.JsonToObject<TContatos>(AValue.ToJSON);
+  fobj := TInfotecUtils.JsonToObject<TContatos>(AValue.ToJSON);
   Conectar(fobj.DataBase);
   try
-//    vJsonStr := TJSONBr.ObjectToJsonString(fobj);
     TContainerObjectSet<TContatos>.Create(FConnection).Delete(fobj);
     Result := TInfotecUtils.ObjectToJsonObject(fobj) as TJSONObject;
-//    Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONObject;
   finally
     if FConnection.IsConnected then
       FConnection.Disconnect;
@@ -388,7 +381,7 @@ end;
 function TAtivo.DescricaoStatus(const pCodDescricao,
   pBaseDados: String): string;
 var
-  vJsonStr, xSql: String;
+  xSql: String;
   temp: integer;
   fObjCli: TStatusSIP;
 begin
@@ -405,7 +398,6 @@ begin
         begin
           fObjCli.DESCRICAOSTATUS := fieldByName('DESCRICAO').AsString;
           fObjCli.CODSTATUS := pCodDescricao;
-          vJsonStr := TJSONBr.ObjectToJsonString(fObjCli);
           Result := fieldByName('DESCRICAO').AsString;   
         end;    
       except on E: Exception do
@@ -800,10 +792,9 @@ end;
 function TAtivo.EnviarEmail(const AValue: TJSONObject): TJSONObject;
 var
   fobj: TConfigMail;
-  vJsonStr:String;
   dmEmail: TdmEmail;
 begin
-  fobj := TJSONBr.JsonToObject<TConfigMail>(AValue.ToJSON);
+  fobj := TInfotecUtils.JsonToObject<TConfigMail>(AValue.ToJSON);
 
   Conectar(fobj.DataBase);
   try
@@ -816,8 +807,6 @@ begin
     dmEmail.EnviarEmail(fobj);
 
     Result := TInfotecUtils.ObjectToJsonObject(fObjCli) as TJSONObject;
-//    vJsonStr := TJSONBr.ObjectToJsonString(fObjCli);
-//    Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONObject;
   finally
     if FConnection.IsConnected then
       FConnection.Disconnect;
@@ -936,13 +925,12 @@ end;
 
 function TAtivo.FinalizarLigacao(const AValue: TJSONObject): TJSONObject;
 var
-  vJsonStr, vSql: String;
+  vSql: String;
   vObj:TJSONObject;
   vListaPropostas: TPropostasClientes;
   vDATA_HORA_LIG: TDateTime;
-
 begin
-  fObjCli := TJSONBr.JsonToObject<TClientes>(AValue.ToJSON);
+  fObjCli := TInfotecUtils.JsonToObject<TClientes>(AValue.ToJSON);
   fOPERADOR := fObjCli.DadosLigacao.OPERADOR.ToInteger;
   Conectar(fObjCli.DataBase);
   try
@@ -1065,8 +1053,7 @@ begin
     //historico
     GravarHistoricoCli;
 
-    vJsonStr := TJSONBr.ObjectToJsonString(fObjCli);
-    Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONObject;
+    Result := TInfotecUtils.ObjectToJsonObject(fObjCli) as TJSONObject;
   finally
     if FConnection.IsConnected then
       FConnection.Disconnect;
@@ -1080,12 +1067,12 @@ end;
 
 function TAtivo.GetAgenda(const AValue: TJSONObject): TJSONArray;
 var
-  vJsonStr, xSql: String;
+  xSql: String;
   vAgenda: TAgendaOperador;
   vListAgenda: TObjectList<TAgendaOperador>;
   vFiltro: TAgendaFiltros;
 begin
-  vFiltro := TJSONBr.JsonToObject<TAgendaFiltros>(AValue.ToJSON);
+  vFiltro := TInfotecUtils.JsonToObject<TAgendaFiltros>(AValue.ToJSON);
   Conectar(vFiltro.DataBase);
   try
     vListAgenda := TObjectList<TAgendaOperador>.Create;
@@ -1172,8 +1159,6 @@ begin
       end;
 
       Result := TInfotecUtils.ObjectToJsonArray<TAgendaOperador>(vListAgenda);
-//      vJsonStr := TJSONBr.ObjectListToJsonString<TAgendaOperador>(vListAgenda);
-//      Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONArray;
     finally
       vListAgenda.Free;
     end;
@@ -1185,7 +1170,6 @@ end;
 
 function TAtivo.GetCidades(const pUF, pBaseDados: String): TJSONArray;
 var
-  vJsonStr: String;
   vListCidades: TObjectList<TCidades>;
 begin
   Result := nil;
@@ -1202,8 +1186,6 @@ begin
         .Find(' UF = '+QuotedStr(pUF));
 
       Result := TInfotecUtils.ObjectToJsonArray<TCidades>(vListCidades);
-//      vJsonStr := TJSONBr.ObjectListToJsonString<TCidades>(vListCidades);
-//      Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONArray;
     finally
       vListCidades.Free;
     end;
@@ -1230,7 +1212,7 @@ end;
 function TAtivo.GetHistoricoCliente(const pCLIENTE,
   pBaseDados: String): TJSONArray;
 var
-  vJsonStr, xSql: String;
+  xSql: String;
   vHistoricoCliente: THistoricoCliente;
   vListHistoricoCliente: TObjectList<THistoricoCliente>;
 begin
@@ -1273,8 +1255,6 @@ begin
       end;
 
       Result := TInfotecUtils.ObjectToJsonArray<THistoricoCliente>(vListHistoricoCliente);
-//      vJsonStr := TJSONBr.ObjectListToJsonString<THistoricoCliente>(vListHistoricoCliente);
-//      Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONArray;
     finally
       vListHistoricoCliente.Free;
     end;
@@ -1324,7 +1304,7 @@ end;
 
 function TAtivo.GetObjTabela(const AValue: TJSONObject): TObject;
 begin
-  Result := TJSONBr.JsonToObject<TClientes>(AValue.ToJSON);
+  Result := TInfotecUtils.JsonToObject<TClientes>(AValue.ToJSON);
 end;
 
 procedure TAtivo.GetParamOperador;
@@ -1376,7 +1356,6 @@ end;
 function TAtivo.GetStart(const pBaseDados: String): TJSONObject;
 var
   vStart: TAtivoStart;
-  vJsonStr: String;
   vResultado: TResultados;
 begin
   vStart := TAtivoStart.Create;
@@ -1428,9 +1407,8 @@ end;
 function TAtivo.GravarContato(const AValue: TJSONObject): TJSONObject;
 var
   fobj, vObjBaseUpdate: TContatos;
-  vJsonStr:String;
 begin
-  fobj := TJSONBr.JsonToObject<TContatos>(AValue.ToJSON);
+  fobj := TInfotecUtils.JsonToObject<TContatos>(AValue.ToJSON);
 
   Conectar(fobj.DataBase);
   try
@@ -1452,13 +1430,11 @@ begin
       begin
         vObjBaseUpdate := Find(fobj.id);
         Modify(vObjBaseUpdate);
-        Update(TJSONBr.JsonToObject<TContatos>(AValue.ToJSON));
+        Update(TInfotecUtils.JsonToObject<TContatos>(AValue.ToJSON));
       end;
     end;
 
     Result := TInfotecUtils.ObjectToJsonObject(fObj) as TJSONObject;
-//    vJsonStr := TJSONBr.ObjectToJsonString(fobj);
-//    Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONObject;
   finally
     if FConnection.IsConnected then
       FConnection.Disconnect;
@@ -1483,7 +1459,7 @@ var
       sql, where: string;
      begin
      objCli := TClientesGravar.create;
-     vObjBaseUpdate  := (TJSONBr.JsonToObject<TClientesGravar>(AValue.ToJSON));
+     vObjBaseUpdate  := (TInfotecUtils.JsonToObject<TClientesGravar>(AValue.ToJSON));
 
      objCli.RAZAO := vObjBaseUpdate.RAZAO;
      objCli.FANTASIA := vObjBaseUpdate.FANTASIA;
@@ -1526,7 +1502,7 @@ var
 
     end;
 begin
-  jsonObject  := (TJSONBr.JsonToObject<TClientesGravar>(AValue.ToJSON));
+  jsonObject  := (TInfotecUtils.JsonToObject<TClientesGravar>(AValue.ToJSON));
   with TContainerObjectSet<TClientesGravar>.Create(FConnection) do
     begin
       vObjBaseUpdate := Find(pid);
@@ -1615,11 +1591,10 @@ end;
 function TAtivo.GravarPausa(const AValue: TJSONObject): TJSONObject;
 var
   fobjPausa: TPausasRealizadas;
-  vJsonStr:String;
   vTEMPO_MAX_SEG:Double;
   vDataaux:TDateTime;
 begin
-  fobjPausa := TJSONBr.JsonToObject<TPausasRealizadas>(AValue.ToJSON);
+  fobjPausa := TInfotecUtils.JsonToObject<TPausasRealizadas>(AValue.ToJSON);
   Conectar(fobjPausa.DataBase);
   try
     fobjPausa.TIPO := 'ATIVO';
@@ -1659,8 +1634,6 @@ begin
     TContainerObjectSet<TPausasRealizadas>.Create(FConnection).Insert(fobjPausa);
 
     Result := TInfotecUtils.ObjectToJsonObject(fobjPausa) as TJSONObject;
-//    vJsonStr := TJSONBr.ObjectToJsonString(fobjPausa);
-//    Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONObject;
   finally
     if FConnection.IsConnected then
       FConnection.Disconnect;
@@ -1813,7 +1786,7 @@ end;
 function TAtivo.BuscaDadosRecebendoLigacao(pCodCli, caminhobd,
   operador: string): TJsonObject;
 var
-  vJsonStr,xSql, where: String;
+  xSql, where: String;
   fObjCli: TClientes;
 begin
 
@@ -1838,8 +1811,6 @@ begin
       fObjCli.OPERADOR := fOPERADOR;
 
     Result := TInfotecUtils.ObjectToJsonObject(fObjCli) as TJSONObject;
-//    vJsonStr := TJSONBr.ObjectToJsonString(fObjCli);
-//    Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONObject;;
   finally
     if FConnection.IsConnected then
       FConnection.Disconnect;
@@ -1870,7 +1841,7 @@ end;
 
 function TAtivo.PesquisaClientes(pfiltro, CaminhoBD: string; page : integer  = 1): TJSONArray;
 var
-  vJsonStr,xSql, where: String;
+  xSql, where: String;
   fObjCliList: TObjectList<TClientes>;
   i, initLimit, finalLimit: integer;
   fObjCli: TClientes;
@@ -1956,8 +1927,6 @@ begin
     end;
 
     Result := TInfotecUtils.ObjectToJsonArray<TClientes>(fObjCliList);
-//    vJsonStr := TJSONBr.ObjectListToJsonString<TClientes>(fObjCliList);
-//    Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONArray;
   finally
     begin
       if FConnection.IsConnected then
@@ -2330,7 +2299,6 @@ function TAtivo.GetPropostasCliente(const pCliente:String; pDataInicial,
   pDataFinal:TDateTime; const pUtilizadas,
   pBaseDados: String): TJSONArray;
 var
-  vJsonStr: String;
   vListPropostasClientes: TObjectList<TPropostasClientes>;
   x, xDatas:String;
   vObj: TPropostasClientes;
@@ -2384,8 +2352,6 @@ begin
       end;
 
       Result := TInfotecUtils.ObjectToJsonArray<TPropostasClientes>(vListPropostasClientes);
-//      vJsonStr := TJSONBr.ObjectListToJsonString<TPropostasClientes>(vListPropostasClientes);
-//      Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONArray;
     finally
       vListPropostasClientes.Free;
     end;
@@ -2412,7 +2378,7 @@ end;
 
 function TAtivo.ProximaLigacao(const AValue: TJSONObject): TJSONValue;
 var
-  vJsonStr, sDataBase: String;
+  sDataBase: String;
   fObjCli: TClientes;
 begin
   Result := nil;
@@ -2434,11 +2400,6 @@ begin
     fObjCli := FContainer.Find(CodigoCliente);
 
     PreencheDadosLigacao(fObjCli);
-//    vJsonStr := TInfotecUtils.ObjectToJson(fObjCli);
-//    vJsonStr := TORMBrJSON.ObjectToJsonString(fObjCli);
-//    vJsonStr := TJSONBr.ObjectToJsonString(fObjCli);
-//    Result := TORMBrJSON.JSONStringToJSONValue(vJsonStr);
-//    Result := TJSONObject.ParseJSONValue(TEncoding.UTF8.GetBytes(vJsonStr), 0) as TJSONObject;
     Result := TInfotecUtils.ObjectToJsonObject(fObjCli);
   finally
     if FConnection.IsConnected then
@@ -2615,7 +2576,6 @@ end;
 function TAtivo.UploadFile(const AValue: TJSONObject): TJSONObject;
 var
   vObj:TAnexo;
-  vJsonStr:String;
   lInStream, lOutStream: TStringStream;
 begin
   vObj:= TAnexo.Create;
@@ -2630,8 +2590,6 @@ begin
   lOutStream.SaveToFile('temp\teste.doc');
 
   Result := TInfotecUtils.ObjectToJsonObject(vObj) as TJSONObject;
-//  vJsonStr := TJSONBr.ObjectToJsonString(vObj);
-//  Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONObject;
 end;
 
 function TAtivo.ValidaFusoHorario: String;

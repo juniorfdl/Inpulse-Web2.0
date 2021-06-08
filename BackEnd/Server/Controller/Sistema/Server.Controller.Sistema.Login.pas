@@ -33,7 +33,7 @@ implementation
 
 {$R *.dfm}
 
-uses Infotec.Utils;
+uses Infotec.Utils, Infotec.Ativo.Utils;
 { TLogin }
 
 function TLogin.GetContainer: TObject;
@@ -48,7 +48,7 @@ end;
 
 function TLogin.GetObjTabela(const AValue: TJSONObject): TObject;
 begin
-  Result := TJSONBr.JsonToObject<TOperadores>(AValue.ToJSON);
+  Result := TInfotecUtils.JsonToObject<TOperadores>(AValue.ToJSON);
 end;
 
 function TLogin.Login(NOME, PWD: String): TJSONObject;
@@ -122,9 +122,6 @@ begin
       end;
 
       Result := TInfotecUtils.ObjectToJsonObject(vListRet[0]) as TJSONObject;
-
-//      vJsonStr := TJSONBr.ObjectToJsonString<TOperadores>(vListRet[0]);
-//      Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(vJsonStr), 0) as TJSONArray;
     finally
       if FConnection.IsConnected then
         FConnection.Disconnect;

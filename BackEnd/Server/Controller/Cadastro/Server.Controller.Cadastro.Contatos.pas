@@ -29,6 +29,8 @@ implementation
 
 {$R *.dfm}
 
+uses Infotec.Utils;
+
 { TLogin }
 
 function TContatos.GetContainer: TObject;
@@ -42,7 +44,7 @@ end;
 
 function TContatos.GetObjTabela(const AValue: TJSONObject): TObject;
 begin
-  result := TJSONBr.JsonToObject<TContatos>(AValue.ToJSON);
+  result := TInfotecUtils.JsonToObject<TContatos>(AValue.ToJSON);
 end;
 
 end.
