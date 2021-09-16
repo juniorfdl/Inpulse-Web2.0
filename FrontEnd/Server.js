@@ -2,7 +2,7 @@
 var express  = require('express');
 const fileUpload = require('express-fileupload');
 var app      = express(); 								// create our app w/ express
-var port  	 = process.env.PORT || 8080; 				// set the port
+var port  	 = process.env.PORT || 5001; 				// set the port
 
 app.use(fileUpload());
 app.use(express.static(__dirname + '/public')); 				// set the static files location /public/img will be /img for users

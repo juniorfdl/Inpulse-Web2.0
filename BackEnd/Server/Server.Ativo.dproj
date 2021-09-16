@@ -5,7 +5,7 @@
         <FrameworkType>None</FrameworkType>
         <MainSource>Server.Ativo.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <TargetedPlatforms>131</TargetedPlatforms>
         <AppType>Console</AppType>
@@ -83,6 +83,12 @@
     </PropertyGroup>
     <PropertyGroup Condition="('$(Platform)'=='Linux64' and '$(Cfg_2)'=='true') or '$(Cfg_2_Linux64)'!=''">
         <Cfg_2_Linux64>true</Cfg_2_Linux64>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win64)'!=''">
+        <Cfg_2_Win64>true</Cfg_2_Win64>
         <CfgParent>Cfg_2</CfgParent>
         <Cfg_2>true</Cfg_2>
         <Base>true</Base>
@@ -169,7 +175,7 @@
         <Manifest_File>(None)</Manifest_File>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <DCC_UnitSearchPath>ORMBr\Source\Core;ORMBr\Source\DataSet;ORMBr\Source\Criteria;ORMBr\Source\Middleware;Utils\GBJSON;modules\.dcp;modules\.dcu;modules;modules\cqlbr\Source\Core;modules\cqlbr\Source\Drivers;modules\cqlbr\Source;modules\dataset-serialize\src;modules\dbcbr\Source\Core;modules\dbcbr\Source\Drivers;modules\dbcbr\Source;modules\dbebr\Source\Core;modules\dbebr\Source\Drivers;modules\dbebr\Source;modules\handle-exception\src;modules\horse\src;modules\horse-cors\src;modules\horse-logger\src;modules\horse-logger-provider-console\src;modules\horse-logger-provider-logfile\src;modules\horse-utils-clientip\src;modules\jhonson\src;modules\jsonbr\Source\Core;modules\jsonbr\Source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>ORMBr\Source\Core;ORMBr\Source\DataSet;ORMBr\Source\Criteria;ORMBr\Source\Middleware;Utils\GBJSON;modules\.dcp;modules\.dcu;modules;modules\cqlbr\Source\Core;modules\cqlbr\Source\Drivers;modules\cqlbr\Source;modules\dataset-serialize\src;modules\dbcbr\Source\Core;modules\dbcbr\Source\Drivers;modules\dbcbr\Source;modules\dbebr\Source\Core;modules\dbebr\Source\Drivers;modules\dbebr\Source;modules\handle-exception\src;modules\horse\src;modules\horse-cors\src;modules\horse-logger\src;modules\horse-logger-provider-console\src;modules\horse-logger-provider-logfile\src;modules\horse-utils-clientip\src;modules\jhonson\src;modules\jsonbr\Source\Core;modules\jsonbr\Source;C:\BKP Elvio\unj\Infotec\Inpulse-Web2.0-master\BackEnd\Server\ORMBr\Source\Objectset;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>(None)</Manifest_File>
     </PropertyGroup>
@@ -182,6 +188,11 @@
     <PropertyGroup Condition="'$(Cfg_2_Linux64)'!=''">
         <DCC_UnitSearchPath>ORMBr\Source\Core;ORMBr\Source\DataSet;ORMBr\Source\Criteria;ORMBr\Source\Middleware;ORMBr\Source\Objectset;modules\.dcp;modules\.dcu;modules;modules\cqlbr\Source\Core;modules\cqlbr\Source\Drivers;modules\cqlbr\Source;modules\dataset-serialize\src;modules\dbcbr\Source\Core;modules\dbcbr\Source\Drivers;modules\dbcbr\Source;modules\dbebr\Source\Core;modules\dbebr\Source\Drivers;modules\dbebr\Source;modules\handle-exception\src;modules\horse\src;modules\horse-cors\src;modules\horse-logger\src;modules\horse-logger-provider-console\src;modules\horse-logger-provider-logfile\src;modules\horse-utils-clientip\src;modules\jhonson\src;modules\jsonbr\Source\Core;modules\jsonbr\Source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <Debugger_Launcher>/usr/bin/xterm -e &quot;%debuggee%&quot;</Debugger_Launcher>
+        <Manifest_File>(None)</Manifest_File>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
+        <DCC_UnitSearchPath>ORMBr\Source\Core;ORMBr\Source\DataSet;ORMBr\Source\Criteria;ORMBr\Source\Middleware;Utils\GBJSON;modules\.dcp;modules\.dcu;modules;modules\cqlbr\Source\Core;modules\cqlbr\Source\Drivers;modules\cqlbr\Source;modules\dataset-serialize\src;modules\dbcbr\Source\Core;modules\dbcbr\Source\Drivers;modules\dbcbr\Source;modules\dbebr\Source\Core;modules\dbebr\Source\Drivers;modules\dbebr\Source;modules\handle-exception\src;modules\horse\src;modules\horse-cors\src;modules\horse-logger\src;modules\horse-logger-provider-console\src;modules\horse-logger-provider-logfile\src;modules\horse-utils-clientip\src;modules\jhonson\src;modules\jsonbr\Source\Core;modules\jsonbr\Source;C:\BKP Elvio\unj\Infotec\Inpulse-Web2.0-master\BackEnd\Server\ORMBr\Source\Objectset;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>(None)</Manifest_File>
     </PropertyGroup>
     <ItemGroup>
@@ -277,8 +288,6 @@
                 <Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k250.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dclofficexp250.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="C:\unj\Branches\Atual\pge-net\bin\edtD5CompletoDT.bpl">SAJ - EDT Componentes Design Time</Excluded_Packages>
-                    <Excluded_Packages Name="C:\unj\Branches\Atual\pge-net\bin\digD5CompletoDT.bpl">DIG Componentes Design Time</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">

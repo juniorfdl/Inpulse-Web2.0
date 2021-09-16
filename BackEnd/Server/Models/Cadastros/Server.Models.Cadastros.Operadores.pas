@@ -31,7 +31,9 @@ type
     //fid: Integer;
     fCODIGOENTRADA: String;
     fid: Integer;
+    fSenhaSIP: String;
 
+    fLoginSIP: String;
     procedure GetNOME(const Value: String);//    fid: Integer;
 //    function Getid: Integer;
 //    procedure Setid(const Value: Integer);
@@ -64,6 +66,9 @@ type
     property Registrar: TRegistrar read fRegistrar write fRegistrar;
 
     property CODIGOENTRADA:String read fCODIGOENTRADA write fCODIGOENTRADA;
+
+    property LoginSIP:String read fLoginSIP write fLoginSIP;
+    property SenhaSIP:String read fSenhaSIP write fSenhaSIP;
   end;
 
 implementation

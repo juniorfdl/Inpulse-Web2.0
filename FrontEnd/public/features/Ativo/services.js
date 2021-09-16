@@ -149,14 +149,19 @@ var App;
                     return this.api.get('Campanhas/'+CAMINHO_BANCO, params);
                 };
 
-                this.FinalizarLigacao = function (pDados, pDemo){                   
+                this.FinalizarLigacao = function (pDados, pCtrlAtivo){                   
 
                     if (pDados.DadosLigacao.Finalizar.HORA){
                         var vHra = new Date(pDados.DadosLigacao.Finalizar.HORA.getTime());
                         vHra = vHra.getHours().toString()+':'+vHra.getMinutes().toString();
                         pDados.DadosLigacao.Finalizar.HORA = vHra;                            
                     }
-                    if (!pDemo) {
+
+                    if (pCtrlAtivo.TestarUtilizaJsSIP()){
+                        pCtrlAtivo.FinalizarLigacaoJsSIP();                        
+                    }
+                    else 
+                    if (!pCtrlAtivo.SipDemo()) {
                         this.Desligar();
                     }
                     

@@ -121,6 +121,17 @@ begin
         end;
       end;
 
+      with FConnection.ExecuteSQL
+        ('select LOGIN_SIP, SENHA_SIP from operadores_config_sip where COD_OPERADOR = '
+        + vListRet[0].id.ToString) do
+      begin
+        if RecordCount > 0 then
+        begin
+          vListRet[0].LoginSIP := fieldByName('LOGIN_SIP').AsString;
+          vListRet[0].SenhaSIP := fieldByName('SENHA_SIP').AsString;
+        end;
+      end;
+
       Result := TInfotecUtils.ObjectToJsonObject(vListRet[0]) as TJSONObject;
     finally
       if FConnection.IsConnected then

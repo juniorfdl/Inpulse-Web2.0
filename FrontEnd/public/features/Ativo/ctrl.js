@@ -12,16 +12,15 @@ var App;
         var CrudAtivoCtrl = (function (_super) {
        
             __extends(CrudAtivoCtrl, _super);
-            function CrudAtivoCtrl($rootScope, api, CrudAtivoService, $q, $scope, $modal, security, SweetAlert) { //roundProgressService, $interval,
+            function CrudAtivoCtrl($rootScope, api, CrudAtivoService, $q, $scope, $modal, security, SweetAlert) { 
                 var _this = this;
                 this.SweetAlert = SweetAlert;
                 var _rootScope = $rootScope;
                 
                 var _scope = $scope;
-                var timestampLigacao = null;
+                _this.timestampLigacao = null;
                 var tecladoVisivel = false;
-                var receptivoVisivel = false;
-               
+                var receptivoVisivel = false;              
 
                 var input = {
                     year: 0,
@@ -52,7 +51,9 @@ var App;
                 _this.ListaCampanhas = {}
                 _this.CPF_CNPJ = ''
                 _this.UltimaPagina = false;
-                _this.PaginaAtual = 1; 
+                _this.PaginaAtual = 1;                    
+                _this.RecebendoLigacaoName = '';
+                _this.RecebendoLigacaoUser = ''; 
                
                 _this.DadosPesquisaCliente ={};    
                 _this.modalPesquisaCLiente = {};
@@ -74,6 +75,30 @@ var App;
 
                 this.MenuSelecionado = 'ENDEREÇO';
                 this.TempoAguardeLigacao = -1;
+                
+                this.incomingCallAudio = new window.Audio('https://code.bandwidth.com/media/incoming_alert.mp3');
+                this.incomingCallAudio.loop = true;
+                this.incomingCallAudio.crossOrigin="anonymous";
+                this.remoteAudio = new window.Audio();
+                this.remoteAudio.autoplay = true;
+                this.remoteAudio.crossOrigin="anonymous";
+
+                this.callOptions = {
+                    mediaConstraints: {audio: true, video: false}
+                };
+
+                this.SocketJsSIP = new JsSIP.WebSocketInterface('wss://demo-infinity.nativeip.com.br/ws'); 
+
+                this.ConfigurationJsSIP = {
+                    sockets: [this.SocketJsSIP],
+                    'uri': _rootScope.currentUser.LoginSIP + '@demo-infinity.nativeip.com.br', 
+                    'password': _rootScope.currentUser.SenhaSIP, 
+                    'username': _rootScope.currentUser.LoginSIP,  
+                    'register': true
+                };
+
+                this.PhoneJsSIPJsSIP = null;
+                this.SessionJsSIP = null;
 
                 this.TempoAntesProximoLigacao = function () {
                     this.GetProximaLigacao();
@@ -89,8 +114,8 @@ var App;
                 this.FecharTempo = function () {
                     this.modalTempo.close();
 
-                    if (this.ProximaLigacao && this.ProximaLigacao.DadosLigacao && !this.SipDemo()) {
-                        this.crudSvc.Ligar(this.ProximaLigacao.DadosLigacao);
+                    if (this.ProximaLigacao && this.ProximaLigacao.DadosLigacao) {
+                        this.ExecutarLigacao(this.ProximaLigacao.DadosLigacao);
                     }
                 }
 
@@ -104,7 +129,6 @@ var App;
                 }
 
                 this.SipDemo = function () {
-                    //console.log('sip_mnodo' +_rootScope.currentUser.Registrar.SIP_MODO )
                    if (_rootScope.currentUser.Registrar.SIP_MODO == 'DEMO') {
                        return true
                    }
@@ -112,8 +136,103 @@ var App;
                        return false
                    }
                 }
-                this.Registrar = function () {
-                    if (_this.SipDemo()) {
+
+                this.TestarUtilizaJsSIP = function () {
+                    return _this.ConfigurationJsSIP.username && _this.ConfigurationJsSIP.password;
+                }
+
+                this.RegistrarJsSIP = function () {
+
+                    if(_this.TestarUtilizaJsSIP()){
+                        debugger;
+                        JsSIP.debug.enable('JsSIP:*'); 
+                        _this.PhoneJsSIP = new JsSIP.UA(_this.ConfigurationJsSIP);
+
+                        _this.PhoneJsSIP.on("connecting", () => console.log("Trying to connect..."));
+                        _this.PhoneJsSIP.on("connected", () => console.log("Connected!"));
+
+                        _this.PhoneJsSIP.on('registrationFailed', function(ev){
+                            alert('Registering on SIP server failed with error: ' + ev.cause);
+                            _this.ConfigurationJsSIP.uri = null;
+                            _this.ConfigurationJsSIP.password = null;
+                            _this.updateUIJsSIP();
+                        });
+
+                        _this.PhoneJsSIP.on('newRTCSession',function(ev){
+                            var newSession = ev.session;
+
+                            if (ev.request && ev.request.from) {
+                              _this.RecebendoLigacaoName = ev.request.from.display_name;
+                              _this.RecebendoLigacaoUser = ev.request.from.uri.user;
+                            } 
+                            else {                                
+                              _this.RecebendoLigacaoName = '';
+                              _this.RecebendoLigacaoUser = '';
+                            }
+
+                            if(_this.SessionJsSIP){ // hangup any existing call
+                                _this.SessionJsSIP.terminate();
+                            }
+                            
+                            _this.SessionJsSIP = newSession;                            
+                            var completeSession = function(){
+                                _this.SessionJsSIP = null;
+                                _this.updateUIJsSIP();
+                            };
+
+                            _this.SessionJsSIP.on('ended', completeSession);
+                            _this.SessionJsSIP.on('failed', completeSession);
+                            _this.SessionJsSIP.on('accepted', _this.updateUIJsSIP);
+                            _this.SessionJsSIP.on('confirmed',function(){
+                                var localStream = _this.SessionJsSIP.connection.getLocalStreams()[0];
+                                var dtmfSender = _this.SessionJsSIP.connection.createDTMFSender(localStream.getAudioTracks()[0])
+                                _this.SessionJsSIP.sendDTMF = function (tone) {
+                                    dtmfSender.insertDTMF(tone);
+                                };
+                                _this.updateUIJsSIP();
+                            });
+
+                            _this.SessionJsSIP.on('peerconnection', (e) => {
+                              console.log('peerconnection', e);
+                              let logError = '';
+                              const peerconnection = e.peerconnection;
+                    
+                              peerconnection.onaddstream = function (e) {
+                                console.log('addstream', e);
+                                // set remote audio stream (to listen to remote audio)
+                                // remoteAudio is <audio> element on pag
+                                this.remoteAudio.srcObject = e.stream;
+                                this.remoteAudio.play();
+                              };
+                    
+                              var remoteStream = new MediaStream();
+                              console.log(peerconnection.getReceivers());
+                              peerconnection.getReceivers().forEach(function (receiver) {
+                                console.log(receiver);
+                                remoteStream.addTrack(receiver.track);
+                              });
+                            });
+                          
+                            if(_this.SessionJsSIP.direction === 'incoming'){
+                                _this.incomingCallAudio.play();
+                            } else {
+                              console.log('con', _this.SessionJsSIP.connection)
+                              _this.SessionJsSIP.connection.addEventListener('addstream', function(e){
+                                _this.incomingCallAudio.pause();
+                                _this.remoteAudio.srcObject = e.stream;
+                              });      
+                            }
+                            _this.updateUIJsSIP();
+                        });
+                        _this.PhoneJsSIP.start();
+                    }
+
+                    return _this.TestarUtilizaJsSIP();
+                }
+
+                this.Registrar = function () {  
+                    
+                    if (_this.RegistrarJsSIP() || _this.SipDemo()) {
                         _this.RegistroOK = true;
                         if (_this.PausarLigacoes) {
                             _this.AbrirModalPausa();
@@ -122,31 +241,204 @@ var App;
                         }
                         return
                     }
-                        this.crudSvc.Registrar(_rootScope.currentUser.Registrar).then(function (dados) {
-                            _this.RegistroOK = true;
-                            if (_this.PausarLigacoes) {
-                                _this.AbrirModalPausa();
-                            } else {
-                                _this.TempoAntesProximoLigacao();
-                            }
-                        }).catch(function (data) {
-                            _this.RegistroOK = false;
-                        });
-                  
+
+                    this.crudSvc.Registrar(_rootScope.currentUser.Registrar).then(function (dados) {
+                        _this.RegistroOK = true;
+                        if (_this.PausarLigacoes) {
+                            _this.AbrirModalPausa();
+                        } else {
+                               _this.TempoAntesProximoLigacao();
+                        }
+                    }).catch(function (data) {
+                        _this.RegistroOK = false;
+                    });                 
                    
+                }
+
+                this.TestarStatusEmConversacao = function (value) {
+
+                    if (!value) {return false}
+
+                    var status = value.substring(3, 11);
+                    status = status.toLowerCase();
+                    return status == 'conversa';
+                } 
+
+                this.TestarStatusRecebendoLigacao = function (value) {
+
+                    if (!value) {return false}
+
+                    var status = value.substring(0, 9);
+                    status = status.toLowerCase();
+                    return status == 'recebendo';
+                } 
+
+                this.SetStatusLigacao = function (pOperador, pStatus, pCAMINHO_BANCO) {
+
+                    if (!pOperador) {
+                        return;
+                    }
+
+                    if (!pStatus) {
+                        return;
+                    }
+
+                    if (!pCAMINHO_BANCO) {
+                        return;
+                    }
+
+                    if (!_this.ProximaLigacao) {
+                        return;
+                    }
+
+                    if (!_this.ProximaLigacao.DadosLigacao) {
+                        return;
+                    }
+
+                    _this.crudSvc.SetStatusLigacao(pOperador, pStatus, pCAMINHO_BANCO).then(function (dados) {
+                        if (dados == 2 || dados == 1) {
+
+                            _this.crudSvc.GetDate().then(function (pdata) {
+                                if (pdata) {
+                                    _this.ProximaLigacao.DadosLigacao.DATA_INICIO = pdata;
+                                };
+                            });
+
+                        };
+                    });
+                }
+
+                this.ProcessarStatus = function (pNovoStatus, psStateCodLigacao) {
+                    debugger;
+                    var statusAnt = _this.StatusLigacao;
+                    if (!_this.TestarStatusEmConversacao(statusAnt) && _this.TestarStatusEmConversacao(pNovoStatus)) {
+                        _this.timestampLigacao = new Date(input.year, input.month, input.day,
+                            input.hours, input.minutes, input.seconds);
+                    }
+                    else {
+                        if (!_this.TestarStatusEmConversacao(pNovoStatus)) {
+                            _this.timestampLigacao = null;
+                            _this.tempoLigacao = '00:00:00';
+                        }
+                    }
+
+                    if (_this.TestarStatusRecebendoLigacao(pNovoStatus)) {
+                        if (!_this.RecebendoChamada) {
+                            if (psStateCodLigacao.match(/^[0-9]+$/) != null) {
+                                _this.GetDadosRecebendoLigacao(psStateCodLigacao);
+                                _this.NumeroRecebendoChamada = 'Recebendo Chamada de : ' + psStateCodLigacao;
+                            }
+                            else {
+                                _this.NumeroRecebendoChamada = 'Recebendo Chamada de : Numero Desconhecido';
+                            }
+
+                            _this.AbrirModalreceptivo();
+                            _this.RecebendoChamada = true;
+                        }
+
+                    }
+                    else {
+                        _this.RecebendoChamada = false;
+                    }
+
+                    _this.StatusLigacaoCalc = pNovoStatus;
+
+                    if (_this.StatusLigacaoCalc == 'Em conversacao...') {
+                        _this.StatusLigacaoCalc = 'Em Conversação...';
+                    }
+
+                    if (statusAnt != pNovoStatus) {
+                        _this.StatusLigacao = statusAnt;
+                        _this.SetStatusLigacao(_rootScope.currentUser.id,
+                            pNovoStatus, _rootScope.currentUser.CAMINHO_DATABASE);
+                    }
+                }
+
+                this.updateUIJsSIP = function (){
+                    if(_this.TestarUtilizaJsSIP()) {
+                        var sStatus = 'Disponivel';
+                        // $('#errorMessage').hide();
+                        // $('#wrapper').show();
+                        if(_this.SessionJsSIP){
+                            if(_this.SessionJsSIP.isInProgress()){
+                                if(_this.SessionJsSIP.direction === 'incoming'){
+                                    // $('#incomingCallNumber').html(_this.SessionJsSIP.remote_identity.uri);
+                                    // $('#incomingCall').show();
+                                    // $('#callControl').hide()  
+                                    // $('#incomingCall').show();
+                                    sStatus = 'Recebendo Ligação...';
+                                }else{
+                                    // $('#callInfoText').html('Ringing...');
+                                    // $('#callInfoNumber').html(_this.SessionJsSIP.remote_identity.uri.user);
+                                    // $('#callStatus').show(); 
+                                    sStatus = 'Discando...';                  
+                                }
+                                
+                            }else if(_this.SessionJsSIP.isEstablished()){
+                                // $('#callStatus').show();
+                                // $('#incomingCall').hide();
+                                // $('#callInfoText').html('In Call');
+                                // $('#callInfoNumber').html(_this.SessionJsSIP.remote_identity.uri.user);
+                                // $('#inCallButtons').show();
+                                _this.incomingCallAudio.pause();
+                                sStatus = 'Em Conversação...'; 
+                            }
+                            // $('#callControl').hide();
+                        }else{
+                            // $('#incomingCall').hide();
+                            // $('#callControl').show();
+                            // $('#callStatus').hide();
+                            // $('#inCallButtons').hide();
+                            _this.incomingCallAudio.pause();
+                        }
+                        //microphone mute icon
+                        if(_this.SessionJsSIP && _this.SessionJsSIP.isMuted().audio){
+                            // $('#muteIcon').addClass('fa-microphone-slash');
+                            // $('#muteIcon').removeClass('fa-microphone');
+                        }else{
+                            // $('#muteIcon').removeClass('fa-microphone-slash');
+                            // $('#muteIcon').addClass('fa-microphone');
+                        }
+
+                        _this.ProcessarStatus(sStatus, _this.RecebendoLigacaoUser);
+                    }else{
+                        // $('#wrapper').hide();
+                        // $('#errorMessage').show();
+                    }                    
+                }
+
+                this.updateUIJsSIP();
+
+                this.ExecutarLigacao = function (pDados) {
+
+                    if (_this.TestarUtilizaJsSIP()) {
+                        
+                        if (_this.RecebendoChamada) {
+                            _this.SessionJsSIP.answer(_this.callOptions);
+                        }
+                        else {
+                           _this.PhoneJsSIP.call(pDados.Finalizar.TELEFONE, _this.callOptions);
+                        }
+
+                        _this.updateUIJsSIP();
+                        return
+                    }
+
+                    if (_this.SipDemo()) {
+                        return
+                    }
+
+                    _this.crudSvc.Ligar(vDados);
                 }
 
                 this.LigarTeclado = function () {
                     if ( (_this.TelefoneTeclado) || (_this.RecebendoChamada)) {
-                        var vDados = {};
-                        if (_this.SipDemo()) {
-                            return
-                        }
+                        var vDados = {};                        
                         vDados.Finalizar = {};
                         vDados.Finalizar.TELEFONE = _this.TelefoneTeclado;
                         vDados.CodigoLigacao = _rootScope.currentUser.id;
                         vDados.NomeOperador = _rootScope.currentUser.LOGIN;
-                        _this.crudSvc.Ligar(vDados);
+                        _this.ExecutarLigacao(vDados);
                     }
                 }
 
@@ -154,22 +446,47 @@ var App;
                     if (_this.TelefoneTeclado) {
                         var vDados = {};
                         vDados.FONE = _this.TelefoneTeclado;
-                        _this.crudSvc.Transferir(vDados);
+
+                        if (_this.TestarUtilizaJsSIP()) {
+
+                        }
+                        else {
+                            _this.crudSvc.Transferir(vDados);
+                        }
                     }
                 }
+                
+                this.EnviarDTMFJsSIP = (tones) => {
+
+                    if (!_this.SessionJsSIP) return;
+
+                    var connection = _this.SessionJsSIP.connection;
+
+                    if (!connection.getSenders()) return;
+              
+                    const dtmfSender = connection.getSenders()[0].dtmf;
+              
+                    dtmfSender.insertDTMF(String(tones));
+                };
 
                 this.EnviarDTMF = function (pNro) {
                     if (pNro) {
-                        var vDados = {};
-                        vDados.FONE = pNro;
-                        _this.crudSvc.EnviarDTMF(vDados);
+                        if (_this.TestarUtilizaJsSIP()) {
+                            if (_this.PhoneJsSIP) {                                
+                                this.EnviarDTMFJsSIP(pNro)
+                            };
+                        }
+                        else {
+                            var vDados = {};
+                            vDados.FONE = pNro;
+                            _this.crudSvc.EnviarDTMF(vDados);
+                        }
                     }
                 }
                 this.BuscaDadosCampanhas = function () {
                     _this.crudSvc.BuscaCampanhas( 
                         _rootScope.currentUser.CAMINHO_DATABASE).then(function (dados) {
-                            _this.ListaCampanhas = dados;
-                            debugger
+                            _this.ListaCampanhas = dados;                            
                         });
                           
                 }
@@ -219,7 +536,6 @@ var App;
                                 _this.EnviarEmail = {};
                                 _this.EnviarEmail.Anexos = {};
 
-                                //debugger;
                                 _this.ProximaLigacao.DadosLigacao.CODIGOENTRADA = _rootScope.currentUser.CODIGOENTRADA;
 
                                 _this.timestampLigacaoTotal = new Date(_this.ProximaLigacao.DadosLigacao.TempoTotal.Ano,
@@ -361,6 +677,10 @@ var App;
                     return true;
                 }
 
+                this.FinalizarLigacaoJsSIP = function () {
+                    if (this.SessionJsSIP) {this.SessionJsSIP.terminate()};
+                };
+
                 this.FinalizarLigacao = function () {
 
                     if (!this.PodeFinalizar()) {
@@ -393,16 +713,15 @@ var App;
                         }
 
                         var vDados = angular.copy(this.ProximaLigacao);
-                        this.crudSvc.FinalizarLigacao(vDados, _this.SipDemo()).then(function (dados) {
-                            // _this.ProximaLigacao = dados;
-                            // _this.SelectCompra = 0; 
-                            
-
-                            if (!_this.SipDemo()){
-                                _this.RenameRecordFile(dados.id) ; }
-                           
+                        this.crudSvc.FinalizarLigacao(vDados, _this).then(function (dados) {                                                                                   
                             _this.OperacaoFinalizada = 0;
+
                             if (dados) {
+
+                                if (!_this.SipDemo()) {
+                                    _this.RenameRecordFile(dados.id) ; 
+                                }
+
                                 _this.FecharFinalizar();
 
                                 if (_this.PausarLigacoes) {
@@ -447,7 +766,7 @@ var App;
                         this.crudSvc.SetPhoneMute('N');  
                     }
                  //   
-                }
+                }                
                 
                 this.FinalizarLigacaoRecebida = function () {
                    
@@ -493,13 +812,14 @@ var App;
                         this.DadosRecebendoLigacao.DadosLigacao.ATIVO_RECEP = 'RECEP';
                         var vDados = angular.copy(this.DadosRecebendoLigacao);
                         
-                        this.crudSvc.FinalizarLigacao(vDados, _this.SipDemo()).then(function (dados) {
-                            if (!_this.SipDemo()){
-                                 _this.RenameRecordFile(dados.id) ;
-                            }
+                        this.crudSvc.FinalizarLigacao(vDados, _this).then(function (dados) {
                              
                             _this.OperacaoFinalizada = 0;
                             if (dados) {
+                                if (!_this.SipDemo()){
+                                    _this.RenameRecordFile(dados.id) ;
+                                }
+
                                 _this.modalReceptivo.close(); 
 
                                 if (_this.PausarLigacoes) {
@@ -530,21 +850,20 @@ var App;
                 this.LiberarLigacao = function () {
                     if (this.ProximaLigacao) {
                         this.TempoAguardeLigacao = -1;
-                        this.crudSvc.Desligar().then((dados) => {
-                          // alert(_this.ProximaLigacao.id); 
-                          if (_this.RecebendoChamada) {
-                              if (_this.DadosRecebendoLigacao.id) {
-                                _this.RenameRecordFile(_this.DadosRecebendoLigacao.id) ;
-                              }
-                              else {
-                                _this.RenameRecordFile(0) ;
-                              }                             
-                            }
-                            else {
-                                _this.RenameRecordFile(_this.ProximaLigacao.id) ;
-                            } 
-                        
-                        });
+
+                        if (_this.TestarUtilizaJsSIP()) {
+                            _this.FinalizarLigacaoJsSIP(); 
+                        }
+                        else {
+                            this.crudSvc.Desligar().then((dados) => {
+                                if (_this.RecebendoChamada) {
+                                    if (_this.DadosRecebendoLigacao.id) {_this.RenameRecordFile(_this.DadosRecebendoLigacao.id)}
+                                    else {_this.RenameRecordFile(0)}
+                                }
+                                else {_this.RenameRecordFile(_this.ProximaLigacao.id)}
+                            });
+                        };
+
                         //
                         //this.stopTimer();
                         // this.crudSvc.LiberarLigacao($rootScope.currentUser.id,
@@ -574,15 +893,28 @@ var App;
                     alert(_this.CPF_CNPJ)
 
                 }
+
                 this.unRegister = function () {
-                        debugger;
+
+                    if (_this.TestarUtilizaJsSIP() && _this.PhoneJsSIP) {
+                        _this.PhoneJsSIP.stop();
+                        _this.PhoneJsSIP.unregister();
+                        _this.PhoneJsSIP = null;
+                        return
+                    }
+
                     this.crudSvc.unRegister().then(function (dados) {
-                        debugger;
-                           console.log(dados)   ;
-                   
-                 })}
+                        console.log(dados);
+                    })
+                }
+
                 this.GetStateLigacao = function () {
-                    console.log(_rootScope.currentUser.Registrar)
+
+                    if (_this.TestarUtilizaJsSIP() || _this.SipDemo()) {
+                        return true  
+                    }
+
+                    // console.log(_rootScope.currentUser.Registrar)
                     if (_rootScope.currentUser.Registrar.SIP_MODO == 'DEMO') {
                         return true
                     }
@@ -592,73 +924,37 @@ var App;
 
                     _this.ExectandoGetStateLigacao = true;
                     this.ExecutarState();                                        
-                }
-
-                this.TestarStatusEmConversacao = function (value) {
-                    var status = value.substring(3, 11);
-                    status = status.toLowerCase();
-                    return status == 'conversa';
-                }
+                }                               
 
                 this.ExecutarState = function () {
                     this.crudSvc.State().then(function (dados) {
-                        var statusAnt = _this.StatusLigacao;						
+                        var sNovoStatus = _this.StatusLigacao;
+                        var sStateCodLigacao = '';
+                        
+                        if (dados) {                            
+
+                            if (!dados.StateDescricao){
+                                dados = JSON.parse(dados);
+                                sStateCodLigacao = obj.StateCod;
+                            }
+
+                            _this.crudSvc.StateToDesc(obj.StateDescricao, _rootScope.currentUser.CAMINHO_DATABASE).then(function (desc_sip) {
+                                _this.StatusLigacao = desc_sip;
+                            });
+                        }
 
                         if (dados) {
-                            _this.StatusLigacao = dados.StateDescricao;
+                            sNovoStatus = dados.StateDescricao;
                         }
                         else {
-						   _this.StatusLigacao = "";
+                            sNovoStatus = "";
 						} 							
 						
-						if (!_this.StatusLigacao || (_this.StatusLigacao == "")) {
-						   dados = JSON.parse(dados);
-						   _this.StatusLigacao = dados.StateDescricao;
+						if (!sNovoStatus || (sNovoStatus == "")) {
+						   sNovoStatus = dados.StateDescricao;
 						}
 
-                        if (!_this.TestarStatusEmConversacao(statusAnt) && _this.TestarStatusEmConversacao(_this.StatusLigacao)) {
-                            timestampLigacao = new Date(input.year, input.month, input.day,
-                                input.hours, input.minutes, input.seconds);
-                        }
-                        else {
-                            if (!_this.TestarStatusEmConversacao(_this.StatusLigacao)) {
-                                timestampLigacao = null;
-                                _this.tempoLigacao = '00:00:00';
-                            }
-                        }
-						
-						if (_this.StatusLigacao == 'Recebendo ligaçao...') {
-							if (!_this.RecebendoChamada) {
-                                if (obj.StateCod.match(/^[0-9]+$/) != null) {
-                                 //   _this.DadosRecebendoLigacao(obj.StateCod);
-                                 _this.GetDadosRecebendoLigacao(obj.StateCod); 
-                                 _this.NumeroRecebendoChamada = 'Recebendo Chamada de : ' + obj.StateCod;
-                                }   
-                                else
-                                {
-                                   _this.NumeroRecebendoChamada = 'Recebendo Chamada de : Numero Desconhecido';
-                                } 
-                                                          
-                                _this.AbrirModalreceptivo();
-                                _this.RecebendoChamada = true;
-                            }
-							
-                        }
-                        else
-                        {
-                            _this.RecebendoChamada = false;
-                        }
-
-                        _this.StatusLigacaoCalc = _this.StatusLigacao;
-
-                        if (_this.StatusLigacaoCalc == 'Em conversacao...') {
-                            _this.StatusLigacaoCalc = 'Em Conversação...';
-                        }
-
-                        if (statusAnt != _this.StatusLigacao) {
-                            _this.SetStatusLigacao(_rootScope.currentUser.id,
-                                _this.StatusLigacao, _rootScope.currentUser.CAMINHO_DATABASE);
-                        }
+                        _this.ProcessarStatus(sNovoStatus, sStateCodLigacao);                        
 
                         _this.ExectandoGetStateLigacao = false;
                     }).catch(function (data) {
@@ -679,42 +975,7 @@ var App;
                     _this.AbrirModalreceptivo();
                     _this.RecebendoChamada = true;
                 }
-
-                this.SetStatusLigacao = function (pOperador, pStatus, pCAMINHO_BANCO) {
-
-                    if (!pOperador) {
-                        return;
-                    }
-
-                    if (!pStatus) {
-                        return;
-                    }
-
-                    if (!pCAMINHO_BANCO) {
-                        return;
-                    }
-
-                    if (!_this.ProximaLigacao) {
-                        return;
-                    }
-
-                    if (!_this.ProximaLigacao.DadosLigacao) {
-                        return;
-                    }
-
-                    _this.crudSvc.SetStatusLigacao(pOperador, pStatus, pCAMINHO_BANCO).then(function (dados) {
-                        if (dados == 2 || dados == 1) {
-
-                            _this.crudSvc.GetDate().then(function (pdata) {
-                                if (pdata) {
-                                    _this.ProximaLigacao.DadosLigacao.DATA_INICIO = pdata;
-                                };
-                            });
-
-                        };
-                    });
-
-                }
+                
                 this.PausarSIP = function (){
                     this.crudSvc.PausarSIP();
                 }
@@ -1111,20 +1372,18 @@ var App;
                         _this.TempoAguardeLigacao = -1;
                         _this.toaster.clear();
 
-                        if (_this.ProximaLigacao && _this.ProximaLigacao.DadosLigacao && !_this.SipDemo() ) {
-                            _this.crudSvc.Ligar(_this.ProximaLigacao.DadosLigacao);
+                        if (_this.ProximaLigacao && _this.ProximaLigacao.DadosLigacao) {
+                            _this.ExecutarLigacao(_this.ProximaLigacao.DadosLigacao);
                         }
                     }
-                    if (!_this.SipDemo()) {
-                        _this.GetStateLigacao()
-                  }
-                   
+
+                    _this.GetStateLigacao();                                    
 
                     _this.calcTempoTotal();
 
                     _this.CalcTempoPausa();
 
-                    if (timestampLigacao) {
+                    if (_this.timestampLigacao) {
                         _this.calcTempoLigacao();
                         _this.calcTempoTotalLigacoes();
                     }
@@ -1151,26 +1410,25 @@ var App;
                 }
 
                 this.calcTempoLigacao = function () {
-                    timestampLigacao = new Date(timestampLigacao.getTime() + 1 * 1000);
+                    _this.timestampLigacao = new Date(_this.timestampLigacao.getTime() + 1 * 1000);
 
-                    if (timestampLigacao.getHours().toString().length == 1)
-                        _this.tempoLigacao = '0' + timestampLigacao.getHours().toString()
+                    if (_this.timestampLigacao.getHours().toString().length == 1)
+                        _this.tempoLigacao = '0' + _this.timestampLigacao.getHours().toString()
                     else
-                        _this.tempoLigacao = timestampLigacao.getHours().toString();
+                        _this.tempoLigacao = _this.timestampLigacao.getHours().toString();
 
-                    if (timestampLigacao.getMinutes().toString().length == 1)
-                        _this.tempoLigacao = _this.tempoLigacao + ':0' + timestampLigacao.getMinutes().toString()
+                    if (_this.timestampLigacao.getMinutes().toString().length == 1)
+                        _this.tempoLigacao = _this.tempoLigacao + ':0' + _this.timestampLigacao.getMinutes().toString()
                     else
-                        _this.tempoLigacao = _this.tempoLigacao + ':' + timestampLigacao.getMinutes().toString();
+                        _this.tempoLigacao = _this.tempoLigacao + ':' + _this.timestampLigacao.getMinutes().toString();
 
-                    if (timestampLigacao.getSeconds().toString().length == 1)
-                        _this.tempoLigacao = _this.tempoLigacao + ':0' + timestampLigacao.getSeconds().toString()
+                    if (_this.timestampLigacao.getSeconds().toString().length == 1)
+                        _this.tempoLigacao = _this.tempoLigacao + ':0' + _this.timestampLigacao.getSeconds().toString()
                     else
-                        _this.tempoLigacao = _this.tempoLigacao + ':' + timestampLigacao.getSeconds().toString();
+                        _this.tempoLigacao = _this.tempoLigacao + ':' + _this.timestampLigacao.getSeconds().toString();
                 }
 
-                this.calcTempoTotalLigacoes = function () {
-                    // debugger;
+                this.calcTempoTotalLigacoes = function () {                    
                     var timestamptot = new Date(_this.timestampLigacaoTotal.getTime() + 1 * 1000);
                     _this.timestampLigacaoTotal = timestamptot;
 
