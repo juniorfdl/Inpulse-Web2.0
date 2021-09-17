@@ -1179,11 +1179,10 @@ begin
 
   Conectar(pBaseDados);
   try
-
     vListCidades := TObjectList<TCidades>.Create;
     try
-      vListCidades := TContainerObjectSet<TObjectList<TCidades>>.Create(FConnection)
-        .Find(' UF = '+QuotedStr(pUF));
+      vListCidades := TContainerObjectSet<TCidades>.Create(FConnection)
+        .FindWhere(' UF = '+QuotedStr(pUF));
 
       Result := TInfotecUtils.ObjectToJsonArray<TCidades>(vListCidades);
     finally
@@ -1744,7 +1743,7 @@ begin
     end;
   end;
 
-	TFunctionsDiversos.ShowMessageDesenv('Result: 1' + Result);
+	TFunctionsDiversos.ShowMessageDesenv('Result: ' + Result);
 end;
 
 function TAtivo.NovaAgenda(const AValue: TJSONObject): String;

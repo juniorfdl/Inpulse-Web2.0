@@ -12,7 +12,7 @@ var App;
         var CrudAtivoCtrl = (function (_super) {
        
             __extends(CrudAtivoCtrl, _super);
-            function CrudAtivoCtrl($rootScope, api, CrudAtivoService, $q, $scope, $modal, security, SweetAlert) { 
+            function CrudAtivoCtrl($rootScope, api, CrudAtivoService, $q, $scope, $modal, security, SweetAlert, luarApp) { 
                 var _this = this;
                 this.SweetAlert = SweetAlert;
                 var _rootScope = $rootScope;
@@ -85,16 +85,18 @@ var App;
 
                 this.callOptions = {
                     mediaConstraints: {audio: true, video: false}
-                };
+                };                
 
-                this.SocketJsSIP = new JsSIP.WebSocketInterface('wss://demo-infinity.nativeip.com.br/ws'); 
+                if (luarApp.URLJSSIP) {
+                    this.SocketJsSIP = new JsSIP.WebSocketInterface('wss://' + luarApp.URLJSSIP + '/ws');
 
-                this.ConfigurationJsSIP = {
-                    sockets: [this.SocketJsSIP],
-                    'uri': _rootScope.currentUser.LoginSIP + '@demo-infinity.nativeip.com.br', 
-                    'password': _rootScope.currentUser.SenhaSIP, 
-                    'username': _rootScope.currentUser.LoginSIP,  
-                    'register': true
+                    this.ConfigurationJsSIP = {
+                        sockets: [this.SocketJsSIP],
+                        'uri': _rootScope.currentUser.LoginSIP + '@' + luarApp.URLJSSIP,
+                        'password': _rootScope.currentUser.SenhaSIP,
+                        'username': _rootScope.currentUser.LoginSIP,
+                        'register': true
+                    };
                 };
 
                 this.PhoneJsSIPJsSIP = null;
@@ -138,7 +140,7 @@ var App;
                 }
 
                 this.TestarUtilizaJsSIP = function () {
-                    return _this.ConfigurationJsSIP.username && _this.ConfigurationJsSIP.password;
+                    return _this.ConfigurationJsSIP && _this.ConfigurationJsSIP.username && _this.ConfigurationJsSIP.password;
                 }
 
                 this.RegistrarJsSIP = function () {
