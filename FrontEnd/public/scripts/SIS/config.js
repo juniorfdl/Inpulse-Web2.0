@@ -7,7 +7,7 @@ var App;
 	    WEBAPI: 'http://localhost:9000/datasnap/rest',
         ITENS_POR_PAGINA: '15',
         APISIP: 'http://localhost:4321/datasnap/rest/TMetodos',
-        URLJSSIP: 'ramal.brinox.com.br'
+        URLJSSIP: 'infinity.nativeip.com.br'
     });
 
 })(App || (App = {}));

@@ -16,6 +16,7 @@ var App;
                 var _this = this;
                 this.SweetAlert = SweetAlert;
                 var _rootScope = $rootScope;
+				this.luarApp = luarApp;
                 
                 var _scope = $scope;
                 _this.timestampLigacao = null;
@@ -87,12 +88,12 @@ var App;
                     mediaConstraints: {audio: true, video: false}
                 };                
 
-                if (luarApp.URLJSSIP) {
-                    this.SocketJsSIP = new JsSIP.WebSocketInterface('wss://' + luarApp.URLJSSIP + '/ws');
+                if (_this.luarApp.URLJSSIP) {
+                    this.SocketJsSIP = new JsSIP.WebSocketInterface('wss://' + _this.luarApp.URLJSSIP + '/ws');
 
                     this.ConfigurationJsSIP = {
                         sockets: [this.SocketJsSIP],
-                        'uri': _rootScope.currentUser.LoginSIP + '@' + luarApp.URLJSSIP,
+                        'uri': _rootScope.currentUser.LoginSIP + '@' + _this.luarApp.URLJSSIP,
                         'password': _rootScope.currentUser.SenhaSIP,
                         'username': _rootScope.currentUser.LoginSIP,
                         'register': true
