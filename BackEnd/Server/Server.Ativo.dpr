@@ -18,6 +18,10 @@ uses
   System.SysUtils,
   Web.WebReq,
   IdHTTPWebBrokerBridge,
+  IdSSLOpenSSL,
+  System.IOUtils,
+  Web.HTTPApp,
+  Web.WebBroker,
   Server.Base.Crud in 'Base\Server.Base.Crud.pas' {ServerBaseCrud: TDSServerModule},
   ServerContainerUnit1 in 'ServerContainerUnit1.pas' {ServerContainer1: TDataModule},
   WebModuleUnit1 in 'WebModuleUnit1.pas' {WebModule1: TWebModule},
@@ -61,12 +65,37 @@ uses
   Server.Models.Cadastros.Unidades in 'Models\Cadastros\Server.Models.Cadastros.Unidades.pas',
   Infotec.Utils in 'Utils\Infotec.Utils.pas';
 
+type
+  TGetSSLPassword = class
+    procedure OnGetSSLPassword(var APassword: {$IF CompilerVersion < 27}AnsiString{$ELSE}string{$ENDIF});
+  end;
+
+  TSSLHelper = class
+     procedure QuerySSLPort(APort: Word; var VUseSSL: boolean);
+  end;
+
+procedure TGetSSLPassword.OnGetSSLPassword(var APassword: {$IF CompilerVersion < 27}AnsiString{$ELSE}string{$ENDIF});
+begin
+  APassword := '';
+end;
+
+procedure TSSLHelper.QuerySSLPort(APort: Word; var VUseSSL: boolean);
+begin
+  VUseSSL := TUtils.bHTTPS;
+end;
+
 var
   oServer: TIdHTTPWebBrokerBridge;
   sCaminhoBase: string;
   nAPP_PORT: Integer;
   sHOST: string;
   CloseApp: Boolean;
+  bHTTPS: Boolean;
+  shttp: string;
+
+  LGetSSLPassword: TGetSSLPassword;
+  LIOHandleSSL: TIdServerIOHandlerSSLOpenSSL;
+  LSSLHelper: TSSLHelper;
 
   {$IFDEF MSWINDOWS}
   function HandleSignals(dwCtrlType: DWORD): BOOL; stdcall;
@@ -88,6 +117,11 @@ var
   end;
   {$ENDIF}
 
+  procedure QuerySSLPort(APort: Word; var VUseSSL: boolean);
+  begin
+    VUseSSL := TUtils.GetHttps;
+  end;
+
 begin
   try
     Writeln('Iniciando Servidor . . .');
@@ -97,24 +131,46 @@ begin
     sCaminhoBase := TUtils.GetCaminhoBase;
     nAPP_PORT := TUtils.GetPort;
     sHOST := TUtils.GetHost;
+    bHTTPS := TUtils.GetHttps;
+    shttp := 'HTTP';
 
+    LGetSSLPassword := nil;
+    LSSLHelper := nil;
     oServer := TIdHTTPWebBrokerBridge.Create(nil);
     oServer.Bindings.Clear;
+
+    if bHTTPS then
+    begin
+      LGetSSLPassword := TGetSSLPassword.Create;
+      LIOHandleSSL := TIdServerIOHandlerSSLOpenSSL.Create(oServer);
+      LIOHandleSSL.SSLOptions.CertFile := 'certificate.pem';
+      LIOHandleSSL.SSLOptions.RootCertFile := '';
+      LIOHandleSSL.SSLOptions.KeyFile := 'key.pem';
+      LIOHandleSSL.OnGetPassword := LGetSSLPassword.OnGetSSLPassword;
+      oServer.IOHandler := LIOHandleSSL;
+      oServer.OnQuerySSLPort := LSSLHelper.QuerySSLPort;
+      Writeln('HTTPS Ativo');
+      shttp := 'HTTPS';
+    end;
+
     oServer.DefaultPort := nAPP_PORT;
     oServer.Active := True;
 
     Writeln('Base: ' + sCaminhoBase);
     Writeln('APP: ' + ExtractFileName(ParamStr(0)));
-    Writeln('Running on: http://' + sHOST + ':' + nAPP_PORT.ToString);
+
+    Writeln('Running on: '+sHttp+'://' + sHOST + ':' + nAPP_PORT.ToString);
     Readln(sCaminhoBase);
 
     CloseApp := False;
 
     while (not CloseApp) do
       Sleep(1000);
-
   except
     on E: Exception do
+    begin
       Writeln(E.ClassName, ': ', E.Message);
+      Readln(sCaminhoBase);
+    end;
   end;
 end.

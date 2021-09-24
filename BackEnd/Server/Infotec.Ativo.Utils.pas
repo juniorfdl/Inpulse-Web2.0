@@ -10,6 +10,7 @@ type
   TUtils = class
     class var oAllParams: TDictionary<string, string>;
     class var oTabelaParametros: TDictionary<string, string>;
+    class var bHTTPS: boolean;
     class function GetCaminhoBase: string;
     class function GetHost: string;
     class function GetPort: Integer;
@@ -23,6 +24,7 @@ type
     class function GetValueJson(poJson: TJSONValue; psPath: string): string;
     class function GetFolderTemp: string;
     class procedure SalvarBase64(const psfileBase64, psfilename: string);
+    class function GetHttps: Boolean;
   end;
 
 implementation
@@ -38,6 +40,7 @@ const
   sDATABASE = 'database';
   nPORT_DEFAUL = 9000;
   sHOST_DEFAULT = '0.0.0.0';
+  sAPPHTTPS = 'https';
 
 { TUtils }
 
@@ -94,6 +97,21 @@ begin
 
   if (Result.IsEmpty) then
     Result := sHOST_DEFAULT;
+end;
+
+class function TUtils.GetHttps: Boolean;
+var
+  sHTTPS: string;
+begin
+  Result := GetEnvironmentVariable('HTTPS') = 'S';
+
+  if (not Result) then
+  begin
+    oAllParams.TryGetValue(sAPPHTTPS, sHTTPS);
+    Result := Trim(sHTTPS) = 'S';
+  end;
+
+  Self.bHTTPS := Result;
 end;
 
 class function TUtils.GetPort: Integer;

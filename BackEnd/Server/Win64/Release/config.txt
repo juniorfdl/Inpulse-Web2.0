@@ -1,3 +1,4 @@
 port:9000 
-log:logfull 
+log:logfull
+https:S 
 database:Server=localhost;Port=3306;Database=crm_sgr;User_Name=root;Password=root;DriverID=MySQL;
