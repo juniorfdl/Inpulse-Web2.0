@@ -451,11 +451,10 @@ var App;
                         vDados.FONE = _this.TelefoneTeclado;
 
                         if (_this.TestarUtilizaJsSIP()) {
+                            return;
+                        }
 
-                        }
-                        else {
-                            _this.crudSvc.Transferir(vDados);
-                        }
+                        _this.crudSvc.Transferir(vDados);                        
                     }
                 }
                 
@@ -493,41 +492,14 @@ var App;
                         });
                           
                 }
-                this.GetDadosRecebendoLigacao = function (pFone) {
-            
+
+                this.GetDadosRecebendoLigacao = function (pFone) {            
                     _this.crudSvc.GetDadosRecebendoLigacao(pFone,
                         _rootScope.currentUser.CAMINHO_DATABASE,_rootScope.currentUser.id).then(function (dados) {
-                          
-                                
                                 _this.DadosRecebendoLigacao = dados;
-                               /* _this.DadosRecebendoLigacao.id = dados.id; 
-                                _this.DadosRecebendoLigacao.FANTASIA = dados.FANTASIA;
-                                _this.DadosRecebendoLigacao.NOME_CONTATO = dados.NOME_CONTATO; 
-                                _this.DadosRecebendoLigacao.CPF_CNPJ = dados.CPF_CNPJ;
-                                _this.DadosRecebendoLigacao.IE_RG = dados.IE_RG;
-                                _this.DadosRecebendoLigacao.PESSOA = dados.PESSOA;
-                                _this.DadosRecebendoLigacao.COD_ERP = dados.COD_ERP;
-                                _this.DadosRecebendoLigacao.OBS_ADMIN = dados.OBS_ADMIN;
-                                _this.DadosRecebendoLigacao.OBS_OPERADOR = dados.OBS_OPERADOR;
-                                _this.DadosRecebendoLigacao.DadosLigacao = dados.DadosLigacao;
-                                _this.DadosRecebendoLigacao.DadosLigacao.Finalizar = dados.DadosLigacao.Finalizar;
-
-                                _this.DadosRecebendoLigacao.AREA1 = dados.AREA1;
-                                _this.DadosRecebendoLigacao.AREA2 = dados.AREA2;
-                                _this.DadosRecebendoLigacao.AREA3 = dados.AREA3;
-
-                                _this.DadosRecebendoLigacao.FONE1 = dados.FONE1;
-                                _this.DadosRecebendoLigacao.FONE2 = dados.FONE2;
-                                _this.DadosRecebendoLigacao.FONE3 = dados.FONE3;
-
-                                _this.DadosRecebendoLigacao.DESC_FONE1 = dados.DESC_FONE1;
-                                _this.DadosRecebendoLigacao.DESC_FONE2 = dados.DESC_FONE2;
-                                _this.DadosRecebendoLigacao.DESC_FONE3 = dados.DESC_FONE3;*/
-
-                            
-
                         });
                 }
+
                 this.GetProximaLigacao = function () {
 
                     _this.tempoEmPausa = 0;
@@ -644,6 +616,7 @@ var App;
                         || this.ProximaLigacao.DadosLigacao.Finalizar.ACAO == '7'
                         || this.ProximaLigacao.DadosLigacao.Finalizar.ACAO == '8';
                 }
+
                 this.VisualizarDataReceptivo = function () {
                     if (_this.DadosRecebendoLigacao.DadosLigacao) {
                         return _this.DadosRecebendoLigacao.DadosLigacao.Finalizar.ACAO == '2'
@@ -651,10 +624,12 @@ var App;
                         || _this.DadosRecebendoLigacao.DadosLigacao.Finalizar.ACAO == '8';
                     }                    
                 }
+
                 this.VisualizarEmail = function () {
                     return this.ProximaLigacao.DadosLigacao.Finalizar.ACAO == '14'
                         || this.ProximaLigacao.DadosLigacao.Finalizar.ACAO == '7';
                 }
+                
                 this.VisualizarEmailReceptivo = function () {
                     if (_this.DadosRecebendoLigacao.DadosLigacao) {
                     return _this.DadosRecebendoLigacao.DadosLigacao.Finalizar.ACAO == '14'
@@ -739,36 +714,69 @@ var App;
                         _this.toaster.error("Atenção", "Não existe ligação ativa!");
                     }
                 }
+
                 this.SetMicValue = function() {
+                    if (_this.TestarUtilizaJsSIP()) return;                    
+
                     if (_this.SipDemo()) {
                         return
                     }
                     this.crudSvc.SetMicVolume(this.micvolume);  
                 }
+
                 this.SetPhoneValue = function() {
+
+                    if (_this.TestarUtilizaJsSIP()) {
+                        return;
+                    }
+
                     if (_this.SipDemo()) {
                         return
                     }
                     this.crudSvc.SetPhoneVolume(this.phonevolume);  
                 }
 
-                this.SetMicMute = function() {
-                        if (this.micmute) {
-                            this.crudSvc.SetMicMute('S');
+                this.SetMicMuteJsSIP = function () {
+                    if (!_this.TestarUtilizaJsSIP()) {
+                        return false;
+                    }
+
+                    if (_this.SessionJsSIP) {
+                        if (_this.SessionJsSIP.isMuted().audio) {
+                            _this.SessionJsSIP.unmute({ audio: true });
+                        } else {
+                            _this.SessionJsSIP.mute({ audio: true });
                         }
-                        else {
-                            this.crudSvc.SetMicMute('N');
-                        }
-                      
+                    }
+
+                    return true;
                 }
+
+                this.SetMicMute = function () {
+
+                    if (_this.SetMicMuteJsSIP()){
+                        return;
+                    }                    
+
+                    if (this.micmute) {
+                        this.crudSvc.SetMicMute('S');
+                    }
+                    else {
+                        this.crudSvc.SetMicMute('N');
+                    }
+                }
+                
                 this.SetPhoneMute = function() {
+                    if (_this.SetMicMuteJsSIP()){
+                        return;
+                    }                    
+
                     if (this.phonemute){
                         this.crudSvc.SetPhoneMute('S');  
                     }
                     else{
                         this.crudSvc.SetPhoneMute('N');  
                     }
-                 //   
                 }                
                 
                 this.FinalizarLigacaoRecebida = function () {
@@ -837,19 +845,26 @@ var App;
                         _this.toaster.error("Atenção", "Não existe ligação ativa!");
                     }
                 }
+
                 this.RenameRecordFile = function(id) {
+
+                    if (_this.TestarUtilizaJsSIP()) return;
+
                     this.crudSvc.RenameRecord(id);
                 }
+
                 this.LigacaoPerdida = function () {
                     this.TempoAguardeLigacao = -1;
-                    if (!_this.SipDemo()){
-                      this.crudSvc.Desligar().then((dados) => {
-                        _this.RenameRecordFile(-2);
-                    });   
+
+                    if ((!_this.SipDemo()) && (!_this.TestarUtilizaJsSIP())) {
+                        this.crudSvc.Desligar().then((dados) => {
+                            _this.RenameRecordFile(-2);
+                        });
                     }
                    
                     _this.modalReceptivo.close();
                 }
+
                 this.LiberarLigacao = function () {
                     if (this.ProximaLigacao) {
                         this.TempoAguardeLigacao = -1;
@@ -866,13 +881,6 @@ var App;
                                 else {_this.RenameRecordFile(_this.ProximaLigacao.id)}
                             });
                         };
-
-                        //
-                        //this.stopTimer();
-                        // this.crudSvc.LiberarLigacao($rootScope.currentUser.id,
-                        //     $rootScope.currentUser.CAMINHO_DATABASE).then(function (dados) {
-                        //         _this.LiberarOK = dados;
-                        //     });
                     }
                     else {
                         _this.toaster.error("Atenção", "Não existe ligação ativa!");
@@ -886,6 +894,7 @@ var App;
                         _this.BuscaDadosCampanhas();
                     });
                 }
+
                 this.CalcDoc = function () {
                     if (document.getElementById("CPF_CNPJ_INPUT").value.length < 12) {
                         _this.CPF_CNPJ = 'cpf' 
@@ -899,10 +908,12 @@ var App;
 
                 this.unRegister = function () {
 
-                    if (_this.TestarUtilizaJsSIP() && _this.PhoneJsSIP) {
-                        _this.PhoneJsSIP.stop();
-                        _this.PhoneJsSIP.unregister();
-                        _this.PhoneJsSIP = null;
+                    if (_this.TestarUtilizaJsSIP()) {
+                        if (_this.PhoneJsSIP) {
+                            _this.PhoneJsSIP.stop();
+                            _this.PhoneJsSIP.unregister();
+                            _this.PhoneJsSIP = null;
+                        }
                         return
                     }
 
@@ -967,11 +978,8 @@ var App;
                 }
 
                 this.InserirClientes = function (){
-
-                    _this.PessoaSelecionada = -1;
-                    
+                    _this.PessoaSelecionada = -1;                    
                     _this.DadosRecebendoLigacao = {};
-
                 }
 
                 this.ChamarReceptivo = function (){
@@ -980,9 +988,13 @@ var App;
                 }
                 
                 this.PausarSIP = function (){
+                    if (_this.TestarUtilizaJsSIP()) return;                    
+
                     this.crudSvc.PausarSIP();
                 }
-                this.SairPausarSIP = function (){
+                this.SairPausarSIP = function (){                    
+                    if (_this.TestarUtilizaJsSIP()) return; 
+
                     this.crudSvc.SairPausarSIP();    
                 }
                 function ExecutaStart() {
@@ -992,9 +1004,6 @@ var App;
                     _this.ApenasConsulta = true;
                     _this.GetStart();
                     _this.Registrar();
-
-                    
-
                 }
 
                 this.ChangeMotivoPausa = function () {
@@ -1029,13 +1038,11 @@ var App;
                         }
                        
                         _this.DadosClienteCarregado = false;
-                        _this.fecharPesquisa();
-                    
+                        _this.fecharPesquisa();                    
                     });
-                 }
-                   
-                           
+                 }         
                 }
+
                 this.fecharPesquisa = function () {
                     this.modalPesquisaCLiente.close();
                 }
@@ -1130,9 +1137,10 @@ var App;
                 }
 
                 this.TransferirLigacao = function () {
+
+                    if (_this.TestarUtilizaJsSIP()) return; 
                    
-                    if (this.telefonetransferir){
-                        
+                    if (this.telefonetransferir){                        
                         var vDados = {};
                         vDados.FONE = this.telefonetransferir;
                         _this.crudSvc.Transferir(vDados);                       
@@ -1213,8 +1221,6 @@ var App;
                         controllerAs: 'Ctrl'
                     });
                 }
-				
-				
 
                 this.AddFoneCampanha = function (pAREA, pFONE, pDESC_FONE) {
 
@@ -1358,40 +1364,6 @@ var App;
                     _this.RecebendoChamada = false;
                     this.modalReceptivo.close();
                 };
-                setInterval(function () {
-                    var i = 0;
-                    var loop = setInterval(function(){                      
-                      if(i == 10){
-                         clearInterval(loop);
-                      }
-                      i++;
-                    }, 2000);
-                    if (_this.TempoAguardeLigacao > 0) {
-                        _this.toaster.info("Aguarde . . .", "Tempo para início da discagem: "
-                            + _this.TempoAguardeLigacao);
-                        _this.TempoAguardeLigacao = _this.TempoAguardeLigacao - 1;
-                    }
-                    else if (_this.TempoAguardeLigacao == 0) {
-                        _this.TempoAguardeLigacao = -1;
-                        _this.toaster.clear();
-
-                        if (_this.ProximaLigacao && _this.ProximaLigacao.DadosLigacao) {
-                            _this.ExecutarLigacao(_this.ProximaLigacao.DadosLigacao);
-                        }
-                    }
-
-                    _this.GetStateLigacao();                                    
-
-                    _this.calcTempoTotal();
-
-                    _this.CalcTempoPausa();
-
-                    if (_this.timestampLigacao) {
-                        _this.calcTempoLigacao();
-                        _this.calcTempoTotalLigacoes();
-                    }
-
-                }, Math.abs(1) * 1000);
 
                 this.calcTempoTotal = function () {
                     timestamp = new Date(timestamp.getTime() + 1 * 1000);
@@ -1618,18 +1590,8 @@ var App;
                         return false;
                     }
 
-                    // _this.ProximaLigacao.DadosLigacao.Finalizar.EVENDA = '';
-                    // _this.COMPRAS.CLIENTE = this.ProximaLigacao.id;      
                     _this.COMPRAS.DadosPropostasCliente = _this.DadosPropostasCliente;
-                    // _this.COMPRAS.DataBase = _rootScope.currentUser.CAMINHO_DATABASE; 
                     _this.FecharPropostasCliente();
-                    // _this.crudSvc.ConfirmarPropostasCliente(_this.COMPRAS).then(function (dados){
-
-                    //   if (dados){
-                    //     _this.FecharPropostasCliente();
-                    //     _this.FinalizarLigacao();
-                    //   };
-                    // });
                 }
 
                 this.AbrirModalPropostasCliente = function () {
@@ -1869,7 +1831,43 @@ var App;
                     console.log('unregister page'); 
                 });
 
-            }
+                setInterval(function () {
+                    var i = 0;
+                    var loop = setInterval(function(){                      
+                      if(i == 10){
+                         clearInterval(loop);
+                      }
+                      i++;
+                    }, 2000);
+                    
+                    if (_this.TempoAguardeLigacao > 0) {
+                        _this.toaster.info("Aguarde . . .", "Tempo para início da discagem: "
+                            + _this.TempoAguardeLigacao);
+                        _this.TempoAguardeLigacao = _this.TempoAguardeLigacao - 1;
+                    }
+                    else if (_this.TempoAguardeLigacao == 0) {
+                        _this.TempoAguardeLigacao = -1;
+                        _this.toaster.clear();
+    
+                        if (_this.ProximaLigacao && _this.ProximaLigacao.DadosLigacao) {
+                            _this.ExecutarLigacao(_this.ProximaLigacao.DadosLigacao);
+                        }
+                    }
+    
+                    _this.GetStateLigacao();                                    
+    
+                    _this.calcTempoTotal();
+    
+                    _this.CalcTempoPausa();
+    
+                    if (_this.timestampLigacao) {
+                        _this.calcTempoLigacao();
+                        _this.calcTempoTotalLigacoes();
+                    }
+    
+                }, Math.abs(1) * 1000);
+
+            }            
 
             CrudAtivoCtrl.prototype.crud = function () {
                 return "Ativo";
