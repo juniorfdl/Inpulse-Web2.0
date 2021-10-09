@@ -12,17 +12,18 @@ var App;
         var CrudAtivoCtrl = (function (_super) {
        
             __extends(CrudAtivoCtrl, _super);
-            function CrudAtivoCtrl($rootScope, api, CrudAtivoService, $q, $scope, $modal, security, SweetAlert, luarApp) { 
+            function CrudAtivoCtrl($rootScope, api, CrudAtivoService, $q, $scope, $modal, security, SweetAlert, luarApp, 
+                                   softphoneController, $window, $interval, $timeout) { 
                 var _this = this;
                 this.SweetAlert = SweetAlert;
                 var _rootScope = $rootScope;
-				this.luarApp = luarApp;
+				this.luarApp = luarApp;                               
                 
                 var _scope = $scope;
                 _this.timestampLigacao = null;
                 var tecladoVisivel = false;
-                var receptivoVisivel = false;              
-
+                var receptivoVisivel = false;  
+                
                 var input = {
                     year: 0,
                     month: 0,
@@ -76,32 +77,6 @@ var App;
 
                 this.MenuSelecionado = 'ENDEREÇO';
                 this.TempoAguardeLigacao = -1;
-                
-                this.incomingCallAudio = new window.Audio('https://code.bandwidth.com/media/incoming_alert.mp3');
-                this.incomingCallAudio.loop = true;
-                this.incomingCallAudio.crossOrigin="anonymous";
-                this.remoteAudio = new window.Audio();
-                this.remoteAudio.autoplay = true;
-                this.remoteAudio.crossOrigin="anonymous";
-
-                this.callOptions = {
-                    mediaConstraints: {audio: true, video: false}
-                };                
-
-                if (_this.luarApp.URLJSSIP) {
-                    this.SocketJsSIP = new JsSIP.WebSocketInterface('wss://' + _this.luarApp.URLJSSIP + '/ws');
-
-                    this.ConfigurationJsSIP = {
-                        sockets: [this.SocketJsSIP],
-                        'uri': _rootScope.currentUser.LoginSIP + '@' + _this.luarApp.URLJSSIP,
-                        'password': _rootScope.currentUser.SenhaSIP,
-                        'username': _rootScope.currentUser.LoginSIP,
-                        'register': true
-                    };
-                };
-
-                this.PhoneJsSIPJsSIP = null;
-                this.SessionJsSIP = null;
 
                 this.TempoAntesProximoLigacao = function () {
                     this.GetProximaLigacao();
@@ -141,93 +116,70 @@ var App;
                 }
 
                 this.TestarUtilizaJsSIP = function () {
-                    return _this.ConfigurationJsSIP && _this.ConfigurationJsSIP.username && _this.ConfigurationJsSIP.password;
+                    return _this.softphoneController.TestarUtilizaJsSIP();
                 }
 
+                this.updateUIJsSIP = function (){
+                    debugger;
+                    if(_this.TestarUtilizaJsSIP()) {
+                        var sStatus = 'Disponivel';
+                        // $('#errorMessage').hide();
+                        // $('#wrapper').show();
+                        if(_this.softphoneController.SessionJsSIP){
+                            if(_this.softphoneController.SessionJsSIP.isInProgress()){
+                                if(_this.softphoneController.SessionJsSIP.direction === 'incoming'){
+                                    // $('#incomingCallNumber').html(_this.SessionJsSIP.remote_identity.uri);
+                                    // $('#incomingCall').show();
+                                    // $('#callControl').hide()  
+                                    // $('#incomingCall').show();
+                                    sStatus = 'Recebendo Ligação...';
+                                }else{
+                                    // $('#callInfoText').html('Ringing...');
+                                    // $('#callInfoNumber').html(_this.SessionJsSIP.remote_identity.uri.user);
+                                    // $('#callStatus').show(); 
+                                    sStatus = 'Discando...';                  
+                                }
+                                
+                            }else if(_this.softphoneController.SessionJsSIP.isEstablished()){
+                                // $('#callStatus').show();
+                                // $('#incomingCall').hide();
+                                // $('#callInfoText').html('In Call');
+                                // $('#callInfoNumber').html(_this.SessionJsSIP.remote_identity.uri.user);
+                                // $('#inCallButtons').show();
+                                // _this.incomingCallAudio.pause();
+                                sStatus = 'Em Conversação...'; 
+                            }
+                            // $('#callControl').hide();
+                        }else{
+                            // $('#incomingCall').hide();
+                            // $('#callControl').show();
+                            // $('#callStatus').hide();
+                            // $('#inCallButtons').hide();
+                            // _this.incomingCallAudio.pause();
+                        }
+                        //microphone mute icon
+                        if(_this.softphoneController.SessionJsSIP && _this.softphoneController.SessionJsSIP.isMuted().audio){
+                            // $('#muteIcon').addClass('fa-microphone-slash');
+                            // $('#muteIcon').removeClass('fa-microphone');
+                        }else{
+                            // $('#muteIcon').removeClass('fa-microphone-slash');
+                            // $('#muteIcon').addClass('fa-microphone');
+                        }
+
+                        _this.ProcessarStatus(sStatus, _this.softphoneController.RecebendoLigacaoUser);
+                    }else{
+                        // $('#wrapper').hide();
+                        // $('#errorMessage').show();
+                    }                    
+                }
+
+                this.softphoneController = softphoneController($scope, $rootScope, $interval, $timeout, $window, luarApp, 
+                    _this.updateUIJsSIP);
+
                 this.RegistrarJsSIP = function () {
-
-                    if(_this.TestarUtilizaJsSIP()){
-                        debugger;
-                        JsSIP.debug.enable('JsSIP:*'); 
-                        _this.PhoneJsSIP = new JsSIP.UA(_this.ConfigurationJsSIP);
-
-                        _this.PhoneJsSIP.on("connecting", () => console.log("Trying to connect..."));
-                        _this.PhoneJsSIP.on("connected", () => console.log("Connected!"));
-
-                        _this.PhoneJsSIP.on('registrationFailed', function(ev){
-                            alert('Registering on SIP server failed with error: ' + ev.cause);
-                            _this.ConfigurationJsSIP.uri = null;
-                            _this.ConfigurationJsSIP.password = null;
-                            _this.updateUIJsSIP();
-                        });
-
-                        _this.PhoneJsSIP.on('newRTCSession',function(ev){
-                            var newSession = ev.session;
-
-                            if (ev.request && ev.request.from) {
-                              _this.RecebendoLigacaoName = ev.request.from.display_name;
-                              _this.RecebendoLigacaoUser = ev.request.from.uri.user;
-                            } 
-                            else {                                
-                              _this.RecebendoLigacaoName = '';
-                              _this.RecebendoLigacaoUser = '';
-                            }
-
-                            if(_this.SessionJsSIP){ // hangup any existing call
-                                _this.SessionJsSIP.terminate();
-                            }
-                            
-                            _this.SessionJsSIP = newSession;                            
-                            var completeSession = function(){
-                                _this.SessionJsSIP = null;
-                                _this.updateUIJsSIP();
-                            };
-
-                            _this.SessionJsSIP.on('ended', completeSession);
-                            _this.SessionJsSIP.on('failed', completeSession);
-                            _this.SessionJsSIP.on('accepted', _this.updateUIJsSIP);
-                            _this.SessionJsSIP.on('confirmed',function(){
-                                var localStream = _this.SessionJsSIP.connection.getLocalStreams()[0];
-                                var dtmfSender = _this.SessionJsSIP.connection.createDTMFSender(localStream.getAudioTracks()[0])
-                                _this.SessionJsSIP.sendDTMF = function (tone) {
-                                    dtmfSender.insertDTMF(tone);
-                                };
-                                _this.updateUIJsSIP();
-                            });
-
-                            _this.SessionJsSIP.on('peerconnection', (e) => {
-                              console.log('peerconnection', e);
-                              let logError = '';
-                              const peerconnection = e.peerconnection;
-                    
-                              peerconnection.onaddstream = function (e) {
-                                console.log('addstream', e);
-                                // set remote audio stream (to listen to remote audio)
-                                // remoteAudio is <audio> element on pag
-                                this.remoteAudio.srcObject = e.stream;
-                                this.remoteAudio.play();
-                              };
-                    
-                              var remoteStream = new MediaStream();
-                              console.log(peerconnection.getReceivers());
-                              peerconnection.getReceivers().forEach(function (receiver) {
-                                console.log(receiver);
-                                remoteStream.addTrack(receiver.track);
-                              });
-                            });
-                          
-                            if(_this.SessionJsSIP.direction === 'incoming'){
-                                _this.incomingCallAudio.play();
-                            } else {
-                              console.log('con', _this.SessionJsSIP.connection)
-                              _this.SessionJsSIP.connection.addEventListener('addstream', function(e){
-                                _this.incomingCallAudio.pause();
-                                _this.remoteAudio.srcObject = e.stream;
-                              });      
-                            }
-                            _this.updateUIJsSIP();
-                        });
-                        _this.PhoneJsSIP.start();
+                    debugger;
+                    if(_this.TestarUtilizaJsSIP()){                        
+                        _this.softphoneController.Registrar();
                     }
 
                     return _this.TestarUtilizaJsSIP();
@@ -356,72 +308,14 @@ var App;
                             pNovoStatus, _rootScope.currentUser.CAMINHO_DATABASE);
                     }
                 }
-
-                this.updateUIJsSIP = function (){
-                    if(_this.TestarUtilizaJsSIP()) {
-                        var sStatus = 'Disponivel';
-                        // $('#errorMessage').hide();
-                        // $('#wrapper').show();
-                        if(_this.SessionJsSIP){
-                            if(_this.SessionJsSIP.isInProgress()){
-                                if(_this.SessionJsSIP.direction === 'incoming'){
-                                    // $('#incomingCallNumber').html(_this.SessionJsSIP.remote_identity.uri);
-                                    // $('#incomingCall').show();
-                                    // $('#callControl').hide()  
-                                    // $('#incomingCall').show();
-                                    sStatus = 'Recebendo Ligação...';
-                                }else{
-                                    // $('#callInfoText').html('Ringing...');
-                                    // $('#callInfoNumber').html(_this.SessionJsSIP.remote_identity.uri.user);
-                                    // $('#callStatus').show(); 
-                                    sStatus = 'Discando...';                  
-                                }
-                                
-                            }else if(_this.SessionJsSIP.isEstablished()){
-                                // $('#callStatus').show();
-                                // $('#incomingCall').hide();
-                                // $('#callInfoText').html('In Call');
-                                // $('#callInfoNumber').html(_this.SessionJsSIP.remote_identity.uri.user);
-                                // $('#inCallButtons').show();
-                                _this.incomingCallAudio.pause();
-                                sStatus = 'Em Conversação...'; 
-                            }
-                            // $('#callControl').hide();
-                        }else{
-                            // $('#incomingCall').hide();
-                            // $('#callControl').show();
-                            // $('#callStatus').hide();
-                            // $('#inCallButtons').hide();
-                            _this.incomingCallAudio.pause();
-                        }
-                        //microphone mute icon
-                        if(_this.SessionJsSIP && _this.SessionJsSIP.isMuted().audio){
-                            // $('#muteIcon').addClass('fa-microphone-slash');
-                            // $('#muteIcon').removeClass('fa-microphone');
-                        }else{
-                            // $('#muteIcon').removeClass('fa-microphone-slash');
-                            // $('#muteIcon').addClass('fa-microphone');
-                        }
-
-                        _this.ProcessarStatus(sStatus, _this.RecebendoLigacaoUser);
-                    }else{
-                        // $('#wrapper').hide();
-                        // $('#errorMessage').show();
-                    }                    
-                }
-
+                
                 this.updateUIJsSIP();
 
                 this.ExecutarLigacao = function (pDados) {
-
+                    debugger;
                     if (_this.TestarUtilizaJsSIP()) {
-                        
-                        if (_this.RecebendoChamada) {
-                            _this.SessionJsSIP.answer(_this.callOptions);
-                        }
-                        else {
-                           _this.PhoneJsSIP.call(pDados.Finalizar.TELEFONE, _this.callOptions);
-                        }
+
+                        _this.softphoneController.answerOrCall(pDados.Finalizar.TELEFONE);                     
 
                         _this.updateUIJsSIP();
                         return
@@ -460,9 +354,9 @@ var App;
                 
                 this.EnviarDTMFJsSIP = (tones) => {
 
-                    if (!_this.SessionJsSIP) return;
+                    if (!_this.softphoneController.SessionJsSIP) return;
 
-                    var connection = _this.SessionJsSIP.connection;
+                    var connection = _this.softphoneController.SessionJsSIP.connection;
 
                     if (!connection.getSenders()) return;
               
@@ -474,9 +368,7 @@ var App;
                 this.EnviarDTMF = function (pNro) {
                     if (pNro) {
                         if (_this.TestarUtilizaJsSIP()) {
-                            if (_this.PhoneJsSIP) {                                
-                                this.EnviarDTMFJsSIP(pNro)
-                            };
+                            this.EnviarDTMFJsSIP(pNro)
                         }
                         else {
                             var vDados = {};
@@ -656,7 +548,7 @@ var App;
                 }
 
                 this.FinalizarLigacaoJsSIP = function () {
-                    if (this.SessionJsSIP) {this.SessionJsSIP.terminate()};
+                    if (_this.softphoneController) {_this.softphoneController.clearSession(_this.softphoneController.SessionJsSIP)};
                 };
 
                 this.FinalizarLigacao = function () {
@@ -741,14 +633,8 @@ var App;
                         return false;
                     }
 
-                    if (_this.SessionJsSIP) {
-                        if (_this.SessionJsSIP.isMuted().audio) {
-                            _this.SessionJsSIP.unmute({ audio: true });
-                        } else {
-                            _this.SessionJsSIP.mute({ audio: true });
-                        }
-                    }
-
+                    _this.softphoneController.mute();
+                    
                     return true;
                 }
 
@@ -909,11 +795,7 @@ var App;
                 this.unRegister = function () {
 
                     if (_this.TestarUtilizaJsSIP()) {
-                        if (_this.PhoneJsSIP) {
-                            _this.PhoneJsSIP.stop();
-                            _this.PhoneJsSIP.unregister();
-                            _this.PhoneJsSIP = null;
-                        }
+                        _this.softphoneController.unRegister();                        
                         return
                     }
 
@@ -1864,8 +1746,10 @@ var App;
                         _this.calcTempoLigacao();
                         _this.calcTempoTotalLigacoes();
                     }
+
+                    $scope.$evalAsync();
     
-                }, Math.abs(1) * 1000);
+                }, Math.abs(1) * 1000); 
 
             }            
 

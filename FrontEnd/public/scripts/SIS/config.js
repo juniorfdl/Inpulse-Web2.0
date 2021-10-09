@@ -4,7 +4,7 @@ var App;
 
     App.modules.App.constant('luarApp',
     {        
-	    WEBAPI: 'http://localhost:9000/datasnap/rest',
+	    WEBAPI: 'https://localhost:9000/datasnap/rest',
         ITENS_POR_PAGINA: '15',
         APISIP: 'http://localhost:4321/datasnap/rest/TMetodos',
         URLJSSIP: 'infinity.nativeip.com.br'
