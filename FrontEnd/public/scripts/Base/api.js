@@ -437,6 +437,7 @@ var App;
 
                     if (response.status != 201 && response.data.error != null) {
                         _this.toaster.error("Atenção", response.data.error);
+                        return null;
                     } else {
                         _this.toaster.success("Atenção", "Operação executada com sucesso!");
 

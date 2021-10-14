@@ -57,7 +57,7 @@ type
     fSEGMENTO: Integer;
     fCOD_MIDIA: Integer;
     fGRUPO: Integer;
-    FCOD_CAMPANHA,
+    FCOD_CAMPANHA: integer;
     FCOD_UNIDADE: integer;
     { Private declarations }
   protected

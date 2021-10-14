@@ -588,7 +588,7 @@ var App;
 
                             if (dados) {
 
-                                if (!_this.SipDemo()) {
+                                if ((!_this.RegistrarJsSIP()) && (!_this.SipDemo())) {
                                     _this.RenameRecordFile(dados.id) ; 
                                 }
 
@@ -680,7 +680,7 @@ var App;
                         this.DadosRecebendoLigacao.DadosLigacao.OPERADOR = _rootScope.currentUser.id;
                         this.DadosRecebendoLigacao.OPERADOR = _rootScope.currentUser.id;
                         this.DadosRecebendoLigacao.DadosLigacao.Finalizar.COMPRAS = this.COMPRAS;
-                        this.DadosRecebendoLigacao.DadosLigacao.COD_CAMPANHA =   this.DadosRecebendoLigacao.COD_UNIDADE * 4;
+                        this.DadosRecebendoLigacao.DadosLigacao.COD_CAMPANHA =  this.DadosRecebendoLigacao.COD_UNIDADE;
                         if (this.DadosRecebendoLigacao.AREA1=="") {
                             this.DadosRecebendoLigacao.AREA1 = 0;
                         }
@@ -713,7 +713,8 @@ var App;
                              
                             _this.OperacaoFinalizada = 0;
                             if (dados) {
-                                if (!_this.SipDemo()){
+
+                                if ((!_this.RegistrarJsSIP()) && (!_this.SipDemo())) {
                                     _this.RenameRecordFile(dados.id) ;
                                 }
 
@@ -1018,14 +1019,20 @@ var App;
 
                 }
 
-                this.TransferirLigacao = function () {
-
-                    if (_this.TestarUtilizaJsSIP()) return; 
+                this.TransferirLigacao = function (pDiretoAssistido) {                    
                    
                     if (this.telefonetransferir){                        
                         var vDados = {};
                         vDados.FONE = this.telefonetransferir;
-                        _this.crudSvc.Transferir(vDados);                       
+                        debugger;
+
+                        if (_this.TestarUtilizaJsSIP()) {
+                            vDados.FONE = pDiretoAssistido + vDados.FONE;
+                            this.EnviarDTMFJsSIP(vDados.FONE);
+                        }
+                        else {
+                            _this.crudSvc.Transferir(vDados);
+                        }
                     }
                     else {
                         this.toaster.error("Atenção", "Preencha um numero para transferir!");

@@ -21,16 +21,17 @@
                 <div class="col-md-7">
                     <input type="text"  ng-model="ctrl.telefonetransferir" required class="form-control">
                 </div> 
-                <div class="col-md-1">
-                        <button type="button" class="btn btn-primary" ng-click="ctrl.TransferirLigacao()"
-                            style="height: 30px;font-size: 15px;">Transferir
-                        </button>
-                </div>
-                       
             </div>
             <br>
             <div class="row">
-                   
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.TransferirLigacao('##')"
+                        style="height: 30px;font-size: 15px;">Transferir
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.TransferirLigacao('*1')" ng-show="ctrl.TestarUtilizaJsSIP()"
+                        style="height: 30px;font-size: 15px;">Transferência assistida
+                    </button>
+               </div>                   
             </div>
         </fieldset>
 

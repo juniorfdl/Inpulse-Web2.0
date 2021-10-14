@@ -81,6 +81,7 @@ type
 
     function GetNomeLoginOperador(pOperador: Integer):String;
     function FinalizarLigacao(const AValue: TJSONObject): TJSONObject;
+    procedure ValidarCamposFinalizarLigacao(const AValue: TJSONObject);
     function GravarDadosCliente(const pid:Integer; const AValue: TJSONObject) :integer;
     procedure VerificaDataAcao;
     procedure CriaFidelizacao(pOperador, pChamada, pCliente, pResQtdeFidelizar
@@ -930,6 +931,8 @@ var
   vListaPropostas: TPropostasClientes;
   vDATA_HORA_LIG: TDateTime;
 begin
+  ValidarCamposFinalizarLigacao(AValue);
+
   fObjCli := TInfotecUtils.JsonToObject<TClientes>(AValue.ToJSON);
   fOPERADOR := fObjCli.DadosLigacao.OPERADOR.ToInteger;
   Conectar(fObjCli.DataBase);
@@ -1445,7 +1448,6 @@ var
   vObjBaseUpdate, obj, jsonObject: TClientesGravar;
   TempObject: TObjectList<TClientesGravar>;
    objCli: TClientesGravar;
-
 
    function removeMascara(s: string): string;
    begin
@@ -2733,9 +2735,24 @@ begin
     end;
     end;
     end; }
+end;
 
+procedure TAtivo.ValidarCamposFinalizarLigacao(const AValue: TJSONObject);
+var
+  nRet: integer;
+  sRet: string;
+  sMsgErro: string;
+begin
+  sMsgErro:= EmptyStr;
 
+  if (not AValue.TryGetValue('RAZAO', sRet)) or (sRet.Trim.IsEmpty) then
+    sMsgErro := sMsgErro + sLineBreak + 'Informar razão social do cliente';
 
+  if (not AValue.TryGetValue('FANTASIA', sRet)) or (sRet.Trim.IsEmpty) then
+    sMsgErro := sMsgErro + sLineBreak + 'Informar nome fantasia do cliente';
+
+  if sMsgErro <> EmptyStr then
+    raise Exception.Create(sMsgErro);
 end;
 
 end.
