@@ -1893,7 +1893,7 @@ begin
           fObjCli.RAZAO := FieldByName('RAZAO').AsString;
           fObjCli.FANTASIA := FieldByName('FANTASIA').AsString;
           fObjCli.CPF_CNPJ := FieldByName('CPF_CNPJ').AsString;
-          fObjCli.cod_erp := FieldByName('COD_ERP').asinteger;
+          fObjCli.cod_erp := FieldByName('COD_ERP').asString;
           fObjCli.email := FieldByName('email').AsString;
           fObjCli.contato_mail := FieldByName('CONTATO_MAIL').AsString;
           fObjCli.FONE1 := FieldByName('FONE1').AsString;
@@ -1916,7 +1916,7 @@ begin
           fObjCli.RAZAO := FieldByName('RAZAO').AsString;
           fObjCli.FANTASIA := FieldByName('FANTASIA').AsString;
           fObjCli.CPF_CNPJ := FieldByName('CPF_CNPJ').AsString;
-          fObjCli.cod_erp := FieldByName('COD_ERP').asinteger;
+          fObjCli.cod_erp := FieldByName('COD_ERP').asString;
           fObjCli.email := FieldByName('email').AsString;
           fObjCli.contato_mail := FieldByName('CONTATO_MAIL').AsString;
           fObjCli.FONE1 := FieldByName('FONE1').AsString;

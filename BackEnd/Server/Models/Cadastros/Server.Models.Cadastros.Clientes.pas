@@ -30,7 +30,7 @@ type
     fAtivo: String;
     FRAZAO: String;
     fIE_RG: String;
-    fCOD_ERP: Integer;
+    fCOD_ERP: String;
     fDataBase: String;
     //fid: Integer;
     fOPERADOR: Integer;
@@ -121,8 +121,8 @@ type
     [Column('IE_RG', ftString, 20)]
     property IE_RG:String read fIE_RG write fIE_RG;
 
-    [Column('COD_ERP', ftInteger, 10)]
-    property COD_ERP:Integer read fCOD_ERP write fCOD_ERP;
+    [Column('COD_ERP', ftString, 20)]
+    property COD_ERP: String read fCOD_ERP write fCOD_ERP;
 
     [Column('OPERADOR', ftInteger, 10)]
     property OPERADOR:Integer read fOPERADOR write fOPERADOR;

@@ -42,10 +42,7 @@ var App;
             //_this.externalCallAudio.autoplay = true;
             _this.externalCallAudio.crossOrigin="anonymous";
 
-            _this.SocketJsSIP = new JsSIP.WebSocketInterface('wss://' + _this.luarApp.URLJSSIP + '/ws');
-
             _this.ConfigurationJsSIP = {
-                sockets: [_this.SocketJsSIP],
                 'uri': _rootScope.currentUser.LoginSIP + '@' + _this.luarApp.URLJSSIP,
                 'password': _rootScope.currentUser.SenhaSIP,
                 'username': _rootScope.currentUser.LoginSIP,
@@ -109,7 +106,9 @@ var App;
             };
 
             _this.Registrar = function () {
-                debugger;
+                debugger;                                
+                const socket = new JsSIP.WebSocketInterface('wss://' + _this.luarApp.URLJSSIP + '/ws');
+                _this.ConfigurationJsSIP.sockets = [socket];
                 _this.phone = new JsSIP.UA(_this.ConfigurationJsSIP);
 
                 _this.phone.on("newRTCSession", rtcSession => {
@@ -133,8 +132,6 @@ var App;
                     }
 
                     _this.SessionJsSIP = newSession; 
-
-                    // _this.SessionJsSIP = rtcSession.session;
                     _this.SessionJsSIP.sendDTMF = sendDTMF;
             
                     const completeSession = session => {
@@ -292,7 +289,7 @@ var App;
 
             _this.answerOrCall = (pFone) => {
                 debugger;
-                if (!_this.browser && !_this.user.microphone) {
+                if (!_this.browser && !_this.user.microphone && _this.audioInputs) {
                     _this.user.microphone = _this.audioInputs[0].deviceId;
                 }
 
@@ -769,24 +766,6 @@ var App;
 
                 session = null;
                 $rootScope.newCall = false;
-
-                // if (_this.showStatusWarning) {
-                //     _this.showStatusWarning = false;
-
-                //     const modalDefaults = {
-                //         templateUrl: "view/templates/statusWarning.html",
-                //     };
-
-                //     modalService.showModal(modalDefaults, {}).then(() => {
-                //         const status = "Online";
-
-                //         $rootScope.loggedUserStatus = status;
-                //         $window.localStorage.loggedUserStatus = status;
-                //         // $rootScope.$emit("changeStatus", { status });
-
-                //         // usersAPI.updateUser($rootScope.loggedUserId, { status });
-                //     });
-                // }
             };
 
             const getCurrentUser = () => {

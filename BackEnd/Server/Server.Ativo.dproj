@@ -5,7 +5,7 @@
         <FrameworkType>None</FrameworkType>
         <MainSource>Server.Ativo.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <TargetedPlatforms>131</TargetedPlatforms>
         <AppType>Console</AppType>
@@ -186,7 +186,7 @@
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Linux64)'!=''">
-        <DCC_UnitSearchPath>ORMBr\Source\Core;ORMBr\Source\DataSet;ORMBr\Source\Criteria;ORMBr\Source\Middleware;ORMBr\Source\Objectset;modules\.dcp;modules\.dcu;modules;modules\cqlbr\Source\Core;modules\cqlbr\Source\Drivers;modules\cqlbr\Source;modules\dataset-serialize\src;modules\dbcbr\Source\Core;modules\dbcbr\Source\Drivers;modules\dbcbr\Source;modules\dbebr\Source\Core;modules\dbebr\Source\Drivers;modules\dbebr\Source;modules\handle-exception\src;modules\horse\src;modules\horse-cors\src;modules\horse-logger\src;modules\horse-logger-provider-console\src;modules\horse-logger-provider-logfile\src;modules\horse-utils-clientip\src;modules\jhonson\src;modules\jsonbr\Source\Core;modules\jsonbr\Source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>ORMBr\Source\Core;ORMBr\Source\DataSet;ORMBr\Source\Criteria;ORMBr\Source\Middleware;ORMBr\Source\Objectset;modules\.dcp;modules\.dcu;modules;modules\cqlbr\Source\Core;modules\cqlbr\Source\Drivers;modules\cqlbr\Source;modules\dataset-serialize\src;modules\dbcbr\Source\Core;modules\dbcbr\Source\Drivers;modules\dbcbr\Source;modules\dbebr\Source\Core;modules\dbebr\Source\Drivers;modules\dbebr\Source;modules\handle-exception\src;modules\horse\src;modules\horse-cors\src;modules\horse-logger\src;modules\horse-logger-provider-console\src;modules\horse-logger-provider-logfile\src;modules\horse-utils-clientip\src;modules\jhonson\src;modules\jsonbr\Source\Core;modules\jsonbr\Source;C:\BKP Elvio\unj\Infotec\Inpulse-Web2.0-master\BackEnd\Server\Utils\GBJSON;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <Debugger_Launcher>/usr/bin/xterm -e &quot;%debuggee%&quot;</Debugger_Launcher>
         <Manifest_File>(None)</Manifest_File>
     </PropertyGroup>
