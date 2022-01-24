@@ -17,12 +17,14 @@ var App;
                 var _this = this;
                 this.SweetAlert = SweetAlert;
                 var _rootScope = $rootScope;
-				this.luarApp = luarApp;                               
+				this.luarApp = luarApp;
+                _this.crudSvc = CrudAtivoService;                               
                 
                 var _scope = $scope;
                 _this.timestampLigacao = null;
                 var tecladoVisivel = false;
-                var receptivoVisivel = false;  
+                var receptivoVisivel = false;
+                _this.InicioPausa = false; 
                 
                 var input = {
                     year: 0,
@@ -98,7 +100,7 @@ var App;
                 }
 
                 this.PermitePesquisarClienteAtivo = function () {
-                    if (_rootScope.currentUser.Registrar.PESQUISA_CLIENTE_ATIVO == 'S') {
+                    if ((_rootScope) && (_rootScope.currentUser) && (_rootScope.currentUser.Registrar.PESQUISA_CLIENTE_ATIVO == 'S')) {
                         return true
                     }
                     else {
@@ -120,7 +122,6 @@ var App;
                 }
 
                 this.updateUIJsSIP = function (){
-                    debugger;
                     if(_this.TestarUtilizaJsSIP()) {
                         var sStatus = 'Disponivel';
                         // $('#errorMessage').hide();
@@ -177,7 +178,6 @@ var App;
                     _this.updateUIJsSIP);
 
                 this.RegistrarJsSIP = function () {
-                    debugger;
                     if(_this.TestarUtilizaJsSIP()){                        
                         _this.softphoneController.Registrar();
                     }
@@ -230,27 +230,20 @@ var App;
 
                 this.SetStatusLigacao = function (pOperador, pStatus, pCAMINHO_BANCO) {
 
-                    if (!pOperador) {
+                    if ((!pOperador) || (!pStatus) || (!pCAMINHO_BANCO) || (!_this.crudSvc)) {
                         return;
-                    }
-
-                    if (!pStatus) {
-                        return;
-                    }
-
-                    if (!pCAMINHO_BANCO) {
-                        return;
-                    }
-
-                    if (!_this.ProximaLigacao) {
-                        return;
-                    }
-
-                    if (!_this.ProximaLigacao.DadosLigacao) {
-                        return;
+                    }  
+                    
+                    if (_this.InicioPausa){
+                        return
                     }
 
                     _this.crudSvc.SetStatusLigacao(pOperador, pStatus, pCAMINHO_BANCO).then(function (dados) {
+
+                        if ((!_this.ProximaLigacao) || (!_this.ProximaLigacao.DadosLigacao)) {
+                            return;
+                        }
+    
                         if (dados == 2 || dados == 1) {
 
                             _this.crudSvc.GetDate().then(function (pdata) {
@@ -264,7 +257,6 @@ var App;
                 }
 
                 this.ProcessarStatus = function (pNovoStatus, psStateCodLigacao) {
-                    debugger;
                     var statusAnt = _this.StatusLigacao;
                     if (!_this.TestarStatusEmConversacao(statusAnt) && _this.TestarStatusEmConversacao(pNovoStatus)) {
                         _this.timestampLigacao = new Date(input.year, input.month, input.day,
@@ -312,7 +304,6 @@ var App;
                 this.updateUIJsSIP();
 
                 this.ExecutarLigacao = function (pDados) {
-                    debugger;
                     if (_this.TestarUtilizaJsSIP()) {
 
                         _this.softphoneController.answerOrCall(pDados.Finalizar.TELEFONE);                     
@@ -882,8 +873,7 @@ var App;
                 }
                 function ExecutaStart() {
                     _this.$rootScope = $rootScope;
-                    _this.api = api;
-                    _this.crudSvc = CrudAtivoService;
+                    _this.api = api;                    
                     _this.ApenasConsulta = true;
                     _this.GetStart();
                     _this.Registrar();
@@ -1005,6 +995,9 @@ var App;
                         };
                     });
 
+                    _this.SetStatusLigacao(_rootScope.currentUser.id,
+                        'PAUSA', _rootScope.currentUser.CAMINHO_DATABASE);
+
                     this.tempoEmPausa = 0;
                     this.InicioPausa = true;
                     this.PausarSIP();
@@ -1024,7 +1017,6 @@ var App;
                     if (this.telefonetransferir){                        
                         var vDados = {};
                         vDados.FONE = this.telefonetransferir;
-                        debugger;
 
                         if (_this.TestarUtilizaJsSIP()) {
                             vDados.FONE = pDiretoAssistido + vDados.FONE;
@@ -1335,8 +1327,12 @@ var App;
                         vObjPausa.COD_PAUSA = this.MotivoPausa;
                         vObjPausa.OPERADOR = _rootScope.currentUser.id;
                         vObjPausa.DataInicioPausa = this.DataInicioPausa;
-
+                        
                         _this.crudSvc.GravarPausa(vObjPausa);
+
+                        _this.InicioPausa = false;
+                        _this.SetStatusLigacao(_rootScope.currentUser.id,
+                            'DISPONIVEL', _rootScope.currentUser.CAMINHO_DATABASE);
 
                         if (ptipo == 1) { //logof
 

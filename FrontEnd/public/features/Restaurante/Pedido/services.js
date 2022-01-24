@@ -18,7 +18,7 @@ var App;
                 _super.apply(this, arguments);
 
               this.ConfirmarPedido = function (dados) {
-                    debugger;
+                     
                     return this.api.save(dados);
                     //return this.api.allLook(dados, 'sis_usuario/confirmarpedido');
               };
@@ -28,7 +28,7 @@ var App;
               }
 
               this.PedidoMesa = function (mesa) {
-                  debugger;
+                   
                   //var params = { "id": mesa };
                   return this.api.allLook(null,'tormbr/PedidoMesa/'+mesa);
               };
@@ -46,7 +46,7 @@ var App;
             });
 
             CrudpedidoService.prototype.buscar = function () {
-                debugger;
+                 
                 return [{ Mesa: "1" }, { Mesa: "2" }, { Mesa: "3" }, { Mesa: "4" }, { Mesa: "5" }];
             }
    

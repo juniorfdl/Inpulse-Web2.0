@@ -17,15 +17,13 @@ var App;
             function CrudAtivoService($q, api, luarApp, $location) {
                 _super.apply(this, arguments);
 
-                this.Ligar = function (pDados){   
-                   
+                this.Ligar = function (pDados){                      
                                     
                     var vURL = luarApp.APISIP;
                     var params = {};
                     params.Telefone = pDados.Finalizar.TELEFONE;
                     params.CodigoLigacao = pDados.CODIGO;
                     params.NomeOperador = pDados.NOME_OPERADOR;
-                    debugger;
                     return this.api.invokePostDirectRestWD('LigarSIP',params,vURL);
                 }
 

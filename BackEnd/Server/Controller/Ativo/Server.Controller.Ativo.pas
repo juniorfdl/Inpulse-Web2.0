@@ -2448,17 +2448,17 @@ begin
 
   Conectar(pBaseDados);
   try
-    if (vstatusOrd = 4) then
-      Liberar_operadores_ligacoes
-    else
-      Travar_operadores_ligacoes;
-
     try
       FConnection.ExecuteSQL(' insert into operadores_status values ('
         + pOperador.ToString + ', ' + IntToStr(vstatusOrd)
         + ', now()) ON DUPLICATE KEY UPDATE STATUS_ATUAL = ' + IntToStr(vstatusOrd) + ' , TEMPO = now()');
     except
     end;
+
+    if (vstatusOrd = 4) then
+      Liberar_operadores_ligacoes
+    else
+      Travar_operadores_ligacoes;
 
     if (vstatusOrd = 0) or (vstatusOrd = 3) then
     begin

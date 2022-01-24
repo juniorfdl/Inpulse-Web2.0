@@ -288,7 +288,7 @@ var App;
             };
 
             ApiService.prototype.invokeFile = function (method, pfileFormData, apiExterna, id) {
-                debugger;
+                 
                 var _this = this;
                 var _api = this.api;
 

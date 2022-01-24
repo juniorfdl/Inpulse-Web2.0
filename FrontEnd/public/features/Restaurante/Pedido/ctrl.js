@@ -29,7 +29,7 @@ var App;
                 this.BuscarMesas = function (){
                     _this.crudSvc.BuscarMesas().then(function (dados) {
                         if (dados.result) {
-                            debugger;
+                             
                             _this.CONFIG_RESTAURANTE = dados.result[0];
                         }
                     });
@@ -74,7 +74,7 @@ var App;
                             cancelButtonText: "Nao"
                         }, function (isConfirm) {
 
-                            debugger;
+                             
 
                             if (isConfirm) {
                                 _this.Pedido.ReImprimir = 'S';
@@ -117,7 +117,7 @@ var App;
 
                     _this.crudSvc.PedidoMesa(index).then(function (dados) {
                         if (dados.result) {
-                            debugger;
+                             
                             dados = dados.result[0];
                             _this.Pedido.id = dados.id;
                             _this.Pedido.CodUsr = dados.CodUsr;
@@ -177,7 +177,7 @@ var App;
                 }
 
                 this.SetGrupo = function (grupo) {
-                    debugger;
+                     
                     _this.GrupoSelecionado = grupo.GRUPA60DESCR;
                     _this.Produtos = grupo.Produtos;
                     _this.VisualizarProdutos = true;
@@ -186,7 +186,7 @@ var App;
                 }
 
                 this.AddProduto = function (Produto) {
-                    debugger;
+                     
                     if (!Produto.QTD)
                         Produto.QTD = 0;
 

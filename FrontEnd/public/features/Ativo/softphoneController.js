@@ -106,13 +106,13 @@ var App;
             };
 
             _this.Registrar = function () {
-                debugger;                                
+                                                 
                 const socket = new JsSIP.WebSocketInterface('wss://' + _this.luarApp.URLJSSIP + '/ws');
                 _this.ConfigurationJsSIP.sockets = [socket];
                 _this.phone = new JsSIP.UA(_this.ConfigurationJsSIP);
 
                 _this.phone.on("newRTCSession", rtcSession => {
-                    debugger;
+                     
                     var newSession = rtcSession.session;
 
                     const sessionIndex =
@@ -288,7 +288,7 @@ var App;
             };
 
             _this.answerOrCall = (pFone) => {
-                debugger;
+                 
                 if (!_this.browser && !_this.user.microphone && _this.audioInputs) {
                     _this.user.microphone = _this.audioInputs[0].deviceId;
                 }
@@ -329,7 +329,7 @@ var App;
                     }
                 }
 
-                debugger;
+                 
                 if (["Ausente", "Ocupado"].includes($rootScope.loggedUserStatus)) {
                     _this.showStatusWarning = true;
                 }
@@ -542,7 +542,7 @@ var App;
             };
 
             _this.updateUI = session => {
-                debugger;
+                 
                 if (session) {
                     if (session.isInProgress()) {
                         const username = session.remote_identity.uri.user;
@@ -653,9 +653,9 @@ var App;
             };
 
             const addTrack = (connection, session) => {
-                debugger;
+                 
                 connection.ontrack = event => {
-                    debugger; 
+                      
                     _this.SessionJsSIP.stream = event.streams[0];
 
                     setTrack(_this.SessionJsSIP);                    
@@ -677,7 +677,7 @@ var App;
             };
 
             const setTrack = session => {
-                debugger;
+                 
                 const stream = session.stream;
 
                 if (!stream) {
@@ -822,7 +822,7 @@ var App;
             };
 
             const registerUserSofphone = () => {
-                debugger;
+                 
                 verifyBrowser();
 
                 if (!_this.phone && !_this.hideSidebar && $rootScope.logged) {
