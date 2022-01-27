@@ -76,7 +76,7 @@ type
 
 procedure TGetSSLPassword.OnGetSSLPassword(var APassword: {$IF CompilerVersion < 27}AnsiString{$ELSE}string{$ENDIF});
 begin
-  APassword := '';
+  APassword := 'infotec';
 end;
 
 procedure TSSLHelper.QuerySSLPort(APort: Word; var VUseSSL: boolean);
@@ -117,10 +117,6 @@ var
   end;
   {$ENDIF}
 
-  procedure QuerySSLPort(APort: Word; var VUseSSL: boolean);
-  begin
-    VUseSSL := TUtils.GetHttps;
-  end;
 
 begin
   try
@@ -141,14 +137,14 @@ begin
 
     if bHTTPS then
     begin
-      LGetSSLPassword := TGetSSLPassword.Create;
       LIOHandleSSL := TIdServerIOHandlerSSLOpenSSL.Create(oServer);
+      LIOHandleSSL.SSLOptions.SSLVersions := [sslvSSLv2, sslvSSLv3, sslvTLSv1, sslvTLSv1_1, sslvTLSv1_2];
+      LIOHandleSSL.SSLOptions.Method := sslvTLSv1_2;
+      LIOHandleSSL.SSLOptions.Mode := sslmServer;
       LIOHandleSSL.SSLOptions.CertFile := 'certificate.pem';
-      LIOHandleSSL.SSLOptions.RootCertFile := '';
       LIOHandleSSL.SSLOptions.KeyFile := 'key.pem';
       LIOHandleSSL.OnGetPassword := LGetSSLPassword.OnGetSSLPassword;
-      oServer.IOHandler := LIOHandleSSL;
-      oServer.OnQuerySSLPort := LSSLHelper.QuerySSLPort;
+      oServer.IOHandler := LIOHandleSSL;      
       Writeln('HTTPS Ativo');
       shttp := 'HTTPS';
     end;
