@@ -258,6 +258,13 @@ var App;
 
                 this.ProcessarStatus = function (pNovoStatus, psStateCodLigacao) {
                     var statusAnt = _this.StatusLigacao;
+
+                    if (pNovoStatus == 'Disponivel') {
+                        if ((_this.TestarStatusEmConversacao(statusAnt) || (!statusAnt)) && !_this.TestarStatusEmConversacao(pNovoStatus)) {
+                          _this.RegistrarJsSIP();
+                        }
+                      }
+
                     if (!_this.TestarStatusEmConversacao(statusAnt) && _this.TestarStatusEmConversacao(pNovoStatus)) {
                         _this.timestampLigacao = new Date(input.year, input.month, input.day,
                             input.hours, input.minutes, input.seconds);

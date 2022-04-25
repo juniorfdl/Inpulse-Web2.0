@@ -106,6 +106,8 @@ var App;
             };
 
             _this.Registrar = function () {
+
+                _this.unRegister();
                                                  
                 const socket = new JsSIP.WebSocketInterface('wss://' + _this.luarApp.URLJSSIP + '/ws');
                 _this.ConfigurationJsSIP.sockets = [socket];
@@ -282,9 +284,12 @@ var App;
             }
 
             _this.unRegister = function () {
-                _this.phone.stop();
-                _this.phone.unregister();
-                $scope.$evalAsync();
+                if (_this.phone) {
+                  _this.phone.stop();
+                  _this.phone.unregister();
+                  _this.phone = null;
+                  $scope.$evalAsync();
+                }
             };
 
             _this.answerOrCall = (pFone) => {
